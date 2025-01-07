@@ -41,19 +41,20 @@ class QRScanner extends StatelessWidget {
         if (barcode.rawValue != null) {
           try {
             final decryptedData =
-            decryptData(barcode.rawValue!, effectiveSecretKey);
+                decryptData(barcode.rawValue!, effectiveSecretKey);
 
             final student = _decodeStudent(decryptedData);
             final isValid = await _validateStudent(
                 student, effectiveDio, effectiveServerURL);
 
             if (isValid) {
-              setResult("인증 성공!");
+              setResult("로딩 중...");
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(
+                    builder: (context) => HomeScreen(student: student)),
               );
             } else {
-              setResult("Authentication failed!");
+              setResult("인증 실패!");
             }
           } catch (e) {
             setResult("Error: ${e.toString()}");

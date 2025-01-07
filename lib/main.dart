@@ -30,7 +30,7 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(_result ?? '로고'),
+                Text(_result ?? '로고는 여기 위에'),
                 ElevatedButton(
                   child: const Text('QR 코드로 로그인하기'),
                   onPressed: () => Navigator.of(context).push(
