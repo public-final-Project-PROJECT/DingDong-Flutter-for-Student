@@ -36,8 +36,11 @@ dependencies:
   cupertino_icons: ^1.0.8
   http: ^1.2.2
   dio: ^5.7.0
-  aescryptojs: ^1.0.0
-  qr_code_scanner: ^1.0.1
+  encrypt: ^5.0.0
+  convert: ^3.0.0
+  crypto: ^3.0.0
+  mobile_scanner: ^6.0.2
+  flutter_dotenv: ^5.2.1
 
 dev_dependencies:
   flutter_test:
@@ -62,7 +65,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
+  assets:
+    - .env
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
