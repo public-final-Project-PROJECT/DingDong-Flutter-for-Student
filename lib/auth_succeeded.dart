@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:lastdance_f/student.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required Student student});
+class AuthSucceeded extends StatefulWidget {
+  const AuthSucceeded({super.key, required Student student});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<AuthSucceeded> createState() => _AuthSucceededState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _AuthSucceededState extends State<AuthSucceeded> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

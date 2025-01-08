@@ -4,13 +4,22 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
-String decryptData(String encryptedData, String secretKey) {
+class DecryptResult {
+  final String? data;
+  final String? error;
+
+  DecryptResult({this.data, this.error});
+
+  bool get isSuccess => data != null && error == null;
+}
+
+DecryptResult decryptData(String encryptedData, String secretKey) {
   try {
     final encryptedBytes = base64.decode(encryptedData);
 
     final prefix = utf8.decode(encryptedBytes.sublist(0, 8));
     if (prefix != "Salted__") {
-      throw ArgumentError("Invalid encrypted data format");
+      return DecryptResult(error: "Invalid encrypted data format");
     }
 
     final salt = encryptedBytes.sublist(8, 16);
@@ -28,9 +37,9 @@ String decryptData(String encryptedData, String secretKey) {
         encrypt.Encrypted(Uint8List.fromList(ciphertext)),
         iv: iv);
 
-    return utf8.decode(decrypted);
+    return DecryptResult(data: utf8.decode(decrypted));
   } catch (e) {
-    throw Exception("Decryption failed: $e");
+    return DecryptResult(error: "Decryption failed: $e");
   }
 }
 

@@ -15,11 +15,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String? _result;
-
-  void setResult(String result) {
-    setState(() => _result = result);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +25,12 @@ class _MyAppState extends State<MyApp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(_result ?? '로고는 여기 위에'),
+                Text('로고는 여기 위에'),
                 ElevatedButton(
                   child: const Text('QR 코드로 로그인하기'),
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => QRScanner(setResult: setResult),
+                      builder: (context) => QRScanner(),
                     ),
                   ),
                 ),

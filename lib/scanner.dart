@@ -1,24 +1,21 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:lastdance_f/decryptData.dart';
-import 'package:lastdance_f/home_screen.dart';
-import 'package:lastdance_f/student.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:lastdance_f/decryptData.dart';
+import 'package:lastdance_f/student.dart';
+import 'package:lastdance_f/auth_succeeded.dart';
+import 'package:lastdance_f/auth_failed.dart';
 
 class QRScanner extends StatelessWidget {
   QRScanner({
-    required this.setResult,
     this.dio,
     this.secretKey,
     this.serverURL,
     super.key,
   });
 
-  final Function setResult;
   final MobileScannerController controller = MobileScannerController();
   final Dio? dio;
   final String? secretKey;
@@ -40,31 +37,36 @@ class QRScanner extends StatelessWidget {
         final barcode = barcodes.first;
         if (barcode.rawValue != null) {
           try {
-            final decryptedData =
-                decryptData(barcode.rawValue!, effectiveSecretKey);
+            final result = decryptData(barcode.rawValue!, effectiveSecretKey);
 
-            final student = _decodeStudent(decryptedData);
-            final isValid = await _validateStudent(
-                student, effectiveDio, effectiveServerURL);
+            if (result.isSuccess) {
+              final student = _decodeStudent(result.data!);
+              final isValid = await _validateStudent(
+                  student, effectiveDio, effectiveServerURL);
 
-            if (isValid) {
-              setResult("로딩 중...");
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                    builder: (context) => HomeScreen(student: student)),
-              );
+              if (isValid) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => AuthSucceeded(student: student)),
+                );
+              }
             } else {
-              setResult("인증 실패!");
+              _redirectToAuthFailed(context);
             }
           } catch (e) {
-            setResult("Error: ${e.toString()}");
-            if (kDebugMode) print(e);
+            _redirectToAuthFailed(context);
           } finally {
             await controller.stop();
             controller.dispose();
           }
         }
       },
+    );
+  }
+
+  void _redirectToAuthFailed(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const AuthFailed()),
     );
   }
 
@@ -95,7 +97,7 @@ class QRScanner extends StatelessWidget {
             student.year == yearOfClassCreated;
       }
     } catch (e) {
-      if (kDebugMode) print("Validation error: $e");
+      throw Exception("Validation error.");
     }
     return false;
   }
