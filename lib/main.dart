@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:lastdance_f/home_screen.dart';
 import 'package:lastdance_f/scanner.dart';
 
 Future<void> main() async {
@@ -30,7 +31,8 @@ class _MyAppState extends State<MyApp> {
                   child: const Text('QR 코드로 로그인하기'),
                   onPressed: () => Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => QRScanner(),
+                      // builder: (context) => QRScanner(),
+                      builder: (context) => HomeScreen(),
                     ),
                   ),
                 ),

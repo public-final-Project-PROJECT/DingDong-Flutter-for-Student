@@ -6,7 +6,6 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:lastdance_f/decryptData.dart';
 import 'package:lastdance_f/student.dart';
 import 'package:lastdance_f/auth_succeeded.dart';
-import 'package:lastdance_f/auth_failed.dart';
 
 class QRScanner extends StatelessWidget {
   QRScanner({
@@ -49,12 +48,14 @@ class QRScanner extends StatelessWidget {
                   MaterialPageRoute(
                       builder: (context) => AuthSucceeded(student: student)),
                 );
+              } else {
+                _showAuthFailedDialog(context);
               }
             } else {
-              _redirectToAuthFailed(context);
+              _showAuthFailedDialog(context);
             }
           } catch (e) {
-            _redirectToAuthFailed(context);
+            _showAuthFailedDialog(context);
           } finally {
             await controller.stop();
             controller.dispose();
@@ -64,9 +65,25 @@ class QRScanner extends StatelessWidget {
     );
   }
 
-  void _redirectToAuthFailed(BuildContext context) {
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const AuthFailed()),
+  void _showAuthFailedDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false, // Prevent closing by tapping outside
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("앗"),
+          content: const Text(
+            "QR 코드 인식에 실패했어요.",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              child: const Text("확인"),
+            ),
+          ],
+        );
+      },
     );
   }
 
