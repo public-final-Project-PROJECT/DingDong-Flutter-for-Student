@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lastdance_f/screen/Seat.dart';
 import 'package:lastdance_f/screen/calendar.dart';
 import 'package:lastdance_f/screen/home.dart';
 import 'package:lastdance_f/screen/myPage.dart';
@@ -20,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Notice(),
     Mypage(),
     Calendar(),
+    Seat(),
     Vote(),
   ];
 
@@ -83,9 +85,30 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             ListTile(
-              title: Text('투표'),
-              onTap: () {
+              title :
+              Row(
+                children: [
+                  Icon(Icons.table_restaurant_outlined, color: Colors.deepOrange, size: 30,),
+                  SizedBox(width: 10,),
+                  Text('우리반 좌석보기'),
+                ],
+              ),
+              onTap: (){
                 _onTapped(4);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              title:
+              Row(
+                children: [
+                  Icon(Icons.how_to_vote_outlined,  color: Colors.deepOrange, size: 30,),
+                  SizedBox(width: 10,),
+                  Text('학급 투표'),
+                ],
+              ),
+              onTap: () {
+                _onTapped(5);
                 Navigator.pop(context);
               },
             ),
