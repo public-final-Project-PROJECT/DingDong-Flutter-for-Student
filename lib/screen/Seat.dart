@@ -73,7 +73,7 @@ class _SeatState extends State<Seat> {
       appBar: AppBar(
         title: Row(
           children: [
-            Icon(Icons.event_seat_sharp),
+            Icon(Icons.table_restaurant_outlined, color: Colors.deepOrange, size: 30,),
             SizedBox(width: 10),
             Text("우리반 좌석 보기"),
           ],

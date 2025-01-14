@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../model/voting_model.dart';
@@ -13,13 +14,14 @@ class _StudentVoteState extends State<Vote> {
   List<dynamic> _voteList = []; // 투표 정보 담기
   Map<int, List<dynamic>> _allVotingData = {}; // 투표 id 별 항목 정보
   List<Map<String, dynamic>> _studentsInfo = []; // 반 학생들의 정보(학생테이블)
-  Map<int, Map<int, List<dynamic>>> _votingStudentsMap = {};
-  // 투표 항목에 대한 학생들 정보
+  Map<int, Map<int, List<dynamic>>> _votingStudentsMap = {}; // 투표 항목에 대한 학생들 정보
 
   int classId = 2;
-  int studentId = 33; // 내 학생 고유 번호
-
+  int studentId = 30; // 내 studentId
   final VotingModel _votingModel = VotingModel();
+
+  // Map<int, int?> _selectedContents = {};
+  Map<int, List<dynamic>> _selectedContents = {};
 
   @override
   void initState() {
@@ -32,6 +34,7 @@ class _StudentVoteState extends State<Vote> {
   void _loadClassStudentsInfo(int classId) async {
     try {
       List<dynamic> studentsList = await _votingModel.findStudentsNameAndImg(2);
+      print(' 우리반 학생정보 불러옴 _studentsInfo : $studentsList');
       setState(() {
         _studentsInfo = studentsList.cast<Map<String, dynamic>>();
       });
@@ -55,7 +58,9 @@ class _StudentVoteState extends State<Vote> {
         _voteList = votingData;
       });
 
-     // 투표 contents 조회
+      print(' 투표 기본정보 vote_list : $_voteList');
+
+      // 투표 contents 조회
       for (var voting in votingData) {
         final votingId = voting["id"];
         if (votingId != null) {
@@ -68,11 +73,37 @@ class _StudentVoteState extends State<Vote> {
     }
   }
 
+  // 알림
+  void _showAlertDialog(String title, String content, int votingId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text(title),
+          content: Text(content),
+          actions: [
+            CupertinoDialogAction(
+              isDefaultAction: true,
+              child: Text("닫기"),
+              onPressed: () {
+                Navigator.pop(context);
+                setState(() {
+                  // Ensure any necessary updates are reflected in the UI
+                  _voteOptionUsers(votingId);
+                });
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // 투표 항목에 대한 학생들의 투표 정보 api
   void _voteOptionUsers(int votingId) async {
     try {
       List<dynamic> userVotingData =
-      await _votingModel.voteOptionUsers(votingId);
+          await _votingModel.voteOptionUsers(votingId);
       Map<int, List<dynamic>> votingStudents = {};
       print(userVotingData);
       for (var userVote in userVotingData) {
@@ -85,7 +116,7 @@ class _StudentVoteState extends State<Vote> {
       setState(() {
         _votingStudentsMap[votingId] = votingStudents;
       });
-      print(_votingStudentsMap);
+      print('학생들 투표 정보 _votingStudentsMap :: $_votingStudentsMap');
     } catch (e) {
       print("Error 학생 투표 정보 api: $e");
     }
@@ -94,12 +125,30 @@ class _StudentVoteState extends State<Vote> {
   // 투표 항목 조회 api
   void _loadVotingContents(int votingId) async {
     try {
-      List<dynamic> contents = await _votingModel.selectVotingContents(votingId);
+      List<dynamic> contents =
+          await _votingModel.selectVotingContents(votingId);
       setState(() {
         _allVotingData[votingId] = contents;
       });
     } catch (e) {
       print("Error loading voting contents for $votingId: $e");
+    }
+  }
+
+  // 사용자 투표 항목 저장 (record save)
+  void _saveVotingRecord(int contentsId, int votingId) async {
+    try {
+      final record =
+          await _votingModel.saveVotingRecord(contentsId, studentId, votingId);
+      print("최종 응답 : $record");
+      if (record == null || record.isEmpty) {
+        _showAlertDialog("알림", "투표가 완료되었습니다!", votingId);
+      } else {
+        _showAlertDialog("경고 알림", "투표 실패!", votingId);
+      }
+    } catch (e) {
+      print("Error _saveVotingRecord for $contentsId: $e");
+      _showAlertDialog("오류", "투표 저장 중 문제가 발생했습니다!", votingId);
     }
   }
 
@@ -110,7 +159,8 @@ class _StudentVoteState extends State<Vote> {
 
     for (var content in votingContents) {
       final contentId = content["contentsId"];
-      final studentsVotedForContent = _votingStudentsMap[votingId]?[contentId] ?? [];
+      final studentsVotedForContent =
+          _votingStudentsMap[votingId]?[contentId] ?? [];
       voteCounts[contentId] = studentsVotedForContent.length;
     }
 
@@ -125,7 +175,7 @@ class _StudentVoteState extends State<Vote> {
 
     if (mostVotedContentId != -1) {
       final mostVotedContent = votingContents.firstWhere(
-            (content) => content["contentsId"] == mostVotedContentId,
+        (content) => content["contentsId"] == mostVotedContentId,
         orElse: () => {},
       );
       return mostVotedContent;
@@ -134,15 +184,46 @@ class _StudentVoteState extends State<Vote> {
     return {};
   }
 
+  // 투표하기 버튼 handler
+  void _submitVote(int votingId) async {
+    final selectedContent = _selectedContents[votingId];
+
+    if (selectedContent == null || selectedContent.isEmpty) {
+      print("No content selected for voting $votingId");
+      return;
+    }
+
+    try {
+      for (var selectedContentId in selectedContent) {
+        final record = await _votingModel.saveVotingRecord(
+            selectedContentId, studentId, votingId);
+        print("Vote saved for content $selectedContentId: $record");
+
+        if (record == null || record.isEmpty) {
+          _showAlertDialog("알림", "투표가 완료되었습니다!", votingId);
+        } else {
+          _showAlertDialog("경고 알림", "투표 실패!", votingId);
+        }
+      }
+
+      setState(() {
+        _selectedContents[votingId] = selectedContent;
+      });
+    } catch (e) {
+      print("Error saving voting records: $e");
+      _showAlertDialog("오류", "투표 저장 중 문제가 발생했습니다!", votingId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
-            Text("학급 투표"),
+            Icon(Icons.how_to_vote, color: Colors.deepOrange, size: 33),
             SizedBox(width: 15),
-            Icon(Icons.how_to_vote),
+            Text("학급 투표"),
           ],
         ),
         backgroundColor: const Color(0xffF4F4F4),
@@ -158,135 +239,293 @@ class _StudentVoteState extends State<Vote> {
         itemBuilder: (context, index) {
           final voting = _voteList[index];
           final votingId = voting["id"];
-          final votingContents = _allVotingData[votingId] ?? []; // 항목 정보
-          final mostVotedContent = _getMostVotedContent(votingId); // 가장 많은 득표수
+          final votingContents = _allVotingData[votingId] ?? [];
+          final mostVotedContent = _getMostVotedContent(votingId);
           final mostVotedContentName = mostVotedContent["votingContents"] ?? "";
-          // 생성 시간
           final createdAt = voting["createdAt"] != null
-              ? DateFormat('yyyy-MM-dd').format(DateTime.parse(voting["createdAt"]))
+              ? DateFormat('yyyy-MM-dd')
+                  .format(DateTime.parse(voting["createdAt"]))
               : '';
-          // 종료 시간
           final votingEnd = voting["votingEnd"] != null
-              ? DateFormat('yyyy-MM-dd').format(DateTime.parse(voting["votingEnd"]))
+              ? DateFormat('yyyy-MM-dd')
+                  .format(DateTime.parse(voting["votingEnd"]))
               : '';
+          final studentVotes =
+              _votingStudentsMap[votingId]?.values.expand((x) => x).toList() ??
+                  [];
+          final isVoted =
+              studentVotes.any((vote) => vote["studentId"] == studentId);
+          final myVote = studentVotes.firstWhere(
+            (vote) => vote["studentId"] == studentId,
+            orElse: () => null,
+          );
+
+          // 중복투표 여부 확인
+          final doubleVoting = voting["doubleVoting"] ?? false;
 
           return Card(
-            margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: ListTile(
-              title: Row(
+            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+            // color: Colors.,
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  ListTile(
+                    title: Row(
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.circle,
-                              size: 13,
-                              color: voting["vote"] == true ? Colors.red : Colors.grey,
-                            ),
-                            SizedBox(width: 5),
-                            Text(
-                              voting["vote"] == true ? "진행중" : "종료",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: voting["vote"] == true ? Colors.red : Colors.grey,
-                              ),
-                            ),
-                            if (voting["votingEnd"] != null && voting["vote"] == true)
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               Row(
                                 children: [
-                                  Icon(Icons.hourglass_bottom, color: Colors.redAccent),
-                                  Text(
-                                    votingEnd,
-                                    style: TextStyle(fontSize: 12, color: Colors.red),
+                                  Icon(
+                                    Icons.circle,
+                                    size: 13,
+                                    color: voting["vote"] == true
+                                        ? Colors.red
+                                        : Colors.grey,
                                   ),
+                                  SizedBox(width: 5),
                                   Text(
-                                    " 에 자동으로 종료됩니다!",
-                                    style: TextStyle(fontSize: 14, color: Colors.red),
+                                    voting["vote"] == true ? "진행중" : "종료",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: voting["vote"] == true
+                                          ? Colors.deepOrangeAccent
+                                          : Colors.grey,
+                                    ),
                                   ),
+                                  SizedBox(width: 13),
+                                  if (voting["anonymousVote"] == true)
+                                    Stack(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 5),
+                                          decoration: BoxDecoration(
+                                            color: voting["vote"] == false
+                                                ? Colors.grey
+                                                : Colors.deepOrangeAccent,
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                          ),
+                                          child: Text(
+                                            "공개 투표",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                 ],
                               ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.offline_pin_rounded, color: Color(0xffb3a724),),
-                            SizedBox(width: 5),
-                            Text(
-                              voting["votingName"] ?? '',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                              SizedBox(height: 20),
+                              Text(
+                                voting["votingName"],
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 21,
+                                ),
+                                softWrap: true,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10),
-                  Text(voting["votingDetail"] ?? ''),
-                  if (mostVotedContentName.isNotEmpty) SizedBox(height: 30),
-                  Row(
-                    children: [
-                      Icon(Icons.how_to_vote_rounded),
-                      SizedBox(width: 5),
-                      if (voting["vote"] == false)
-                        Row(
-                          children: [
-                            Text(
-                              "투표 결과: ",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
+                    subtitle: ConstrainedBox(
+                      constraints:
+                          BoxConstraints(maxHeight: 400, minHeight: 200),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 25),
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.star,
+                                color: Colors.deepOrangeAccent,
+                                size: 20,
+                              ),
+                              SizedBox(width: 7),
+                              Expanded(
+                                child: Text(
+                                  voting["votingDetail"] ?? '',
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    color: Colors.deepOrangeAccent,
+                                  ),
+                                  softWrap: true,
+                                ),
+                              ),
+                            ],
+                          ),
+                          if (mostVotedContentName.isNotEmpty)
+                            SizedBox(height: 30),
+                          if (voting["vote"] == false)
                             Text(
                               mostVotedContentName,
                               style: TextStyle(
-                                color: Colors.red,
+                                color: Colors.deepOrangeAccent,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 20,
                               ),
+                            )
+                          else
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ...votingContents.map((content) {
+                                  final contentId = content["contentsId"];
+                                  final isMyVote = myVote != null &&
+                                      myVote["contentsId"] == contentId;
+                                  final voteCount = _votingStudentsMap[votingId]
+                                              ?[contentId]
+                                          ?.length ??
+                                      0;
+                                  return ListTile(
+                                    leading: Radio<int>(
+                                        value: contentId,
+                                        groupValue: _selectedContents[votingId]
+                                                    ?.isNotEmpty ??
+                                                false
+                                            ? _selectedContents[votingId]!.last
+                                            : null,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            if (doubleVoting) {
+                                              if (_selectedContents[votingId] ==
+                                                  null) {
+                                                _selectedContents[votingId] =
+                                                    [];
+                                              }
+
+                                              if (!_selectedContents[votingId]!
+                                                  .contains(value)) {
+                                                _selectedContents[votingId]!
+                                                    .add(value);
+                                              }
+                                            } else {
+                                              _selectedContents[votingId] = [
+                                                value
+                                              ];
+                                            }
+                                          });
+                                        }),
+                                    title: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            content["votingContents"] ?? "",
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 18,
+                                              color: isMyVote
+                                                  ? Colors.red
+                                                  : Colors.black,
+                                            ),
+                                            overflow: TextOverflow.clip,
+                                          ),
+                                        ),
+                                        if (voting["anonymousVote"] == true &&
+                                            isVoted == true)
+                                          Text(
+                                            " ($voteCount명)",
+                                            style: TextStyle(
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+                              ],
                             ),
-                          ],
-                        )
-                      else
-                        Column(
-                          children: [
-                            ...votingContents.map((content) {
-                              return Row(
-                                children: [
-                                  Radio(
-                                    value: content["contentsId"],
-                                    groupValue: voting["selectedContentId"],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        voting["selectedContentId"] = value;
-                                      });
-                                    },
-                                  ),
-                                  Text(content["votingContents"] ?? ""),
-                                ],
-                              );
-                            }).toList(),
-                          ],
-                        ),
-                    ],
+                        ],
+                      ),
+                    ),
+                    isThreeLine: true,
                   ),
+
+                  // 중복투표 표시
+                  if (doubleVoting)
+                    Positioned(
+                      right: 10,
+                      top: 10,
+                      child: Container(
+                        color: Colors.red,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                        child: Text(
+                          "중복투표",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+
                   SizedBox(height: 20),
+                  if (voting["votingEnd"] != null)
+                    Row(
+                      children: [
+                        Text(
+                          votingEnd,
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        Text(" 일 종료 !",
+                            style: TextStyle(
+                                color: Colors.deepOrangeAccent,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20))
+                      ],
+                    ),
                   Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      createdAt,
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: () => _submitVote(votingId),
+                      style: TextButton.styleFrom(
+                        backgroundColor: isVoted || voting["vote"] == false
+                            ? Colors.grey
+                            : Colors.deepOrangeAccent,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.check_circle_outlined,
+                            color: Colors.white,
+                          ),
+                          SizedBox(width: 10),
+                          Text(isVoted ? "이미 투표 완료" : "투표하기",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ))
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-
             ),
           );
         },
