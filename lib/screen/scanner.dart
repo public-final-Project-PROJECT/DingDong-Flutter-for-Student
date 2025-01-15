@@ -3,9 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:lastdance_f/decryptData.dart';
+import 'package:lastdance_f/decrypt_data.dart';
 import 'package:lastdance_f/student.dart';
-import 'package:lastdance_f/auth_succeeded.dart';
+import 'package:lastdance_f/screen/auth_succeeded.dart';
 
 class QRScanner extends StatelessWidget {
   QRScanner({

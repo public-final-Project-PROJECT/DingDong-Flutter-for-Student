@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:lastdance_f/home_screen.dart';
+import 'package:lastdance_f/screen/home_screen.dart';
 import 'package:lastdance_f/main.dart';
 import 'package:lastdance_f/student.dart';
 
