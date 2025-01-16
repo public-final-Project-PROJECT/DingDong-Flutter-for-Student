@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lastdance_f/dialog/endDrawer.dart';
 import 'package:lastdance_f/screen/calendar.dart';
 import 'package:lastdance_f/screen/home.dart';
 import 'package:lastdance_f/screen/myPage.dart';
@@ -41,10 +42,15 @@ class _HomeScreenState extends State<HomeScreen> {
               style: TextStyle(fontSize: 20),
             ),
             Spacer(),
-            IconButton(
-              icon: Icon(Icons.notifications),
-              onPressed: () {
-                print("알림 아이콘 클릭됨");
+            Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: () {
+
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                );
               },
             ),
           ],
@@ -92,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+      endDrawer: EndDrawerWidget(),
       body: _pages[_selectedIndex],
     );
   }
