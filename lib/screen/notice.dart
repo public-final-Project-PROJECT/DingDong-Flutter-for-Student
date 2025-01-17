@@ -128,11 +128,15 @@ class _NoticeState extends State<Notice> {
                       ],
                     ),
                     onTap: () {
+                      print("d");
+                      print(notice['noticeId']);
+                      print("d");
+
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  NoticeDetailpage(notice: notice)));
+                                  NoticeDetailpage(noticeId: notice['noticeId'])));
                     },
                   ),
                 );

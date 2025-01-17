@@ -17,4 +17,18 @@ class AlertModel {
     }
   }
 
+
+  Future<void> updateAlert(int alert) async{
+    final dio = Dio();
+    try{
+      await dio.get( "http://112.221.66.174:6892/api/alert/update",
+        queryParameters: {
+          'alertId': alert,
+        },
+      );
+    }catch (e) {
+      throw Exception("Error: $e");
+    }
+  }
+
 }
