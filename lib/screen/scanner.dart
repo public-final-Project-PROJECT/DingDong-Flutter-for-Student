@@ -6,6 +6,8 @@ import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:lastdance_f/decrypt_data.dart';
 import 'package:lastdance_f/student.dart';
 import 'package:lastdance_f/screen/auth_succeeded.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 
 class QRScanner extends StatelessWidget {
   QRScanner({
@@ -19,6 +21,7 @@ class QRScanner extends StatelessWidget {
   final Dio? dio;
   final String? secretKey;
   final String? serverURL;
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +47,7 @@ class QRScanner extends StatelessWidget {
                   student, effectiveDio, effectiveServerURL);
 
               if (isValid) {
+                await _storeQRData(result.data!); // Store QR data for skipping login
                 Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => AuthSucceeded(student: student)),
@@ -63,6 +67,14 @@ class QRScanner extends StatelessWidget {
         }
       },
     );
+  }
+
+  Future<void> _storeQRData(String qrData) async {
+    final DateTime nextMarch = DateTime(DateTime.now().year + 1, 3, 1);
+    final String expirationDate = DateFormat('yyyy-MM-dd').format(nextMarch);
+
+    await storage.write(key: 'qrData', value: qrData);
+    await storage.write(key: 'expirationDate', value: expirationDate);
   }
 
   void _showAuthFailedDialog(BuildContext context) {
