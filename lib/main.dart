@@ -75,8 +75,8 @@ class QRLoginScreen extends StatelessWidget {
               child: const Text('QR 코드로 로그인하기'),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  // builder: (context) => QRScanner()
-                  builder: (context) => HomeScreen()
+                  builder: (context) => QRScanner()
+                  // builder: (context) => HomeScreen()
                 ),
               ),
             ),

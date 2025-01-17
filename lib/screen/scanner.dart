@@ -1,13 +1,15 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:lastdance_f/decrypt_data.dart';
-import 'package:lastdance_f/student.dart';
-import 'package:lastdance_f/screen/auth_succeeded.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
+import 'package:lastdance_f/decrypt_data.dart';
+import 'package:lastdance_f/main.dart';
+import 'package:lastdance_f/screen/auth_succeeded.dart';
+import 'package:lastdance_f/student.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScanner extends StatelessWidget {
   QRScanner({
@@ -47,7 +49,7 @@ class QRScanner extends StatelessWidget {
                   student, effectiveDio, effectiveServerURL);
 
               if (isValid) {
-                await _storeQRData(result.data!); // Store QR data for skipping login
+                await _storeQRData(result.data!);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => AuthSucceeded(student: student)),
@@ -72,7 +74,6 @@ class QRScanner extends StatelessWidget {
   Future<void> _storeQRData(String qrData) async {
     final DateTime nextMarch = DateTime(DateTime.now().year + 1, 3, 1);
     final String expirationDate = DateFormat('yyyy-MM-dd').format(nextMarch);
-
     await storage.write(key: 'qrData', value: qrData);
     await storage.write(key: 'expirationDate', value: expirationDate);
   }
@@ -80,17 +81,19 @@ class QRScanner extends StatelessWidget {
   void _showAuthFailedDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("앗"),
+          title: const Text("앗!"),
           content: const Text(
             "QR 코드 인식에 실패했어요.",
             style: TextStyle(fontSize: 16),
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MyApp())),
+              // Close the dialog
               child: const Text("확인"),
             ),
           ],
@@ -121,6 +124,8 @@ class QRScanner extends StatelessWidget {
         final String classCreated = responseData['classCreated'];
         final int yearOfClassCreated = int.parse(classCreated.substring(0, 4));
 
+        _addStudent(student, dio, serverURL, classId);
+
         return student.classId == classId &&
             student.teacherId == teacherId &&
             student.year == yearOfClassCreated;
@@ -129,5 +134,18 @@ class QRScanner extends StatelessWidget {
       throw Exception("Validation error.");
     }
     return false;
+  }
+
+  Future<void> _addStudent(
+      Student student, Dio dio, String serverURL, int classId) async {
+    try {
+      await dio.post('$serverURL/api/students/add', queryParameters: {
+        'studentNo': student.studentInfo.studentNo,
+        'studentName': student.studentInfo.studentName,
+        'classId': classId,
+      });
+    } catch (e) {
+      throw Exception("ERROR in addStudent: $e");
+    }
   }
 }

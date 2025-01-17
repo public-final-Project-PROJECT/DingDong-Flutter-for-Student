@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:lastdance_f/screen/Seat.dart';
+import 'package:lastdance_f/screen/seat.dart';
 import 'package:lastdance_f/dialog/endDrawer.dart';
 import 'package:lastdance_f/screen/calendar.dart';
 import 'package:lastdance_f/screen/home.dart';

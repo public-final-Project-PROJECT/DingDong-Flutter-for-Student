@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import '../model/seat_model.dart';
 
@@ -10,7 +9,7 @@ class Seat extends StatefulWidget {
 }
 
 class _SeatState extends State<Seat> {
-  final seatModel _seatModel = seatModel();
+  final SeatModel _seatModel = SeatModel();
   List<dynamic> loadedSeats = [];
   List<dynamic> nameList = [];
   bool isEditing = false;
@@ -25,9 +24,8 @@ class _SeatState extends State<Seat> {
     loadStudentNames();
   }
 
-  // 기존 좌석 조회 api
   Future<void> loadSeatTable(int classId) async {
-    List<dynamic> result = await _seatModel.selectSeatTable(classId) as List;
+    List<dynamic> result = await _seatModel.selectSeatTable(classId);
     setState(() {
       loadedSeats = result.map((seat) => Map<String, dynamic>.from(seat)).toList();
       originalSeats = List.from(loadedSeats);
@@ -38,7 +36,6 @@ class _SeatState extends State<Seat> {
   }
 
 
-  // 이름 조회 api
   Future<void> loadStudentNames() async {
     List<dynamic> result = await _seatModel.studentNameAPI() as List;
     setState(() {
@@ -47,7 +44,6 @@ class _SeatState extends State<Seat> {
     });
   }
 
-  // name과 studentId 매칭
   String getStudentNameByStudentId(int studentId) {
     var student = nameList.firstWhere(
           (student) => student['studentId'] == studentId,
@@ -55,8 +51,6 @@ class _SeatState extends State<Seat> {
     );
     return student['studentName'];
   }
-
-
 
   @override
   Widget build(BuildContext context) {

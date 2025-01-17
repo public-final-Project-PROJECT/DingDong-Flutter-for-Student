@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lastdance_f/screen/home_screen.dart';
 import 'package:lastdance_f/main.dart';
 import 'package:lastdance_f/student.dart';
@@ -94,11 +95,16 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                         const SizedBox(width: 10),
                         ElevatedButton(
                           child: const Text("아니오"),
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => MyApp(),
-                            ),
-                          ),
+                          onPressed: () async {
+                            final FlutterSecureStorage storage = const FlutterSecureStorage();
+                            await storage.delete(key: 'qrData');
+                            await storage.delete(key: 'expirationDate');
+
+                            Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(builder: (context) => MyApp()),
+                                  (route) => false, // Clears the navigation stack
+                            );
+                          },
                         ),
                       ],
                     ),
