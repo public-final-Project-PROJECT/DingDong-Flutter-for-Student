@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lastdance_f/screen/home_screen.dart';
-import 'package:lastdance_f/screen/scanner.dart';
+import 'package:lastdance_f/screen/login_screen.dart';
 import 'package:lastdance_f/student.dart';
 
 Future<void> main() async {
@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         home: _student != null
             ? HomeScreen(student: _student!)
-            : QRScanner()
+            : LoginScreen()
     );
   }
 }
