@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lastdance_f/model/alert_model.dart';
+import 'package:lastdance_f/screen/notice.dart';
+import 'package:lastdance_f/screen/noticeDetail.dart';
 
 class EndDrawerWidget extends StatefulWidget {
   const EndDrawerWidget({super.key});
@@ -22,12 +24,13 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
    List<dynamic> AlertData = await _alertModel.searchAlert();
    setState(() {
      alertList = AlertData;
-     print("여");
      print(alertList);
-     print("여");
    });
+  }
 
-
+  void _updateAlert(int alertId) async{
+    await _alertModel.updateAlert(alertId);
+    _loadAlert();
   }
 
 
@@ -60,9 +63,20 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
           else
             for (var alert in alertList)
               ListTile(
-                title: Text('알림: ${alert["alertCategory"]}'),
+                title: Text(
+                  alert["alertCategory"] == "공지사항"
+                      ? '알림: ${alert["alertCategory"]}이 작성 되었습니다'
+                      : '알림: ${alert["alertCategory"]}가 시작되었습니다',
+                ),
+                subtitle: Text("${alert["noticeId"]}번 공지사항"),
                 onTap: () {
+                  print(alert['noticeId']);
                   Navigator.pop(context);
+                  _updateAlert(alert['alertId']);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NoticeDetailpage(noticeId:alert["noticeId"])));
                 },
               ),
         ],

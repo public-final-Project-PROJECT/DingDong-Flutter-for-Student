@@ -2,14 +2,14 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:intl/intl.dart';
+import 'package:lastdance_f/model/notice_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
-
 class NoticeDetailpage extends StatefulWidget {
-  final dynamic notice;
+  final dynamic noticeId;
 
-  const NoticeDetailpage({super.key, required this.notice});
+  const NoticeDetailpage({super.key, required this.noticeId});
 
   @override
   State<NoticeDetailpage> createState() => _NoticeDetailpageState();
@@ -17,24 +17,53 @@ class NoticeDetailpage extends StatefulWidget {
 
 class _NoticeDetailpageState extends State<NoticeDetailpage> {
   static bool isInitialized = false;
+  NoticeModel _noticeModel = NoticeModel();
+  List<dynamic> noticeList = [];
 
   @override
   void initState() {
     super.initState();
+    _loadNoticeDetail();
     if (!isInitialized) {
       FlutterDownloader.initialize(debug: true);
       isInitialized = true;
     }
   }
 
+  void _loadNoticeDetail() async {
+    print(widget.noticeId);
+    List<dynamic> noticeData = await _noticeModel.searchNoticeDetail(widget.noticeId);
+    setState(() {
+      noticeList = noticeData;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    final notice = widget.notice;
+    if (noticeList.isEmpty) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text("공지사항"),
+          backgroundColor: Color(0xffF4F4F4),
+          shape: const Border(
+              bottom: BorderSide(
+                color: Colors.grey,
+                width: 1,
+              )),
+        ),
+        backgroundColor: Color(0xffF4F4F4),
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
+    final notice = noticeList[0];
     String formattedCreateAt = _formatDate(notice['createdAt']);
     String formattedUpdatedAt = _formatDate(notice['updatedAt']);
 
     String displayDate = "";
-    if (notice['updatedAt'] != null && notice['updatedAt'].isNotEmpty && notice['createdAt'] != notice['updatedAt']) { // 추가된 조건
+    if (notice['updatedAt'] != null &&
+        notice['updatedAt'].isNotEmpty &&
+        notice['createdAt'] != notice['updatedAt']) {
       formattedUpdatedAt = _formatDate(notice['updatedAt']);
       displayDate = "수정일: $formattedUpdatedAt";
     } else {
@@ -44,18 +73,17 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
 
     return Scaffold(
       appBar: AppBar(
-        title:  Text("공지사항"),
+        title: Text("공지사항"),
         backgroundColor: Color(0xffF4F4F4),
         shape: const Border(
             bottom: BorderSide(
               color: Colors.grey,
               width: 1,
-            )
-        ),
+            )),
       ),
       backgroundColor: Color(0xffF4F4F4),
       body: Padding(
-        padding:  EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -64,25 +92,24 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
               children: [
                 Text(
                   "${notice['noticeTitle']}",
-                  style:  TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
                 if (notice['noticeFile'] != null)
                   ElevatedButton.icon(
                     onPressed: () async {
                       String fileUrl =
-                          "http://112.221.66.174:3013/download${notice['noticeFile']}"; // 변경된 부분: /download 추가
+                          "http://112.221.66.174:3013/download${notice['noticeFile']}";
                       await _downloadFile(fileUrl, context);
                     },
-                    icon:  Icon(Icons.file_download),
-                    label:  Text("첨부 파일"),
+                    icon: Icon(Icons.file_download),
+                    label: Text("첨부 파일"),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xff515151),
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
-                        )
-                    ),
+                        )),
                   ),
               ],
             ),
@@ -119,13 +146,12 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
             if (notice['noticeFile'] != null && notice['noticeFile'].isNotEmpty)
               Container(
                 alignment: Alignment.centerRight,
-                padding:  EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.0),
                 child: Text(
-                  getFileName("${getFileName(notice['noticeFile'])}") ,
+                  getFileName("${getFileName(notice['noticeFile'])}"),
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
                 ),
               ),
-
           ],
         ),
       ),
@@ -156,7 +182,6 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
           saveInPublicStorage: true,
         );
 
-
         print("다운로드 완료: $taskId");
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('다운로드가 완료되었습니다.')));
@@ -178,9 +203,7 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
   }
 
   String getFileName(String filePath) {
-    String fileName = filePath
-        .split('/')
-        .last;
+    String fileName = filePath.split('/').last;
 
     String processedFileName;
     if (fileName.contains('%')) {
