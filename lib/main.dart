@@ -39,10 +39,8 @@ class _MyAppState extends State<MyApp> {
       if (DateTime.now().isBefore(expirationDate)) {
         try {
           final parsedData = jsonDecode(qrData);
-          print(parsedData);
           setState(() {
             _student = Student.fromJson(parsedData);
-            print(_student);
           });
         } catch (e) {
           throw Exception("Failed to parse QR data: $e");
@@ -64,9 +62,9 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
-      home: _student != null
-          ? HomeScreen(student: _student!)
-          : QRScanner()
+        home: _student != null
+            ? HomeScreen(student: _student!)
+            : QRScanner()
     );
   }
 }

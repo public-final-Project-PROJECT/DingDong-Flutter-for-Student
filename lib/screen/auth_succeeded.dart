@@ -1,9 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:lastdance_f/screen/home_screen.dart';
 import 'package:lastdance_f/main.dart';
+import 'package:lastdance_f/screen/home_screen.dart';
 import 'package:lastdance_f/student.dart';
 
 class AuthSucceeded extends StatefulWidget {
@@ -24,10 +25,16 @@ class _AuthSucceededState extends State<AuthSucceeded> {
     classDetailsFuture = _fetchClassDetails(widget.student.classId);
   }
 
+  String getServerURL() {
+    return kIsWeb
+        ? dotenv.env['FETCH_SERVER_URL2']!
+        : dotenv.env['FETCH_SERVER_URL']!;
+  }
+
   Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
     try {
       final dio = Dio();
-      final serverURL = dotenv.get("FETCH_SERVER_URL");
+      String serverURL = getServerURL();
       final response = await dio.get('$serverURL/class/$classId');
 
       if (response.statusCode == 200) {
@@ -61,7 +68,9 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                         style: TextStyle(fontSize: 18)),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (context) => MyApp()),
+                          (route) => false),
                       child: const Text("뒤로"),
                     ),
                   ],
@@ -77,8 +86,8 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                   children: [
                     Text(
                       "${classDetails['schoolName']} "
-                          "${classDetails['grade']}학년 "
-                          "${classDetails['classNo']}반",
+                      "${classDetails['grade']}학년 "
+                      "${classDetails['classNo']}반",
                       style: const TextStyle(fontSize: 20),
                     ),
                     const SizedBox(height: 10),
@@ -94,8 +103,8 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                             child: const Text("네"),
                             onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => HomeScreen(student: widget.student)
-                              ),
+                                  builder: (context) =>
+                                      HomeScreen(student: widget.student)),
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -103,15 +112,14 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                             child: const Text("아니오"),
                             onPressed: () async {
                               final FlutterSecureStorage storage =
-                              const FlutterSecureStorage();
+                                  const FlutterSecureStorage();
                               await storage.delete(key: 'qrData');
                               await storage.delete(key: 'expirationDate');
 
                               Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => MyApp()),
-                                    (route) => false
-                              );
+                                  MaterialPageRoute(
+                                      builder: (context) => MyApp()),
+                                  (route) => false);
                             },
                           ),
                         ],
