@@ -42,80 +42,89 @@ class _AuthSucceededState extends State<AuthSucceeded> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: FutureBuilder<Map<String, dynamic>>(
-        future: classDetailsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("클래스 정보를 불러올 수 없습니다.",
-                      style: TextStyle(fontSize: 18)),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: const Text("뒤로"),
-                  ),
-                ],
-              ),
-            );
-          } else if (snapshot.hasData) {
-            final classDetails = snapshot.data!;
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${classDetails['schoolName']} "
-                        "${classDetails['grade']}학년 "
-                        "${classDetails['classNo']}반",
-                    style: const TextStyle(fontSize: 20),
-                  ),
-                  const SizedBox(height: 10),
-                  Text("우리반이 맞나요?"),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ElevatedButton(
-                          child: const Text("네"),
-                          onPressed: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => HomeScreen(),
+    return PopScope(
+      onPopInvokedWithResult: (popDisposition, result) async {
+        return;
+      },
+      child: Scaffold(
+        body: FutureBuilder<Map<String, dynamic>>(
+          future: classDetailsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("우리반을 찾을 수 없어요.",
+                        style: TextStyle(fontSize: 18)),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text("뒤로"),
+                    ),
+                  ],
+                ),
+              );
+            } else if (snapshot.hasData) {
+              final classDetails = snapshot.data!;
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "${classDetails['schoolName']} "
+                          "${classDetails['grade']}학년 "
+                          "${classDetails['classNo']}반",
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 10),
+                    const Text("우리반이 맞나요?"),
+                    const SizedBox(height: 10),
+                    const Text("\"네\"를 누르면 어플을 삭제하기 전까지 우리반을 변경할 수 없어요."),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            child: const Text("네"),
+                            onPressed: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => HomeScreen(student: widget.student)
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        ElevatedButton(
-                          child: const Text("아니오"),
-                          onPressed: () async {
-                            final FlutterSecureStorage storage = const FlutterSecureStorage();
-                            await storage.delete(key: 'qrData');
-                            await storage.delete(key: 'expirationDate');
+                          const SizedBox(width: 10),
+                          ElevatedButton(
+                            child: const Text("아니오"),
+                            onPressed: () async {
+                              final FlutterSecureStorage storage =
+                              const FlutterSecureStorage();
+                              await storage.delete(key: 'qrData');
+                              await storage.delete(key: 'expirationDate');
 
-                            Navigator.of(context).pushAndRemoveUntil(
-                              MaterialPageRoute(builder: (context) => MyApp()),
-                                  (route) => false, // Clears the navigation stack
-                            );
-                          },
-                        ),
-                      ],
+                              Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => MyApp()),
+                                    (route) => false
+                              );
+                            },
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          } else {
-            return const Center(child: Text("데이터가 없습니다."));
-          }
-        },
+                  ],
+                ),
+              );
+            } else {
+              return const Center(child: Text("오류"));
+            }
+          },
+        ),
       ),
     );
   }

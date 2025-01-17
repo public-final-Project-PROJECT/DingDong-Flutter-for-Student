@@ -6,9 +6,12 @@ import 'package:lastdance_f/screen/home.dart';
 import 'package:lastdance_f/screen/myPage.dart';
 import 'package:lastdance_f/screen/notice.dart';
 import 'package:lastdance_f/screen/vote.dart';
+import 'package:lastdance_f/student.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final Student student;
+
+  const HomeScreen({super.key, required this.student});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
