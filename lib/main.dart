@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:lastdance_f/screen/home_screen.dart';
 import 'package:lastdance_f/screen/scanner.dart';
+import 'package:lastdance_f/student.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -19,7 +21,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   bool _isLoading = true;
-  bool _skipQRLogin = false;
+  Student? _student;
 
   @override
   void initState() {
@@ -35,9 +37,16 @@ class _MyAppState extends State<MyApp> {
       final expirationDate = DateTime.parse(expirationDateStr);
 
       if (DateTime.now().isBefore(expirationDate)) {
-        setState(() {
-          _skipQRLogin = true;
-        });
+        try {
+          final parsedData = jsonDecode(qrData);
+          print(parsedData);
+          setState(() {
+            _student = Student.fromJson(parsedData);
+            print(_student);
+          });
+        } catch (e) {
+          throw Exception("Failed to parse QR data: $e");
+        }
       }
     }
 
@@ -55,34 +64,9 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
-      home: _skipQRLogin ? const HomeScreen() : const QRLoginScreen(),
-    );
-  }
-}
-
-class QRLoginScreen extends StatelessWidget {
-  const QRLoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('로고는 여기 위에'),
-            ElevatedButton(
-              child: const Text('QR 코드로 로그인하기'),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => QRScanner()
-                  // builder: (context) => HomeScreen()
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      home: _student != null
+          ? HomeScreen(student: _student!)
+          : QRScanner()
     );
   }
 }
