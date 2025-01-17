@@ -306,51 +306,7 @@ class _MypageState extends State<Mypage> {
                           ),
                         ],
                       ),
-
                       SizedBox(height: 15),
-
-                      Row(
-                        children: [
-                          Container(
-                            width: 87,
-                            child: Text("메모", style: TextStyle(fontSize: 16),
-                                textAlign: TextAlign.center),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.only(left: 14.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    padding: EdgeInsets.all(12.0),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      border: Border.all(
-                                          color: Colors.grey.withOpacity(0.5)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.1),
-                                          blurRadius: 8,
-                                          offset: Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Text(
-                                      "${_student['memo'] ?? '미입력'}",
-                                      style: TextStyle(fontSize: 18,
-                                          color: Colors.black.withOpacity(0.7)),
-                                    ),
-                                  ),
-
-                                  SizedBox(height: 15)
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ],
                   ),
                 ),
@@ -376,8 +332,8 @@ class _MypageState extends State<Mypage> {
             icon: const Icon(Icons.update ),
             label: const Text("수정하기"),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff515151), // 버튼 배경색 변경
-              foregroundColor: Colors.white, // 버튼 텍스트 색 변경
+              backgroundColor: const Color(0xff515151),
+              foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8.0),

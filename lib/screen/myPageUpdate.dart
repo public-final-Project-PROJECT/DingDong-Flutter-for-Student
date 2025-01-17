@@ -45,15 +45,11 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
     if (widget.studentData['studentImg'] != null) {
 
       beforeImg = widget.studentData['studentImg'];
-      print("여기");
-      print(beforeImg);
-      print("여기");
 
     }
   }
 
   Future<void> _pickImage() async {
-    // 권한 확인
     await _checkPermission(Permission.photos);
 
     final picker = ImagePicker();
@@ -185,7 +181,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
                 ),
               ],
             ),
-            _buildTextField("이 름", _nameController),
+            _buildTextField("이 름", _nameController, isEnabled: false),
             _buildTextField("성별", _studentGenderController),
             _buildTextField("생년월일", _birthController),
             _buildTextField("핸드폰", _phoneController),
@@ -212,11 +208,12 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller) {
+  Widget _buildTextField(String label, TextEditingController controller, {bool isEnabled = true}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: TextField(
         controller: controller,
+        enabled: isEnabled,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
