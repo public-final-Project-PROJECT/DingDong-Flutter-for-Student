@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -15,21 +16,25 @@ class QRScanner extends StatelessWidget {
   QRScanner({
     this.dio,
     this.secretKey,
-    this.serverURL,
     super.key,
   });
 
   final MobileScannerController controller = MobileScannerController();
   final Dio? dio;
   final String? secretKey;
-  final String? serverURL;
   final FlutterSecureStorage storage = const FlutterSecureStorage();
+
+  String getServerURL() {
+    return kIsWeb
+        ? dotenv.env['FETCH_SERVER_URL2']!
+        : dotenv.env['FETCH_SERVER_URL']!;
+  }
 
   @override
   Widget build(BuildContext context) {
     final effectiveDio = dio ?? Dio();
     final effectiveSecretKey = secretKey ?? dotenv.get("QRCODE_SECRET_KEY");
-    final effectiveServerURL = serverURL ?? dotenv.get("FETCH_SERVER_URL");
+    String effectiveServerURL = getServerURL();
 
     return MobileScanner(
       controller: controller,

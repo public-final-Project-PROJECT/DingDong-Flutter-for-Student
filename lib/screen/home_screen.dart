@@ -70,6 +70,13 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             ListTile(
+              title: Text('홈'),
+              onTap: () {
+                _onTapped(0);
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
               title: Text('공지사항'),
               onTap: () {
                 _onTapped(1);
