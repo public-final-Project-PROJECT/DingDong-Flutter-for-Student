@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:lastdance_f/dialog/endDrawer.dart';
+import 'package:lastdance_f/notification/init_noti.dart';
+import 'package:lastdance_f/notification/show_noti.dart';
 import 'package:lastdance_f/screen/calendar.dart';
 import 'package:lastdance_f/screen/home.dart';
 import 'package:lastdance_f/screen/myPage.dart';
@@ -10,6 +15,8 @@ import 'package:lastdance_f/screen/notice.dart';
 import 'package:lastdance_f/screen/seat.dart';
 import 'package:lastdance_f/screen/vote.dart';
 import 'package:lastdance_f/student.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:http/http.dart' as http;
 
 class HomeScreen extends StatefulWidget {
   final Student student;
@@ -32,11 +39,80 @@ class _HomeScreenState extends State<HomeScreen> {
         : dotenv.env['FETCH_SERVER_URL']!;
   }
 
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+
   @override
   void initState() {
     super.initState();
     classDetailsFuture = _fetchClassDetails(widget.student.classId);
+
+    requestNotificationPermission();
+    initNotification();//init 추가
+
+    //앱 실행시 firebase 에서 토큰 가져오는 메소드
+    _firebaseMessaging.getToken().then((token){
+      print("FCM token : $token");
+
+      //서버로 토큰 전송
+
+      if(token != null){
+        sendTokenToServer(token ,1);
+      }
+
+    });
+    //포그라운드 상태에서 알림을 처리하기 위한 핸들러
+    FirebaseMessaging.onMessage.listen((RemoteMessage message){
+      print("Foreground message : ${message.notification?.title}");
+      showNotification(message.notification?.title, message.notification?.body);
+    });
+
+    //알람을 클릭해서 앱이 열릴 때 핸들러
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
+      print("알람을 클릭해서 앱이 열리는 상태 : ${message.notification?.title}");
+    });
+
+
+    //백그라운드 및 종료 상태에서 알람을 처리하기 위한 핸들러
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
+
   }
+  static Future<void> _backgroundMessageHandler(RemoteMessage message) async{
+    print("BackgroundMessage Message : ${message.notification?.title}");
+  }
+
+  //권한 설정 메소드
+  Future<void> requestNotificationPermission() async{
+    if(await Permission.notification.isDenied){
+      await Permission.notification.request();
+    }
+  }
+
+  Future<void> sendTokenToServer(String token, int studentId) async {
+    final url = Uri.parse("http://112.221.66.174:6892/fcm/register-token");
+
+    final body = jsonEncode({
+      "token": token,
+      "studentId": studentId,
+    });
+
+    final response = await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+
+    if (response.statusCode == 200) {
+      print("토큰 전송 성공");
+    } else {
+      print("전송 실패: ${response.statusCode}");
+      print("에러 메시지: ${response.body}");
+    }
+  }
+
+
+
+
+
 
   Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
     try {

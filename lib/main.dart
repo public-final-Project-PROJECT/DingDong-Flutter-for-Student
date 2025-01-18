@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -7,7 +8,9 @@ import 'package:lastdance_f/screen/login_screen.dart';
 import 'package:lastdance_f/student.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -19,6 +22,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   bool _isLoading = true;
   Student? _student;
@@ -27,6 +31,8 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _checkStoredQRData();
+
+
   }
 
   Future<void> _checkStoredQRData() async {
