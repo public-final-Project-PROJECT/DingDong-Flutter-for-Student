@@ -15,10 +15,36 @@ class LoginScreen extends StatelessWidget {
           children: [
             const Text('로고는 여기 위에'),
             ElevatedButton(
-              child: const Text('QR 코드로 로그인하기'),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/QRcode.png',
+                    width: 24,
+                    height: 24,
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    'QR 코드로 로그인하기',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14.0,
+                    ),
+                  ),
+                ],
+              ),
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (context) => QRScanner(),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                fixedSize: const Size(220, 50),
+                elevation: 1.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
                 ),
               ),
             ),
