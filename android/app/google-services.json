@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "779275319794",
+    "project_id": "dingdong-student",
+    "storage_bucket": "dingdong-student.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:779275319794:android:6fa543ebc544424b7ad36b",
+        "android_client_info": {
+          "package_name": "com.dingdong.lastdance_f"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlTSfyq-vmvuB6qBcqOjJqgHwwYZPc9KI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
