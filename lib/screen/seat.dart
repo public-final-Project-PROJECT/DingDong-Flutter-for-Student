@@ -82,16 +82,19 @@ class _SeatState extends State<Seat> {
       backgroundColor: const Color(0xffF4F4F4),
       body: Column(
         children: [
-          SizedBox(height: 50,),
+          SizedBox(height: 70,),
           Center(
             child: Container(
-              height: 50,
-              width: 150,
+              height: 40,
+              width: 170,
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: Color(0xff3ec137)),
+              decoration: BoxDecoration(
+                color: Color(0xff57cc4e),
+                borderRadius: BorderRadius.circular(30),
+              ),
               child: Text(
-                "교탁",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                "칠판",
+                style: TextStyle(fontSize: 19, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -127,7 +130,7 @@ class _SeatState extends State<Seat> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
-                        color: Colors.yellow,
+                        color: Colors.orange,
                       ),
                       child: Text(
                         student['studentName'],
@@ -161,7 +164,7 @@ class _SeatState extends State<Seat> {
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: Colors.yellow,
+          color: Colors.orange,
           border: Border.all(
             color: (firstSelectedSeat == seat) ? Colors.red : Colors.white70,
           ),

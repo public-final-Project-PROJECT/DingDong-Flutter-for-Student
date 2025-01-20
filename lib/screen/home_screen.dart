@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> sendTokenToServer(String token, int studentId) async {
-    final url = Uri.parse("http://112.221.66.174:6892/fcm/register-token");
+    final url = Uri.parse("http://112.221.66.174:3013/fcm/register-token");
 
     final body = jsonEncode({
       "token": token,

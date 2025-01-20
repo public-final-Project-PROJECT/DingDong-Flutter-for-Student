@@ -2,10 +2,11 @@
 import 'package:dio/dio.dart';
 
 class AlertModel {
+
   Future<List<dynamic>> searchAlert() async{
     final dio = Dio();
     try{
-      final response = await dio.get( "http://112.221.66.174:6892/api/alert/view",
+      final response = await dio.get( "http://112.221.66.174:3013/api/alert/view",
         queryParameters: {
           'classId': 7,
           'studentId': 2,
@@ -21,13 +22,29 @@ class AlertModel {
   Future<void> updateAlert(int alert) async{
     final dio = Dio();
     try{
-      await dio.get( "http://112.221.66.174:6892/api/alert/update",
+      await dio.get( "http://112.221.66.174:3013/api/alert/update",
         queryParameters: {
           'alertId': alert,
         },
       );
     }catch (e) {
       throw Exception("Error: $e");
+    }
+  }
+
+  Future<String> votingNameSearch(int votingId) async {
+    final dio = Dio();
+    try {
+      final response = await dio.post(
+          "http://112.221.66.174:3013/api/voting/votingNameSearch",
+          data: {'votingId': votingId});
+      if (response.statusCode == 200) {
+        return response.data as String;
+      } else {
+        throw Exception("로드 실패");
+      }
+    } catch (e) {
+      throw Exception(e);
     }
   }
 
