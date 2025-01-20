@@ -20,13 +20,19 @@ class Student {
 }
 
 class StudentInfo {
+  final String schoolName;
   final int studentNo;
   final String studentName;
 
-  StudentInfo({required this.studentNo, required this.studentName});
+  StudentInfo(
+      {required this.schoolName,
+      required this.studentNo,
+      required this.studentName});
 
   factory StudentInfo.fromJson(Map<String, dynamic> json) {
     return StudentInfo(
-        studentNo: json['studentNo'], studentName: json['studentName']);
+        schoolName: json['schoolName'],
+        studentNo: json['studentNo'],
+        studentName: json['studentName']);
   }
 }

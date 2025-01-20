@@ -30,10 +30,10 @@ DecryptResult decryptData(String encryptedData, String secretKey) {
 
     final key = encrypt.Key(Uint8List.fromList(keyAndIV.sublist(0, 32)));
     final iv = encrypt.IV(Uint8List.fromList(keyAndIV.sublist(32, 48)));
-    final encrypter = encrypt.Encrypter(
+    final encrypted = encrypt.Encrypter(
         encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: "PKCS7"));
 
-    final decrypted = encrypter.decryptBytes(
+    final decrypted = encrypted.decryptBytes(
         encrypt.Encrypted(Uint8List.fromList(ciphertext)),
         iv: iv);
 

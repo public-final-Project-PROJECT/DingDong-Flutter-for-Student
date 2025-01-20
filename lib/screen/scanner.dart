@@ -1,30 +1,40 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
-import 'package:lastdance_f/decryptData.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
+import 'package:lastdance_f/decrypt_data.dart';
+import 'package:lastdance_f/main.dart';
+import 'package:lastdance_f/screen/auth_succeeded.dart';
 import 'package:lastdance_f/student.dart';
-import 'package:lastdance_f/auth_succeeded.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QRScanner extends StatelessWidget {
   QRScanner({
     this.dio,
     this.secretKey,
-    this.serverURL,
     super.key,
   });
 
   final MobileScannerController controller = MobileScannerController();
   final Dio? dio;
   final String? secretKey;
-  final String? serverURL;
+  final FlutterSecureStorage storage = const FlutterSecureStorage();
+
+  String getServerURL() {
+    return kIsWeb
+        ? dotenv.env['FETCH_SERVER_URL2']!
+        : dotenv.env['FETCH_SERVER_URL']!;
+  }
 
   @override
   Widget build(BuildContext context) {
     final effectiveDio = dio ?? Dio();
     final effectiveSecretKey = secretKey ?? dotenv.get("QRCODE_SECRET_KEY");
-    final effectiveServerURL = serverURL ?? dotenv.get("FETCH_SERVER_URL");
+    String effectiveServerURL = getServerURL();
 
     return MobileScanner(
       controller: controller,
@@ -44,6 +54,7 @@ class QRScanner extends StatelessWidget {
                   student, effectiveDio, effectiveServerURL);
 
               if (isValid) {
+                await _storeQRData(result.data!);
                 Navigator.of(context).push(
                   MaterialPageRoute(
                       builder: (context) => AuthSucceeded(student: student)),
@@ -65,20 +76,29 @@ class QRScanner extends StatelessWidget {
     );
   }
 
+  Future<void> _storeQRData(String qrData) async {
+    final DateTime nextMarch = DateTime(DateTime.now().year + 1, 3, 1);
+    final String expirationDate = DateFormat('yyyy-MM-dd').format(nextMarch);
+    await storage.write(key: 'qrData', value: qrData);
+    await storage.write(key: 'expirationDate', value: expirationDate);
+  }
+
   void _showAuthFailedDialog(BuildContext context) {
     showDialog(
       context: context,
-      barrierDismissible: false, // Prevent closing by tapping outside
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("앗"),
+          title: const Text("앗!"),
           content: const Text(
             "QR 코드 인식에 실패했어요.",
             style: TextStyle(fontSize: 16),
           ),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Close the dialog
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MyApp())),
+              // Close the dialog
               child: const Text("확인"),
             ),
           ],
@@ -109,6 +129,8 @@ class QRScanner extends StatelessWidget {
         final String classCreated = responseData['classCreated'];
         final int yearOfClassCreated = int.parse(classCreated.substring(0, 4));
 
+        _addStudent(student, dio, serverURL, classId);
+
         return student.classId == classId &&
             student.teacherId == teacherId &&
             student.year == yearOfClassCreated;
@@ -117,5 +139,18 @@ class QRScanner extends StatelessWidget {
       throw Exception("Validation error.");
     }
     return false;
+  }
+
+  Future<void> _addStudent(
+      Student student, Dio dio, String serverURL, int classId) async {
+    try {
+      await dio.post('$serverURL/api/students/add', queryParameters: {
+        'studentNo': student.studentInfo.studentNo,
+        'studentName': student.studentInfo.studentName,
+        'classId': classId,
+      });
+    } catch (e) {
+      throw Exception("ERROR in addStudent: $e");
+    }
   }
 }
