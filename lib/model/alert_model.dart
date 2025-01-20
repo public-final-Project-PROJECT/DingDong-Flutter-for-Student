@@ -31,4 +31,21 @@ class AlertModel {
     }
   }
 
+  Future<String> votingNameSearch(int votingId) async {
+    final dio = Dio();
+    try {
+      final response = await dio.post(
+          "http://112.221.66.174:3013/api/voting/votingNameSearch",
+          data: {'votingId': votingId});
+      if (response.statusCode == 200) {
+        return response.data as String;
+      } else {
+        throw Exception("로드 실패");
+      }
+    } catch (e) {
+      throw Exception(e);
+    }
+  }
+
+
 }

@@ -308,25 +308,27 @@ class _MypageState extends State<Mypage> {
                       ),
                       SizedBox(height: 15),
                       ElevatedButton.icon(
-                        onPressed: () {
-                          Navigator.push(
+                        onPressed: () async {
+                          // 페이지 이동 후 돌아온 후 자동으로 데이터를 새로 로드
+                          final updatedData = await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => MyPageUpdate(studentData: _student),
                             ),
-                          ).then((updatedData) {
-                            if (updatedData != null) {
-                              setState(() {
-                                _student = updatedData;
-                              });
-                            }
-                          });
-
+                          );
+                          if (updatedData != null) {
+                            setState(() {
+                              _student = updatedData;
+                            });
+                            _loadStudent();
+                          } else {
+                            _loadStudent();
+                          }
                         },
-                        icon: const Icon(Icons.update ),
+                        icon: const Icon(Icons.update, color: Colors.white, ),
                         label: const Text("수정하기"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xff515151),
+                          backgroundColor: Colors.orangeAccent,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                           shape: RoundedRectangleBorder(

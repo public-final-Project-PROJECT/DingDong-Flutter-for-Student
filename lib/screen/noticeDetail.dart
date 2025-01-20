@@ -104,7 +104,7 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
                     icon: Icon(Icons.file_download),
                     label: Text("첨부 파일"),
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xff515151),
+                        backgroundColor: Colors.orangeAccent,
                         foregroundColor: Colors.white,
                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 13),
                         shape: RoundedRectangleBorder(
@@ -128,20 +128,20 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 10),
 
             // 이미지 섬네일 표시
             if (notice['noticeImg'] != null && notice['noticeImg'].isNotEmpty)
               Image.network(
                 "http://112.221.66.174:3013${notice['noticeImg']}",
-                fit: BoxFit.cover,
+                fit: BoxFit.fill,
                 width: double.infinity,
-                height: 200,
+                height: 300,
               ),
-            SizedBox(height: 8),
+            SizedBox(height: 10),
 
-            Text("${notice['noticeContent']}"),
-            SizedBox(height: 8),
+            Text("${notice['noticeContent']}",style: TextStyle(fontSize: 20),),
+            SizedBox(height: 10),
 
             if (notice['noticeFile'] != null && notice['noticeFile'].isNotEmpty)
               Container(
