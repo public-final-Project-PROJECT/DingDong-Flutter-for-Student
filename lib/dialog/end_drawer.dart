@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lastdance_f/model/alert_model.dart';
-import 'package:lastdance_f/screen/notice.dart';
 import 'package:lastdance_f/screen/noticeDetail.dart';
 
 class EndDrawerWidget extends StatefulWidget {
   const EndDrawerWidget({super.key});
 
   @override
-  _EndDrawerWidgetState createState() => _EndDrawerWidgetState();
+  State<EndDrawerWidget> createState() => _EndDrawerWidgetState();
 }
 
 class _EndDrawerWidgetState extends State<EndDrawerWidget> {
@@ -16,25 +15,21 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
 
   @override
   void initState() {
+    super.initState();
     _loadAlert();
   }
 
-
   void _loadAlert() async {
-   List<dynamic> AlertData = await _alertModel.searchAlert();
-   setState(() {
-     alertList = AlertData;
-     print(alertList);
-   });
+    List<dynamic> alertData = await _alertModel.searchAlert();
+    setState(() {
+      alertList = alertData;
+    });
   }
 
-  void _updateAlert(int alertId) async{
+  void _updateAlert(int alertId) async {
     await _alertModel.updateAlert(alertId);
     _loadAlert();
   }
-
-
-
 
   List<String> notifications = [];
 
@@ -70,13 +65,13 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
                 ),
                 subtitle: Text("${alert["noticeId"]}번 공지사항"),
                 onTap: () {
-                  print(alert['noticeId']);
                   Navigator.pop(context);
                   _updateAlert(alert['alertId']);
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => NoticeDetailpage(noticeId:alert["noticeId"])));
+                          builder: (context) =>
+                              NoticeDetailpage(noticeId: alert["noticeId"])));
                 },
               ),
         ],

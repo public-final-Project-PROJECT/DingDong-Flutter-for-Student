@@ -88,10 +88,14 @@ class _SeatState extends State<Seat> {
               height: 50,
               width: 150,
               alignment: Alignment.center,
-              decoration: BoxDecoration(color: Color(0xff3ec137)),
+              decoration: BoxDecoration(color: Color(0xff205736),
+                border: Border(
+                  bottom: BorderSide(color: Colors.brown, width: 5),
+                )
+              ),
               child: Text(
                 "교탁",
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: 16, color: Colors.white),
                 textAlign: TextAlign.center,
               ),
             ),

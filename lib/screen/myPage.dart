@@ -120,6 +120,7 @@ class _MypageState extends State<Mypage> {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 15)
                         ],
                       ),
                       SizedBox(height: 15),
@@ -242,7 +243,7 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("보호자 연락처",
+                            child: Text("보호자\n연락처",
                                 style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
@@ -306,7 +307,7 @@ class _MypageState extends State<Mypage> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 15),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
@@ -332,7 +333,7 @@ class _MypageState extends State<Mypage> {
             icon: const Icon(Icons.update ),
             label: const Text("수정하기"),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff515151),
+              backgroundColor: Colors.deepOrangeAccent,
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
               shape: RoundedRectangleBorder(
