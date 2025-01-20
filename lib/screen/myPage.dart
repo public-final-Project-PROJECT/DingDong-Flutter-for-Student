@@ -14,6 +14,8 @@ class _MyPageState extends State<MyPage> {
   Map<String, dynamic> _student = {};
   final StudentModel _studentModel = StudentModel();
 
+
+
   @override
   void initState() {
     super.initState();
@@ -78,23 +80,24 @@ class _MyPageState extends State<MyPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 15),
-                      if (_student['studentImg'] != null)
-                        Image.network(
-                          "http://112.221.66.174:6892${_student['studentImg']}",
-                          width: 100,
-                          height: 100,
+                      if( _student['studentImg'] != null )
+              Image.network(
+                      "http://112.221.66.174:6892${_student['studentImg']}",
+                         width: 100,
+                         height: 100,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                            return Container(
-                              width: 100,
-                              height: 100,
-                              color: Colors.grey[300],
-                              child: Icon(Icons.image, color: Colors.grey[700]),
-                            );
-                          },
-                        ),
+                           return Container(
+                        width: 100,
+                         height: 100,
+                           color: Colors.grey[300],
+                          child: Icon(Icons.image, color: Colors.grey[700]),
+                         );
+                            },
+                           ),
                       Container(
-                        child: Text("프로필 사진"),
+                        child:
+                        Text("프로필 사진" ,style: const TextStyle(fontSize: 15, fontWeight:FontWeight.bold )),
                       ),
                       SizedBox(height: 18),
 
@@ -103,8 +106,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("이 름",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("이 름", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -126,10 +128,9 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("생년월일 ",
-                                style: TextStyle(fontSize: 15),
-                                textAlign: TextAlign.center),
-                          ),
+                         child: Text("생년월일 ", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                           textAlign: TextAlign.center),
+                           ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
@@ -150,8 +151,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("학교",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("학교", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -174,8 +174,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("성별",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("성별", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -198,8 +197,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("핸드폰",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("핸드폰", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -222,8 +220,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("보호자",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("보호자", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -245,8 +242,8 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("보호자 연락처",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("보호자 번호",
+                                style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -269,8 +266,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("주소",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("주소", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -294,14 +290,13 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("특이사항",
-                                style: TextStyle(fontSize: 15),
+                            child: Text("특이사항", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text("${_student['studentEtc'] ?? '미입력'}",
+                              child: Text("${_student['studentEtc'] ?? '미입력' }",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -312,36 +307,40 @@ class _MyPageState extends State<MyPage> {
                         ],
                       ),
                       SizedBox(height: 15),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          // 페이지 이동 후 돌아온 후 자동으로 데이터를 새로 로드
+                          final updatedData = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyPageUpdate(studentData: _student),
+                            ),
+                          );
+                          if (updatedData != null) {
+                            setState(() {
+                              _student = updatedData;
+                            });
+                            _loadStudent();
+                          } else {
+                            _loadStudent();
+                          }
+                        },
+                        icon: const Icon(Icons.update, color: Colors.white, ),
+                        label: const Text("수정하기"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orangeAccent,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ),
+
               ],
-            ),
-          ),
-          ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MyPageUpdate(studentData: _student),
-                ),
-              ).then((updatedData) {
-                if (updatedData != null) {
-                  setState(() {
-                    _student = updatedData;
-                  });
-                }
-              });
-            },
-            icon: const Icon(Icons.update),
-            label: const Text("수정하기"),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xff515151),
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0),
-              ),
             ),
           ),
         ],

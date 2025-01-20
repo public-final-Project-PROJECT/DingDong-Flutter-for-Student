@@ -120,6 +120,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("메모 업데이트 성공")),
         );
+        Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("업데이트 실패")),
@@ -171,7 +172,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
                 ElevatedButton(
                   onPressed: _pickImage,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff515151),
+                    backgroundColor: Colors.orangeAccent,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -181,19 +182,19 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
                 ),
               ],
             ),
-            _buildTextField("이 름", _nameController, isEnabled: false),
-            _buildTextField("성별", _studentGenderController),
-            _buildTextField("생년월일", _birthController),
-            _buildTextField("핸드폰", _phoneController),
-            _buildTextField("주소", _addressController),
-            _buildTextField("보호자", _parentsNameController),
-            _buildTextField("보호자 번호", _parentsPhoneController),
-            _buildTextField("특이사항", _studentEtcController),
+            _buildTextField("이 름", _nameController, isEnabled: false, icon: Icons.person),
+            _buildTextField("성별", _studentGenderController, icon: Icons.male),
+            _buildTextField("생년월일", _birthController, icon: Icons.cake),
+            _buildTextField("핸드폰", _phoneController, icon: Icons.phone),
+            _buildTextField("주소", _addressController, icon: Icons.home),
+            _buildTextField("보호자", _parentsNameController, icon: Icons.group),
+            _buildTextField("보호자 번호", _parentsPhoneController, icon: Icons.phone_android),
+            _buildTextField("특이사항", _studentEtcController, icon: Icons.info),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: _saveChanges,
               style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff515151),
+                backgroundColor: Colors.orangeAccent,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                 shape: RoundedRectangleBorder(
@@ -208,19 +209,33 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
     );
   }
 
-  Widget _buildTextField(String label, TextEditingController controller, {bool isEnabled = true}) {
+  Widget _buildTextField(String label, TextEditingController controller,
+      {bool isEnabled = true, IconData? icon}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 15.0),
       child: TextField(
         controller: controller,
         enabled: isEnabled,
         decoration: InputDecoration(
-          labelText: label,
+          label: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16.0,
+                  color: Colors.black,
+                ),
+              ),
+              const SizedBox(width: 8), // 라벨과 아이콘 사이 간격
+              if (icon != null) Icon(icon, size: 18, color: Colors.orangeAccent),
+            ],
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
           ),
         ),
       ),
     );
-  }
-}
+  }}

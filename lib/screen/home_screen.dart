@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
           DrawerHeader(
             child: Text(
               '${classDetails['schoolName']} ${classDetails['grade']}학년 ${classDetails['classNo']}반\n'
-              '${widget.student.studentInfo.studentName}',
+                  '${widget.student.studentInfo.studentName}',
               style: const TextStyle(fontSize: 24),
             ),
           ),
