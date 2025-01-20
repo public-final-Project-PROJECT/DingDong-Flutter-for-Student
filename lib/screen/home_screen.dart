@@ -145,6 +145,10 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void alert(){
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
@@ -175,9 +179,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   DrawerHeader(
                     child: Text(
                       '${classDetails['schoolName']} '
-                      '${classDetails['grade']}학년 '
-                      '${classDetails['classNo']}반 '
-                      '${widget.student.studentInfo.studentName}',
+                          '${classDetails['grade']}학년 '
+                          '${classDetails['classNo']}반 '
+                          '${widget.student.studentInfo.studentName}',
                       style: const TextStyle(fontSize: 24),
                     ),
                   ),

@@ -22,7 +22,8 @@ class NoticeModel {
   Future<List<dynamic>> searchNoticeDetail(int noticeId) async {
     final dio = Dio();
     try {
-      final response = await dio.get(
+      final response = await dio.
+      get(
         "http://112.221.66.174:6892/api/notice/detail/$noticeId",
       );
       return response.data as List<dynamic>;
