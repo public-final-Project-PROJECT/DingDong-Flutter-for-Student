@@ -109,11 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
-
-
-
-
   Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
     try {
       final dio = Dio();
