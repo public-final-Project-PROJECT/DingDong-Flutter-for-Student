@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:lastdance_f/model/student_model.dart';
 import 'package:lastdance_f/screen/myPageUpdate.dart';
 
-class Mypage extends StatefulWidget {
-  const Mypage({super.key});
+class MyPage extends StatefulWidget {
+  final int studentId;
+  const MyPage({super.key, required this.studentId});
 
   @override
-  State<Mypage> createState() => _MypageState();
+  State<MyPage> createState() => _MyPageState();
 }
 
-class _MypageState extends State<Mypage> {
-  final int studentId = 1; // 학생 ID
+class _MyPageState extends State<MyPage> {
   Map<String, dynamic> _student = {};
   final StudentModel _studentModel = StudentModel();
 
@@ -24,14 +24,14 @@ class _MypageState extends State<Mypage> {
 
   void _loadStudent() async {
     try {
-      Map<String, dynamic> studentData = await _studentModel.searchDetailStudent(studentId);
+      Map<String, dynamic> studentData =
+          await _studentModel.searchDetailStudent(widget.studentId);
       setState(() {
         _student = studentData; // 데이터 저장
       });
     } catch (e) {
       print("Error loading student data: $e");
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -128,9 +128,9 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("생년월일 ", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
-                                textAlign: TextAlign.center),
-                          ),
+                         child: Text("생년월일 ", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                           textAlign: TextAlign.center),
+                           ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
@@ -181,7 +181,7 @@ class _MypageState extends State<Mypage> {
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['studentGender'] ?? '미입력' } ",
+                                  "${_student['studentGender'] ?? '미입력'} ",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -204,7 +204,7 @@ class _MypageState extends State<Mypage> {
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['studentPhone'] ?? '미입력' }",
+                                  "${_student['studentPhone'] ?? '미입력'}",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -250,7 +250,7 @@ class _MypageState extends State<Mypage> {
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['parentsPhone'] ?? '미입력' }",
+                                  "${_student['parentsPhone'] ?? '미입력'}",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -273,7 +273,7 @@ class _MypageState extends State<Mypage> {
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['studentAddress'] ?? '미입력' }",
+                                  "${_student['studentAddress'] ?? '미입력'}",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -346,4 +346,5 @@ class _MypageState extends State<Mypage> {
         ],
       ),
     );
-  }}
+  }
+}

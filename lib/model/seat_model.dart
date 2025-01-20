@@ -7,7 +7,7 @@ class SeatModel {
     try {
       final response = await dio.post(
           "http://112.221.66.174:3013/api/seat/findAllSeat",
-          data: {'classId': 2});
+          data: {'classId': classId});
       if (response.statusCode == 200) {
         return response.data as List<dynamic>;
       }
@@ -17,13 +17,13 @@ class SeatModel {
     }
   }
 
-  Future<List<dynamic>?> studentNameAPI() async {
+  Future<List<dynamic>?> studentNameAPI(int classId) async {
     final dio = Dio();
 
     try {
       final response = await dio.post(
         "http://112.221.66.174:3013/api/seat/findName",
-        data: {'classId': 2},
+        data: {'classId': classId},
       );
       if (response.statusCode == 200) {
         return response.data as List<dynamic>;

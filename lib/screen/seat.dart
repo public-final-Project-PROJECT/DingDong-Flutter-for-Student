@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../model/seat_model.dart';
 
 class Seat extends StatefulWidget {
-  const Seat({super.key});
+  final int classId;
+  const Seat({super.key, required this.classId});
 
   @override
   State<Seat> createState() => _SeatState();
@@ -13,31 +14,30 @@ class _SeatState extends State<Seat> {
   List<dynamic> loadedSeats = [];
   List<dynamic> nameList = [];
   bool isEditing = false;
-  int classId = 2;
   Map<String, dynamic>? firstSelectedSeat;
   List<dynamic> originalSeats = [];
 
   @override
   void initState() {
     super.initState();
-    loadSeatTable(classId);
+    loadSeatTable(widget.classId);
     loadStudentNames();
   }
 
   Future<void> loadSeatTable(int classId) async {
-    List<dynamic> result = await _seatModel.selectSeatTable(classId);
+    List<dynamic> result = await _seatModel.selectSeatTable(widget.classId);
     setState(() {
       loadedSeats = result.map((seat) => Map<String, dynamic>.from(seat)).toList();
       originalSeats = List.from(loadedSeats);
     });
     if(result.isEmpty){
-      loadSeatTable(classId);
+      loadSeatTable(widget.classId);
     }
   }
 
 
   Future<void> loadStudentNames() async {
-    List<dynamic> result = await _seatModel.studentNameAPI() as List;
+    List<dynamic> result = await _seatModel.studentNameAPI(widget.classId) as List;
     setState(() {
       nameList = List.from(result);
       nameList.sort((a, b) => a['studentId'].compareTo(b['studentId']));

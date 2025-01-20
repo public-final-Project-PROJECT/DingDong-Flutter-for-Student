@@ -6,14 +6,17 @@ import 'package:lastdance_f/screen/noticeDetail.dart';
 import 'package:lastdance_f/screen/vote.dart';
 
 class EndDrawerWidget extends StatefulWidget {
-  const EndDrawerWidget({super.key});
+  final int classId;
+  final int studentId;
+
+  const EndDrawerWidget({super.key, required this.classId, required this.studentId});
 
   @override
-  _EndDrawerWidgetState createState() => _EndDrawerWidgetState();
+  State<EndDrawerWidget> createState() => _EndDrawerWidgetState();
 }
 
 class _EndDrawerWidgetState extends State<EndDrawerWidget> {
-  AlertModel _alertModel = AlertModel();
+  final AlertModel _alertModel = AlertModel();
   List<dynamic> alertList = [];
 
   @override
@@ -23,10 +26,9 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
   }
 
   void _loadAlert() async {
-    List<dynamic> AlertData = await _alertModel.searchAlert();
+    List<dynamic> alertData = await _alertModel.searchAlert(widget.classId, widget.studentId);
     setState(() {
-      alertList = AlertData;
-      print(alertList);
+      alertList = alertData;
     });
   }
 
@@ -35,6 +37,7 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
     _loadAlert();
   }
 
+  List<String> notifications = [];
   String formatDate(String dateString) {
     try {
       DateTime dateTime = DateTime.parse(dateString);
@@ -244,7 +247,7 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
                               _updateAlert(alert['alertId']);
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (context) => Vote()),
+                                MaterialPageRoute(builder: (context) => Vote(classId: widget.classId, studentId: widget.studentId)),
                               );
                             },
                           );
@@ -261,4 +264,5 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
     );
   }
 }
+
 

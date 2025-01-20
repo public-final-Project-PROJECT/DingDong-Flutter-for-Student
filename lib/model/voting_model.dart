@@ -7,7 +7,7 @@ class VotingModel {
     try {
       final response = await dio.post(
           "http://112.221.66.174:3013/api/voting/findVoting",
-          data: {'classId': 2});
+          data: {'classId': classId});
 
       if (response.statusCode == 200) {
         return response.data as List<dynamic>;
@@ -43,7 +43,8 @@ class VotingModel {
       List<dynamic> options,
       String? deadline,
       bool secretVoting,
-      bool doubleVoting) async {
+      bool doubleVoting,
+      int classId) async {
     final dio = Dio();
     try {
       if (deadline == null || deadline.isEmpty) {
@@ -53,7 +54,7 @@ class VotingModel {
       final response = await dio.post(
         "http://112.221.66.174:3013/api/voting/newvoting",
         data: {
-          'classId': 2,
+          'classId': classId,
           'votingName': title,
           'detail': description,
           'votingEnd': deadline,
@@ -79,7 +80,7 @@ class VotingModel {
     try {
       final response = await dio.post(
         "http://112.221.66.174:3013/api/voting/findStudentsName",
-        data: {'classId': 2},
+        data: {'classId': classId},
       );
       if (response.statusCode == 200) {
         return response.data as List<dynamic>;

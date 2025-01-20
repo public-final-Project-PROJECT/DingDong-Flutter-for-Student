@@ -4,7 +4,8 @@ import 'package:lastdance_f/model/notice_model.dart';
 import 'package:lastdance_f/screen/noticeDetail.dart';
 
 class Notice extends StatefulWidget {
-  const Notice({super.key});
+  final int classId;
+  const Notice({super.key, required this.classId});
 
   @override
   State<Notice> createState() => _NoticeState();
@@ -22,7 +23,7 @@ class _NoticeState extends State<Notice> {
   }
 
   void _loadNotice({String? category}) async {
-    List<dynamic> noticeData = await _noticeModel.searchNotice(category: category);
+    List<dynamic> noticeData = await _noticeModel.searchNotice(category: category, classId: widget.classId);
     setState(() {
       _noticeList = noticeData;
     });

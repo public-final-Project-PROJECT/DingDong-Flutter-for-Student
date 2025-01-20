@@ -5,18 +5,18 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:lastdance_f/dialog/endDrawer.dart';
-import 'package:lastdance_f/notification/init_noti.dart';
-import 'package:lastdance_f/notification/show_noti.dart';
-import 'package:lastdance_f/screen/calendar.dart';
-import 'package:lastdance_f/screen/home.dart';
-import 'package:lastdance_f/screen/myPage.dart';
-import 'package:lastdance_f/screen/notice.dart';
-import 'package:lastdance_f/screen/seat.dart';
-import 'package:lastdance_f/screen/vote.dart';
-import 'package:lastdance_f/student.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:http/http.dart' as http;
+import 'package:permission_handler/permission_handler.dart';
+
+import '../dialog/end_drawer.dart';
+import '../notification/init_noti.dart';
+import '../notification/show_noti.dart';
+import '../screen/calendar.dart';
+import '../screen/myPage.dart';
+import '../screen/notice.dart';
+import '../screen/seat.dart';
+import '../screen/vote.dart';
+import '../student.dart';
 
 class HomeScreen extends StatefulWidget {
   final Student student;
@@ -27,99 +27,47 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+String _getServerURL() {
+  return kIsWeb
+      ? dotenv.env['FETCH_SERVER_URL2']!
+      : dotenv.env['FETCH_SERVER_URL']!;
+}
+
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
   late Future<Map<String, dynamic>> classDetailsFuture;
-
-  String getServerURL() {
-    return kIsWeb
-        ? dotenv.env['FETCH_SERVER_URL2']!
-        : dotenv.env['FETCH_SERVER_URL']!;
-  }
-
+  int _studentId = 0;
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
     super.initState();
     classDetailsFuture = _fetchClassDetails(widget.student.classId);
+    _fetchStudentId(widget.student.classId);
+    _initializeNotifications();
+  }
 
-    requestNotificationPermission();
-    initNotification();//init 추가
+  Future<void> _fetchStudentId(int classId) async {
+    final dio = Dio();
+    final serverURL = _getServerURL();
 
-    //앱 실행시 firebase 에서 토큰 가져오는 메소드
-    _firebaseMessaging.getToken().then((token){
-      print("FCM token : $token");
-
-      //서버로 토큰 전송
-
-      if(token != null){
-        sendTokenToServer(token ,1);
+    try {
+      final response = await dio.get(
+          '$serverURL/api/students/get/class/$classId/no/${widget.student.studentInfo.studentNo}');
+      if (response.statusCode == 200) {
+        final data = response.data;
+        _studentId = data is int ? data : int.tryParse(data.toString()) ?? 0;
       }
-
-    });
-    //포그라운드 상태에서 알림을 처리하기 위한 핸들러
-    FirebaseMessaging.onMessage.listen((RemoteMessage message){
-      print("Foreground message : ${message.notification?.title}");
-      showNotification(message.notification?.title, message.notification?.body);
-    });
-
-    //알람을 클릭해서 앱이 열릴 때 핸들러
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
-      print("알람을 클릭해서 앱이 열리는 상태 : ${message.notification?.title}");
-    });
-
-
-    //백그라운드 및 종료 상태에서 알람을 처리하기 위한 핸들러
-    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
-
-  }
-  static Future<void> _backgroundMessageHandler(RemoteMessage message) async{
-    print("BackgroundMessage Message : ${message.notification?.title}");
-  }
-
-  //권한 설정 메소드
-  Future<void> requestNotificationPermission() async{
-    if(await Permission.notification.isDenied){
-      await Permission.notification.request();
+    } catch (e) {
+      debugPrint("Error fetching student ID: $e");
     }
   }
-
-  Future<void> sendTokenToServer(String token, int studentId) async {
-    final url = Uri.parse("http://112.221.66.174:6892/fcm/register-token");
-
-    final body = jsonEncode({
-      "token": token,
-      "studentId": studentId,
-    });
-
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: body,
-    );
-
-    if (response.statusCode == 200) {
-      print("토큰 전송 성공");
-    } else {
-      print("전송 실패: ${response.statusCode}");
-      print("에러 메시지: ${response.body}");
-    }
-  }
-
-
-
-
-
 
   Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
     try {
       final dio = Dio();
-      String serverURL = getServerURL();
+      final serverURL = _getServerURL();
       final response = await dio.get('$serverURL/class/$classId');
-
       if (response.statusCode == 200) {
         return response.data as Map<String, dynamic>;
       } else {
@@ -130,23 +78,36 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  final List<Widget> _pages = [
-    Home(),
-    Notice(),
-    Mypage(),
-    Calendar(),
-    Seat(),
-    Vote(),
-  ];
-
-  void _onTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
+  void _initializeNotifications() {
+    _requestNotificationPermission();
+    initNotification();
+    _firebaseMessaging.getToken().then((token) {
+      if (token != null) _sendTokenToServer(token, _studentId);
     });
+    FirebaseMessaging.onMessage.listen((message) => showNotification(
+        message.notification?.title, message.notification?.body));
+    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
 
-  void alert(){
+  Future<void> _requestNotificationPermission() async {
+    if (await Permission.notification.isDenied) {
+      await Permission.notification.request();
+    }
+  }
 
+  Future<void> _sendTokenToServer(String token, int studentId) async {
+    final url = Uri.parse("http://112.221.66.174:6892/fcm/register-token");
+    final body = jsonEncode({"token": token, "studentId": studentId});
+    try {
+      await http.post(url,
+          headers: {"Content-Type": "application/json"}, body: body);
+    } catch (e) {
+      debugPrint("Error sending token to server: $e");
+    }
+  }
+
+  static Future<void> _backgroundMessageHandler(RemoteMessage message) async {
+    // Handle background notifications
   }
 
   @override
@@ -157,117 +118,76 @@ class _HomeScreenState extends State<HomeScreen> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasData) {
-          final classDetails = snapshot.data!;
-          return Scaffold(
-            key: _scaffoldKey,
-            appBar: AppBar(
-              title: Text(
-                "${classDetails['classNickname']}",
-                style: const TextStyle(fontSize: 20),
-              ),
-              actions: [
-                IconButton(
-                  icon: Icon(Icons.notifications),
-                  onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
-                ),
-              ],
-            ),
-            drawer: Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: [
-                  DrawerHeader(
-                    child: Text(
-                      '${classDetails['schoolName']} '
-                          '${classDetails['grade']}학년 '
-                          '${classDetails['classNo']}반 '
-                          '${widget.student.studentInfo.studentName}',
-                      style: const TextStyle(fontSize: 24),
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text('홈'),
-                    onTap: () {
-                      _onTapped(0);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('공지사항'),
-                    onTap: () {
-                      _onTapped(1);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('마이 페이지'),
-                    onTap: () {
-                      _onTapped(2);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('캘린더'),
-                    onTap: () {
-                      _onTapped(3);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: Row(
-                      children: const [
-                        Icon(
-                          Icons.table_restaurant_outlined,
-                          color: Colors.deepOrange,
-                          size: 30,
-                        ),
-                        SizedBox(width: 10),
-                        Text('우리반 좌석보기'),
-                      ],
-                    ),
-                    onTap: () {
-                      _onTapped(4);
-                      Navigator.pop(context);
-                    },
-                  ),
-                  ListTile(
-                    title: Row(
-                      children: const [
-                        Icon(
-                          Icons.how_to_vote_outlined,
-                          color: Colors.deepOrange,
-                          size: 30,
-                        ),
-                        SizedBox(width: 10),
-                        Text('학급 투표'),
-                      ],
-                    ),
-                    onTap: () {
-                      _onTapped(5);
-                      Navigator.pop(context);
-                    },
-                  ),
-                ],
-              ),
-            ),
-            endDrawer: EndDrawerWidget(),
-            body: _pages[_selectedIndex],
-          );
+          return _buildScaffold(snapshot.data!);
         } else if (snapshot.hasError) {
-          return Scaffold(
-            body: Center(
-              child: Text(
-                "오류: ${snapshot.error}",
-                style: const TextStyle(fontSize: 18),
-              ),
-            ),
-          );
+          return Center(child: Text("오류: ${snapshot.error}"));
         } else {
-          return const Center(
-            child: Text("오류"),
-          );
+          return const Center(child: Text("오류"));
         }
       },
     );
+  }
+
+  Scaffold _buildScaffold(Map<String, dynamic> classDetails) {
+    return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          title: Text(
+            classDetails['classNickname'] ?? 'Home',
+            style: const TextStyle(fontSize: 20),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.notifications),
+              onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+            ),
+          ],
+        ),
+        drawer: _buildDrawer(classDetails),
+        endDrawer: EndDrawerWidget(
+            classId: widget.student.classId, studentId: _studentId),
+        body: Text('$_studentId'));
+  }
+
+  Drawer _buildDrawer(Map<String, dynamic> classDetails) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            child: Text(
+              '${classDetails['schoolName']} ${classDetails['grade']}학년 ${classDetails['classNo']}반\n'
+                  '${widget.student.studentInfo.studentName}',
+              style: const TextStyle(fontSize: 24),
+            ),
+          ),
+          _buildDrawerItem(title: '홈', onTap: () => Navigator.pop(context)),
+          _buildDrawerItem(
+              title: '공지사항',
+              onTap: () =>
+                  _navigateTo(Notice(classId: widget.student.classId))),
+          _buildDrawerItem(
+              title: '마이 페이지',
+              onTap: () => _navigateTo(MyPage(studentId: _studentId))),
+          _buildDrawerItem(title: '캘린더', onTap: () => _navigateTo(Calendar())),
+          _buildDrawerItem(
+              title: '우리반 좌석 보기',
+              onTap: () => _navigateTo(Seat(classId: widget.student.classId))),
+          _buildDrawerItem(
+              title: '학급 투표',
+              onTap: () => _navigateTo(Vote(
+                  classId: widget.student.classId, studentId: _studentId))),
+        ],
+      ),
+    );
+  }
+
+  ListTile _buildDrawerItem(
+      {required String title, required VoidCallback onTap}) {
+    return ListTile(title: Text(title), onTap: onTap);
+  }
+
+  void _navigateTo(Widget page) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
 }
