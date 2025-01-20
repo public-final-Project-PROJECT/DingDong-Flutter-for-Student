@@ -133,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> {
         key: _scaffoldKey,
         appBar: AppBar(
           title: Text(
-            classDetails['classNickname'] ?? 'Home',
+            classDetails['classNickname'] ?? '홈',
             style: const TextStyle(fontSize: 20),
           ),
           actions: [
