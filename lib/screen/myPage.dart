@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:lastdance_f/model/student_model.dart';
 import 'package:lastdance_f/screen/myPageUpdate.dart';
 
-class Mypage extends StatefulWidget {
-  const Mypage({super.key});
+class MyPage extends StatefulWidget {
+  final int studentId;
+  const MyPage({super.key, required this.studentId});
 
   @override
-  State<Mypage> createState() => _MypageState();
+  State<MyPage> createState() => _MyPageState();
 }
 
-class _MypageState extends State<Mypage> {
-  final int studentId = 1; // 학생 ID
+class _MyPageState extends State<MyPage> {
   Map<String, dynamic> _student = {};
   final StudentModel _studentModel = StudentModel();
-
-
 
   @override
   void initState() {
@@ -24,14 +22,14 @@ class _MypageState extends State<Mypage> {
 
   void _loadStudent() async {
     try {
-      Map<String, dynamic> studentData = await _studentModel.searchDetailStudent(studentId);
+      Map<String, dynamic> studentData =
+          await _studentModel.searchDetailStudent(widget.studentId);
       setState(() {
         _student = studentData; // 데이터 저장
       });
     } catch (e) {
       print("Error loading student data: $e");
-      setState(() {
-      });
+      setState(() {});
     }
   }
 
@@ -80,24 +78,23 @@ class _MypageState extends State<Mypage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 15),
-                      if( _student['studentImg'] != null )
-              Image.network(
-                      "http://112.221.66.174:6892${_student['studentImg']}",
-                         width: 100,
-                         height: 100,
+                      if (_student['studentImg'] != null)
+                        Image.network(
+                          "http://112.221.66.174:6892${_student['studentImg']}",
+                          width: 100,
+                          height: 100,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                           return Container(
-                        width: 100,
-                         height: 100,
-                           color: Colors.grey[300],
-                          child: Icon(Icons.image, color: Colors.grey[700]),
-                         );
-                            },
-                           ),
+                            return Container(
+                              width: 100,
+                              height: 100,
+                              color: Colors.grey[300],
+                              child: Icon(Icons.image, color: Colors.grey[700]),
+                            );
+                          },
+                        ),
                       Container(
-                        child:
-                        Text("프로필 사진"),
+                        child: Text("프로필 사진"),
                       ),
                       SizedBox(height: 18),
 
@@ -106,7 +103,8 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("이 름", style: TextStyle(fontSize: 15),
+                            child: Text("이 름",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -128,7 +126,8 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("생년월일 ", style: TextStyle(fontSize: 15),
+                            child: Text("생년월일 ",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -151,7 +150,8 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("학교", style: TextStyle(fontSize: 15),
+                            child: Text("학교",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -174,14 +174,15 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("성별", style: TextStyle(fontSize: 15),
+                            child: Text("성별",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['studentGender'] ?? '미입력' } ",
+                                  "${_student['studentGender'] ?? '미입력'} ",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -197,14 +198,15 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("핸드폰", style: TextStyle(fontSize: 15),
+                            child: Text("핸드폰",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['studentPhone'] ?? '미입력' }",
+                                  "${_student['studentPhone'] ?? '미입력'}",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -220,7 +222,8 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("보호자", style: TextStyle(fontSize: 15),
+                            child: Text("보호자",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -250,7 +253,7 @@ class _MypageState extends State<Mypage> {
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['parentsPhone'] ?? '미입력' }",
+                                  "${_student['parentsPhone'] ?? '미입력'}",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -266,14 +269,15 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("주소", style: TextStyle(fontSize: 15),
+                            child: Text("주소",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
                               child: Text(
-                                  "${_student['studentAddress'] ?? '미입력' }",
+                                  "${_student['studentAddress'] ?? '미입력'}",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -290,13 +294,14 @@ class _MypageState extends State<Mypage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("특이사항", style: TextStyle(fontSize: 15),
+                            child: Text("특이사항",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text("${_student['studentEtc'] ?? '미입력' }",
+                              child: Text("${_student['studentEtc'] ?? '미입력'}",
                                   style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
@@ -327,9 +332,8 @@ class _MypageState extends State<Mypage> {
                   });
                 }
               });
-
             },
-            icon: const Icon(Icons.update ),
+            icon: const Icon(Icons.update),
             label: const Text("수정하기"),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xff515151),
@@ -343,4 +347,5 @@ class _MypageState extends State<Mypage> {
         ],
       ),
     );
-  }}
+  }
+}

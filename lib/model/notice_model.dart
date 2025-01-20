@@ -2,13 +2,13 @@ import 'package:dio/dio.dart';
 
 class NoticeModel {
 
-  Future<List<dynamic>> searchNotice({String? category}) async {
+  Future<List<dynamic>> searchNotice({String? category, required int classId}) async {
     final dio = Dio();
     try {
       final response = await dio.get(
         "http://112.221.66.174:6892/api/notice/view",
         queryParameters: {
-          'classId': 1,
+          'classId': classId,
           if (category != null) 'noticeCategory': category,
         },
       );

@@ -3,14 +3,17 @@ import 'package:lastdance_f/model/alert_model.dart';
 import 'package:lastdance_f/screen/noticeDetail.dart';
 
 class EndDrawerWidget extends StatefulWidget {
-  const EndDrawerWidget({super.key});
+  final int classId;
+  final int studentId;
+
+  const EndDrawerWidget({super.key, required this.classId, required this.studentId});
 
   @override
   State<EndDrawerWidget> createState() => _EndDrawerWidgetState();
 }
 
 class _EndDrawerWidgetState extends State<EndDrawerWidget> {
-  AlertModel _alertModel = AlertModel();
+  final AlertModel _alertModel = AlertModel();
   List<dynamic> alertList = [];
 
   @override
@@ -20,7 +23,7 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
   }
 
   void _loadAlert() async {
-    List<dynamic> alertData = await _alertModel.searchAlert();
+    List<dynamic> alertData = await _alertModel.searchAlert(widget.classId, widget.studentId);
     setState(() {
       alertList = alertData;
     });

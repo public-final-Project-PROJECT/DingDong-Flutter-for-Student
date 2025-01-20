@@ -4,7 +4,9 @@ import 'package:intl/intl.dart';
 import '../model/voting_model.dart';
 
 class Vote extends StatefulWidget {
-  const Vote({super.key});
+  final int classId;
+  final int studentId;
+  const Vote({super.key, required this.classId, required this.studentId});
 
   @override
   State<Vote> createState() => _StudentVoteState();
@@ -16,8 +18,6 @@ class _StudentVoteState extends State<Vote> {
   List<Map<String, dynamic>> _studentsInfo = []; // 반 학생들의 정보(학생테이블)
   Map<int, Map<int, List<dynamic>>> _votingStudentsMap = {}; // 투표 항목에 대한 학생들 정보
 
-  int classId = 2;
-  int studentId = 30; // 내 studentId
   final VotingModel _votingModel = VotingModel();
 
   // Map<int, int?> _selectedContents = {};
@@ -27,13 +27,13 @@ class _StudentVoteState extends State<Vote> {
   void initState() {
     super.initState();
     _loadVoting(); // 투표 기본정보, 항목 요청
-    _loadClassStudentsInfo(classId); // 학생들의 항목 투표 내용 요청
+    _loadClassStudentsInfo(); // 학생들의 항목 투표 내용 요청
   }
 
   // 학생 정보
-  void _loadClassStudentsInfo(int classId) async {
+  void _loadClassStudentsInfo() async {
     try {
-      List<dynamic> studentsList = await _votingModel.findStudentsNameAndImg(2);
+      List<dynamic> studentsList = await _votingModel.findStudentsNameAndImg(widget.classId);
       print(' 우리반 학생정보 불러옴 _studentsInfo : $studentsList');
       setState(() {
         _studentsInfo = studentsList.cast<Map<String, dynamic>>();
@@ -45,7 +45,7 @@ class _StudentVoteState extends State<Vote> {
 
   void _loadVoting() async {
     try {
-      List<dynamic> votingData = await _votingModel.selectVoting(1);
+      List<dynamic> votingData = await _votingModel.selectVoting(widget.classId);
 
       // 진행중인 투표를 위로 배치
       votingData.sort((a, b) {
@@ -139,7 +139,7 @@ class _StudentVoteState extends State<Vote> {
   void _saveVotingRecord(int contentsId, int votingId) async {
     try {
       final record =
-          await _votingModel.saveVotingRecord(contentsId, studentId, votingId);
+          await _votingModel.saveVotingRecord(contentsId, widget.studentId, votingId);
       print("최종 응답 : $record");
       if (record == null || record.isEmpty) {
         _showAlertDialog("알림", "투표가 완료되었습니다!", votingId);
@@ -196,7 +196,7 @@ class _StudentVoteState extends State<Vote> {
     try {
       for (var selectedContentId in selectedContent) {
         final record = await _votingModel.saveVotingRecord(
-            selectedContentId, studentId, votingId);
+            selectedContentId, widget.studentId, votingId);
         print("Vote saved for content $selectedContentId: $record");
 
         if (record == null || record.isEmpty) {
@@ -254,9 +254,9 @@ class _StudentVoteState extends State<Vote> {
               _votingStudentsMap[votingId]?.values.expand((x) => x).toList() ??
                   [];
           final isVoted =
-              studentVotes.any((vote) => vote["studentId"] == studentId);
+              studentVotes.any((vote) => vote["studentId"] == widget.studentId);
           final myVote = studentVotes.firstWhere(
-            (vote) => vote["studentId"] == studentId,
+            (vote) => vote["studentId"] == widget.studentId,
             orElse: () => null,
           );
 

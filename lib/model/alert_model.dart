@@ -2,13 +2,13 @@
 import 'package:dio/dio.dart';
 
 class AlertModel {
-  Future<List<dynamic>> searchAlert() async{
+  Future<List<dynamic>> searchAlert(int classId, int studentId) async{
     final dio = Dio();
     try{
       final response = await dio.get( "http://112.221.66.174:6892/api/alert/view",
         queryParameters: {
-          'classId': 7,
-          'studentId': 2,
+          'classId': classId,
+          'studentId': studentId,
         },
       );
       return response.data as List<dynamic>;
