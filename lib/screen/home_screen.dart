@@ -17,6 +17,7 @@ import '../screen/notice.dart';
 import '../screen/seat.dart';
 import '../screen/vote.dart';
 import '../student.dart';
+import 'main-body.dart';
 
 class HomeScreen extends StatefulWidget {
   final Student student;
@@ -39,16 +40,21 @@ class _HomeScreenState extends State<HomeScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool _studentIdFetched = false;
+  bool _classDetailsFetched = false;
+
   @override
   void initState() {
     super.initState();
-    classDetailsFuture = _fetchClassDetails(widget.student.classId);
+    classDetailsFuture = _fetchClassDetails();
     _fetchStudentId(widget.student.classId).then((_) {
       _initializeNotifications();
     });
   }
 
   Future<void> _fetchStudentId(int classId) async {
+    if(_studentIdFetched) return;
+
     final dio = Dio();
     final serverURL = _getServerURL();
 
@@ -58,9 +64,11 @@ class _HomeScreenState extends State<HomeScreen> {
       if (response.statusCode == 200) {
         final data = response.data;
         _studentId = data is int ? data : int.tryParse(data.toString()) ?? 0;
+        _studentIdFetched = true;
       }
     } catch (e) {
       debugPrint("Error fetching student ID: $e");
+<<<<<<< HEAD
 
     };
 
@@ -79,11 +87,36 @@ class _HomeScreenState extends State<HomeScreen> {
 
   }
   static Future<void> _backgroundMessageHandler(RemoteMessage message) async{
+=======
+    }
+>>>>>>> 587e7d9c98a10406605319a31a5baa52dac960d6
   }
 
-  //권한 설정 메소드
-  Future<void> requestNotificationPermission() async{
-    if(await Permission.notification.isDenied){
+  Future<Map<String, dynamic>> _fetchClassDetails() async {
+    if (_classDetailsFetched) {
+        return classDetailsFuture;
+    }
+
+    final dio = Dio();
+    final serverURL = _getServerURL();
+
+    try {
+      final response = await dio.get('$serverURL/class/${widget.student.classId}');
+      if (response.statusCode == 200) {
+        _classDetailsFetched = true;
+        return response.data as Map<String, dynamic>;
+      } else {
+        throw Exception("Failed to fetch class details.");
+      }
+    } catch (e) {
+      throw Exception("Error: ${e.toString()}");
+    }
+  }
+
+  static Future<void> _backgroundMessageHandler(RemoteMessage message) async {}
+
+  Future<void> requestNotificationPermission() async {
+    if (await Permission.notification.isDenied) {
       await Permission.notification.request();
     }
   }
@@ -96,26 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
       "studentId": studentId,
     });
 
-    final response = await http.post(
+    await http.post(
       url,
       headers: {"Content-Type": "application/json"},
       body: body,
     );
-  }
-
-  Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
-    try {
-      final dio = Dio();
-      final serverURL = _getServerURL();
-      final response = await dio.get('$serverURL/class/$classId');
-      if (response.statusCode == 200) {
-        return response.data as Map<String, dynamic>;
-      } else {
-        throw Exception("Failed to fetch class details.");
-      }
-    } catch (e) {
-      throw Exception("Error: ${e.toString()}");
-    }
   }
 
   void _initializeNotifications() {
@@ -126,6 +144,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     FirebaseMessaging.onMessage.listen((message) => showNotification(
         message.notification?.title, message.notification?.body));
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
     FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
 
@@ -146,7 +165,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 587e7d9c98a10406605319a31a5baa52dac960d6
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(
@@ -183,7 +205,8 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: _buildDrawer(classDetails),
         endDrawer: EndDrawerWidget(
             classId: widget.student.classId, studentId: _studentId),
-        body: Text('$_studentId'));
+        body: HomeContent(schoolName: widget.student.studentInfo.studentName),
+    );
   }
 
   Drawer _buildDrawer(Map<String, dynamic> classDetails) {
@@ -194,7 +217,7 @@ class _HomeScreenState extends State<HomeScreen> {
           DrawerHeader(
             child: Text(
               '${classDetails['schoolName']} ${classDetails['grade']}학년 ${classDetails['classNo']}반\n'
-                  '${widget.student.studentInfo.studentName}',
+              '${widget.student.studentInfo.studentName}',
               style: const TextStyle(fontSize: 24),
             ),
           ),
