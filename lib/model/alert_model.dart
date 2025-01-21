@@ -5,7 +5,7 @@ class AlertModel {
   Future<List<dynamic>> searchAlert(int classId, int studentId) async{
     final dio = Dio();
     try{
-      final response = await dio.get( "http://112.221.66.174:3013/api/alert/view",
+      final response = await dio.get( "http://112.221.66.174:6892/api/alert/view",
         queryParameters: {
           'classId': classId,
           'studentId': studentId,
