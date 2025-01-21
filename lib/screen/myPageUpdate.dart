@@ -118,7 +118,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("메모 업데이트 성공")),
+          const SnackBar(content: Text("정보 수정 완료!")),
         );
         Navigator.pop(context);
       } else {
