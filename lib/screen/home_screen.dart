@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       debugPrint("Error fetching student ID: $e");
 
-    });
+    };
     //포그라운드 상태에서 알림을 처리하기 위한 핸들러
     FirebaseMessaging.onMessage.listen((RemoteMessage message){
       showNotification(message.notification?.title, message.notification?.body);
