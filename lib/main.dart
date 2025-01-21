@@ -68,20 +68,20 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
 
         theme: ThemeData(
-          primarySwatch: Colors.green, // 기본 테마 색상 (녹색)
-          scaffoldBackgroundColor: Color(0xFFFFEFB0), // 기본 배경색
+          primarySwatch: Colors.green,
+          scaffoldBackgroundColor: Color(0xFFFFEFB0),
           appBarTheme: AppBarTheme(
-            color: Color(0xFFFFEFB0), // 헤더(AppBar) 배경색
+            color: Color(0xFFFFEFB0),
             titleTextStyle: TextStyle(
-              color: Colors.black, // 헤더 제목 텍스트 색상
+              color: Colors.black,
               fontSize: 20,
               fontWeight: FontWeight.bold,
             ),
-            iconTheme: IconThemeData(color: Colors.black), // 헤더 아이콘 색상
+            iconTheme: IconThemeData(color: Colors.black),
           ),
           bottomAppBarTheme: BottomAppBarTheme(
-            color: Color(0xFFFFEFB0), // 푸터(Bottom AppBar) 배경색
-            elevation: 4.0, // 그림자 설정 (원하는 값으로 변경 가능)
+            color: Color(0xFFFFEFB0),
+            elevation: 4.0,
           ),
         ),
         home: _student != null
