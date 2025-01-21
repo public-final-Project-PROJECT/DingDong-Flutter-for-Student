@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildDrawerItem(
               title: '마이 페이지',
               onTap: () => _navigateTo(MyPage(studentId: _studentId))),
-          _buildDrawerItem(title: '캘린더', onTap: () => _navigateTo(Calendar())),
+
           _buildDrawerItem(
               title: '우리반 좌석 보기',
               onTap: () => _navigateTo(Seat(classId: widget.student.classId))),
