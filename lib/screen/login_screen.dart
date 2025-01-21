@@ -15,6 +15,19 @@ class LoginScreen extends StatelessWidget {
           children: [
             const Text('로고는 여기 위에'),
             ElevatedButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => QRScanner(),
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                fixedSize: const Size(220, 50),
+                elevation: 1.0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4.0),
+                ),
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -34,22 +47,9 @@ class LoginScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => QRScanner(),
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                fixedSize: const Size(220, 50),
-                elevation: 1.0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-              ),
             ),
             TextButton(
-              child: const Text('로그인건너뛰기',
+              child: const Text('로그인 건너뛰기',
                 style: TextStyle(
                   fontSize: 14,
                   height: 5,
