@@ -141,14 +141,19 @@ class QRScanner extends StatelessWidget {
     return false;
   }
 
+  bool _studentAdded = false;
+
   Future<void> _addStudent(
       Student student, Dio dio, String serverURL, int classId) async {
+    if(_studentAdded) return;
+
     try {
       await dio.post('$serverURL/api/students/add', queryParameters: {
         'studentNo': student.studentInfo.studentNo,
         'studentName': student.studentInfo.studentName,
         'classId': classId,
       });
+      _studentAdded = true;
     } catch (e) {
       throw Exception("ERROR in addStudent: $e");
     }

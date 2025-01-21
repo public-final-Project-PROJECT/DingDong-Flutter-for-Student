@@ -39,16 +39,21 @@ class _HomeScreenState extends State<HomeScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool _studentIdFetched = false;
+  bool _classDetailsFetched = false;
+
   @override
   void initState() {
     super.initState();
-    classDetailsFuture = _fetchClassDetails(widget.student.classId);
+    classDetailsFuture = _fetchClassDetails();
     _fetchStudentId(widget.student.classId).then((_) {
       _initializeNotifications();
     });
   }
 
   Future<void> _fetchStudentId(int classId) async {
+    if(_studentIdFetched) return;
+
     final dio = Dio();
     final serverURL = _getServerURL();
 
@@ -58,18 +63,25 @@ class _HomeScreenState extends State<HomeScreen> {
       if (response.statusCode == 200) {
         final data = response.data;
         _studentId = data is int ? data : int.tryParse(data.toString()) ?? 0;
+        _studentIdFetched = true;
       }
     } catch (e) {
       debugPrint("Error fetching student ID: $e");
     }
   }
 
-  Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
+  Future<Map<String, dynamic>> _fetchClassDetails() async {
+    if (_classDetailsFetched) {
+        return classDetailsFuture;
+    }
+
+    final dio = Dio();
+    final serverURL = _getServerURL();
+
     try {
-      final dio = Dio();
-      final serverURL = _getServerURL();
-      final response = await dio.get('$serverURL/class/$classId');
+      final response = await dio.get('$serverURL/class/${widget.student.classId}');
       if (response.statusCode == 200) {
+        _classDetailsFetched = true;
         return response.data as Map<String, dynamic>;
       } else {
         throw Exception("Failed to fetch class details.");
