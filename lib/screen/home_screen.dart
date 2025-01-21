@@ -17,6 +17,7 @@ import '../screen/notice.dart';
 import '../screen/seat.dart';
 import '../screen/vote.dart';
 import '../student.dart';
+import 'main-body.dart';
 
 class HomeScreen extends StatefulWidget {
   final Student student;
@@ -179,7 +180,8 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: _buildDrawer(classDetails),
         endDrawer: EndDrawerWidget(
             classId: widget.student.classId, studentId: _studentId),
-        body: Text('$_studentId'));
+        body: HomeContent(schoolName: widget.student.studentInfo.studentName),
+    );
   }
 
   Drawer _buildDrawer(Map<String, dynamic> classDetails) {
