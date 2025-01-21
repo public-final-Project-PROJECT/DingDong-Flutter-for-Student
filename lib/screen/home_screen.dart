@@ -11,7 +11,6 @@ import 'package:permission_handler/permission_handler.dart';
 import '../dialog/end_drawer.dart';
 import '../notification/init_noti.dart';
 import '../notification/show_noti.dart';
-import '../screen/calendar.dart';
 import '../screen/myPage.dart';
 import '../screen/notice.dart';
 import '../screen/seat.dart';
@@ -68,28 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } catch (e) {
       debugPrint("Error fetching student ID: $e");
-<<<<<<< HEAD
-
-    };
-
-    //포그라운드 상태에서 알림을 처리하기 위한 핸들러
-    FirebaseMessaging.onMessage.listen((RemoteMessage message){
-      showNotification(message.notification?.title, message.notification?.body);
-    });
-
-    //알람을 클릭해서 앱이 열릴 때 핸들러
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
-    });
-
-
-    //백그라운드 및 종료 상태에서 알람을 처리하기 위한 핸들러
-    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
-
-  }
-  static Future<void> _backgroundMessageHandler(RemoteMessage message) async{
-=======
     }
->>>>>>> 587e7d9c98a10406605319a31a5baa52dac960d6
   }
 
   Future<Map<String, dynamic>> _fetchClassDetails() async {
@@ -165,10 +143,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 587e7d9c98a10406605319a31a5baa52dac960d6
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>>(

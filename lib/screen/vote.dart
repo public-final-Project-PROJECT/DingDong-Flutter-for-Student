@@ -245,7 +245,6 @@ class _StudentVoteState extends State<Vote> {
                   ListTile(
                     title: Row(
                       children: [
-<<<<<<< HEAD
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -297,21 +296,6 @@ class _StudentVoteState extends State<Vote> {
                                 softWrap: true,
                               ),
                             ],
-=======
-                        Icon(
-                          Icons.circle,
-                          size: 13,
-                          color: voting["vote"] == true ? Colors.red : Colors.grey,
-                        ),
-                        SizedBox(width: 5),
-                        Text(
-                          voting["vote"] == true ? "진행중" : "종료",
-                          style: TextStyle(
-                            fontSize: 17,
-                            fontWeight: FontWeight.bold,
-                            color:
-                            voting["vote"] == true ? Colors.red : Colors.grey,
->>>>>>> 587e7d9c98a10406605319a31a5baa52dac960d6
                           ),
                         ),
                         SizedBox(width: 13),
@@ -395,10 +379,7 @@ class _StudentVoteState extends State<Vote> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: votingContents.map<Widget>((content) {
-<<<<<<< HEAD
                               bool isVoted = false;
-=======
->>>>>>> 587e7d9c98a10406605319a31a5baa52dac960d6
                               final contentId = content["contentsId"];
                               final isMyVote =
                                   myVote != null && myVote["contentsId"] == contentId;
