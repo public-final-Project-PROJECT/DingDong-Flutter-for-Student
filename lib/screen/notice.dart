@@ -121,7 +121,7 @@ class _NoticeState extends State<Notice> {
                       children: [
                         Text(
                           "${notice['noticeCategory']}",
-                          style: const TextStyle(fontSize: 10, color: Colors.orangeAccent),
+                          style: const TextStyle(fontSize: 10, color: Colors.deepOrange),
                         ),
                         const SizedBox(height: 8),
                         Text(
