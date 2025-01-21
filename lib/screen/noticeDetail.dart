@@ -92,7 +92,7 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
               children: [
                 Text(
                   "${notice['noticeTitle']}",
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
                 ),
                 if (notice['noticeFile'] != null)
                   ElevatedButton.icon(
@@ -113,8 +113,8 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
                   ),
               ],
             ),
-            Text(displayDate),
-            Text("${notice['noticeCategory']}"),
+            Text(displayDate ,style: TextStyle(fontSize: 9),),
+            Text("${notice['noticeCategory']}", style: TextStyle(fontSize: 12,color: Colors.orangeAccent),),
             SizedBox(height: 8),
             Container(
               width: 393,

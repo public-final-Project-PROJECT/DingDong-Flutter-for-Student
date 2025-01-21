@@ -212,7 +212,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
   Widget _buildTextField(String label, TextEditingController controller,
       {bool isEnabled = true, IconData? icon}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 15.0),
+      padding: const EdgeInsets.only(bottom: 13.0),
       child: TextField(
         controller: controller,
         enabled: isEnabled,
@@ -224,12 +224,12 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
                 label,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: 16.0,
+                  fontSize: 10.0,
                   color: Colors.black,
                 ),
               ),
               const SizedBox(width: 8), // 라벨과 아이콘 사이 간격
-              if (icon != null) Icon(icon, size: 18, color: Colors.orangeAccent),
+              if (icon != null) Icon(icon, size: 17, color: Colors.orangeAccent),
             ],
           ),
           border: OutlineInputBorder(
