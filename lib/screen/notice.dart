@@ -33,7 +33,11 @@ class _NoticeState extends State<Notice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("공지사항"),
+        title: Row(children: [Icon(
+          Icons.article,
+          color: Colors.deepOrange,
+          size: 30,// 아이콘 색상 설정
+        ), const Text("공지사항") ],) ,
         backgroundColor: const Color(0xffF4F4F4),
         shape: const Border(
           bottom: BorderSide(color: Colors.grey, width: 1),
@@ -92,11 +96,11 @@ class _NoticeState extends State<Notice> {
                 }
 
                 return Card(
-                  margin: const EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.all(5.0),
                   color: const Color(0xffFFFFFF),
                   elevation: 4.0,
                   child: ListTile(
-                    contentPadding: const EdgeInsets.all(16.0),
+                    contentPadding: const EdgeInsets.all(9.0),
                     title: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -104,7 +108,7 @@ class _NoticeState extends State<Notice> {
                           child: Text(
                             notice['noticeTitle'],
                             style: const TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.bold),
+                                fontSize: 17, fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -114,17 +118,17 @@ class _NoticeState extends State<Notice> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "카테고리: ${notice['noticeCategory']}",
-                          style: const TextStyle(fontSize: 14, color: Colors.grey),
+                          "${notice['noticeCategory']}",
+                          style: const TextStyle(fontSize: 10, color: Colors.orangeAccent),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           "내용: ${notice['noticeContent']}",
-                          style: const TextStyle(fontSize: 16),
+                          style: const TextStyle(fontSize: 13),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                        Text(displayDate, style: const TextStyle(fontSize: 11)),
+                        Text(displayDate, style: const TextStyle(fontSize: 9)),
                         const SizedBox(height: 8),
                       ],
                     ),
