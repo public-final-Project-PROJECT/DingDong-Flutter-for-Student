@@ -323,7 +323,7 @@ class _HomeContentState extends State<HomeContent> {
                 ),
               ),
               defaultDecoration: BoxDecoration(
-                color: Colors.grey[200],
+                color: Colors.amber[200],
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(5.0),
               ),
@@ -438,7 +438,7 @@ class _HomeContentState extends State<HomeContent> {
                         constraints: const BoxConstraints(
                           maxHeight: 300, // 컨테이너 높이 제한
                         ),
-                        margin: const EdgeInsets.fromLTRB(0,5,0,40),
+                        margin: const EdgeInsets.fromLTRB(20,5,20,40),
                         padding: const EdgeInsets.all(0.0),
                         decoration: BoxDecoration(
                           color: Colors.orangeAccent.withAlpha(128),
@@ -452,6 +452,7 @@ class _HomeContentState extends State<HomeContent> {
                           ],
                         ),
                         child: Padding(
+
                           padding: const EdgeInsets.all(16.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -522,11 +523,11 @@ class _HomeContentState extends State<HomeContent> {
                                           children: [
                                             Text(
                                               '${index+1}교시',
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight:
                                                 FontWeight.bold,
-                                                color: Colors.black,
+                                                color: Colors.green[100],
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -537,7 +538,7 @@ class _HomeContentState extends State<HomeContent> {
                                                   : '',
                                               style: const TextStyle(
                                                 fontSize: 14,
-                                                color: Colors.black,
+                                                color: Colors.white70,
                                               ),
                                               textAlign: TextAlign.center,
                                             ),
@@ -557,7 +558,7 @@ class _HomeContentState extends State<HomeContent> {
                         constraints: const BoxConstraints(
                           maxHeight: 300, // 컨테이너 높이 제한
                         ),
-                        margin: const EdgeInsets.fromLTRB(0,5,0,20),
+                        margin: const EdgeInsets.fromLTRB(20,5,20,20),
                         padding: const EdgeInsets.all(16.0),
                         decoration: BoxDecoration(
                           color: Colors.orangeAccent.withAlpha(128),
@@ -708,7 +709,7 @@ class _HomeContentState extends State<HomeContent> {
             height: 80.0,
             // 바텀바 높이
             decoration: BoxDecoration(
-              color: const Color(0xffF4F4F4), // 바텀바 배경색
+              color: const Color(0xFFFFEFB0), // 바텀바 배경색
               border: Border(
                 top: BorderSide(
                   color: Colors.grey.withOpacity(0.4), // 올바르게 호출
