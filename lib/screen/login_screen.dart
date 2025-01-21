@@ -49,7 +49,14 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             TextButton(
-              child: const Text('로그인 건너뛰기'),
+              child: const Text('로그인건너뛰기',
+                style: TextStyle(
+                  fontSize: 14,
+                  height: 5,
+                  color: Colors.grey,
+                  decoration: TextDecoration.underline,
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(

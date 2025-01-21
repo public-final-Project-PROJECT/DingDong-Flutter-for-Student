@@ -246,20 +246,19 @@ class _StudentVoteState extends State<Vote> {
           final doubleVoting = voting["doubleVote"] ?? false;
 
           return Card(
-            margin: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ListTile(
-                    title: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
+              margin: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ListTile(
+                        title: Row(
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Icon(
                                     Icons.circle,
@@ -507,7 +506,6 @@ class _StudentVoteState extends State<Vote> {
               ),
             ),
           );
-
         },
       ),
     );

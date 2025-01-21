@@ -120,6 +120,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 15)
                         ],
                       ),
                       SizedBox(height: 15),
@@ -242,8 +243,8 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("보호자 번호",
-                                style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("보호자\n연락처",
+                                style: TextStyle(fontSize: 15),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -325,10 +326,13 @@ class _MyPageState extends State<MyPage> {
                             _loadStudent();
                           }
                         },
-                        icon: const Icon(Icons.update, color: Colors.white, ),
+                        icon: const Icon(
+                          Icons.update, 
+                          color: Colors.white
+                          ),
                         label: const Text("수정하기"),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orangeAccent,
+                          backgroundColor: Colors.deepOrangeAccent,
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
                           shape: RoundedRectangleBorder(
@@ -339,7 +343,6 @@ class _MyPageState extends State<MyPage> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

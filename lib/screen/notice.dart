@@ -46,6 +46,7 @@ class _NoticeState extends State<Notice> {
             padding: const EdgeInsets.all(4.0),
             child: Row(
               children: [
+                const SizedBox(width: 10),
                 DropdownButton<String>(
                   value: _selectedCategory,
                   hint: const Text("카테고리 선택"),
@@ -61,6 +62,7 @@ class _NoticeState extends State<Notice> {
                     });
                     _loadNotice(category: value);
                   },
+                  dropdownColor: const Color(0xffFFFFFF),
                 ),
               ],
             ),
