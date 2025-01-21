@@ -50,7 +50,7 @@ class _HomeContentState extends State<HomeContent> {
     '영어',
     '과학',
     '체육',
-    '세계사',
+    '역사',
     '음악',
     '미술',
   ];
@@ -653,7 +653,7 @@ class _HomeContentState extends State<HomeContent> {
                                                 Text(
                                                   cleanMealData(mealMenu!),
                                                   style: const TextStyle(
-                                                    fontSize: 18,
+                                                    fontSize: 16,
                                                     color: Colors.white70,
                                                     fontWeight: FontWeight.bold,// 텍스트 색상
                                                     shadows: [
