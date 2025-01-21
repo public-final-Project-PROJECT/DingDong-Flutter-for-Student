@@ -14,10 +14,8 @@ import 'calendar_details.dart';
 class HomeContent extends StatefulWidget {
   final String schoolName;
 
-
   const HomeContent({
     required this.schoolName,
-
     super.key,
   });
 
@@ -116,7 +114,7 @@ class _HomeContentState extends State<HomeContent> {
         setState(() {
           mealDate = mealData != null ? mealData['MLSV_YMD'] : null;
           mealMenu =
-          mealData != null ? cleanMealData(mealData['DDISH_NM']) : null;
+              mealData != null ? cleanMealData(mealData['DDISH_NM']) : null;
           _isMealLoaded = true; // 급식 정보 로드 완료
         });
 
@@ -148,11 +146,11 @@ class _HomeContentState extends State<HomeContent> {
               .add(const Duration(hours: 9))
               .toUtc();
           final endDate =
-          DateTime.parse(item['end']).add(const Duration(hours: 9)).toUtc();
+              DateTime.parse(item['end']).add(const Duration(hours: 9)).toUtc();
 
           for (var date = startDate;
-          !date.isAfter(endDate);
-          date = date.add(const Duration(days: 1))) {
+              !date.isAfter(endDate);
+              date = date.add(const Duration(days: 1))) {
             _events.putIfAbsent(date, () => []).add(item);
           }
         }
@@ -161,8 +159,6 @@ class _HomeContentState extends State<HomeContent> {
       throw Exception('Error loading calendar: $error');
     }
   }
-
-
 
   Future<void> _deleteEvent(int id) async {
     try {
@@ -189,8 +185,8 @@ class _HomeContentState extends State<HomeContent> {
     final events = <dynamic>[];
 
     for (var date = start;
-    !date.isAfter(end);
-    date = date.add(const Duration(days: 1))) {
+        !date.isAfter(end);
+        date = date.add(const Duration(days: 1))) {
       if (_events.containsKey(date)) {
         events.addAll(_events[date]!);
       }
@@ -202,6 +198,7 @@ class _HomeContentState extends State<HomeContent> {
   List<dynamic> _getEventsForDay(DateTime day) {
     return _events[day] ?? [];
   }
+
   String formatMealDate(String mealDate) {
     // 년, 월, 일을 각각 추출
     String year = mealDate.substring(0, 4); // 연도
@@ -215,7 +212,6 @@ class _HomeContentState extends State<HomeContent> {
     // 최종 결과
     return '$formattedMonth $formattedDay'; // 예: 11월 11일
   }
-
 
   Widget _buildEventsMarker(DateTime date, List events) {
     return Positioned(
@@ -258,7 +254,7 @@ class _HomeContentState extends State<HomeContent> {
             rangeStartDay: _rangeStart,
             rangeEndDay: _rangeStart,
             selectedDayPredicate: (day) =>
-            _selectedDay != null && isSameDay(_selectedDay, day),
+                _selectedDay != null && isSameDay(_selectedDay, day),
             onPageChanged: (focusedDay) {
               setState(() {
                 _focusedDay = focusedDay;
@@ -284,19 +280,19 @@ class _HomeContentState extends State<HomeContent> {
               titleTextFormatter: (date, locale) =>
                   DateFormat.yMMMMd(locale).format(date),
               titleTextStyle:
-              const TextStyle(fontSize: 20.0, color: Colors.black),
+                  const TextStyle(fontSize: 20.0, color: Colors.black),
               headerPadding: const EdgeInsets.symmetric(vertical: 4.0),
             ),
             calendarStyle: CalendarStyle(
               isTodayHighlighted: true,
               outsideDaysVisible: true,
               todayDecoration: BoxDecoration(
-                color: Colors.white,
+                color: Colors.amber[200],
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.circular(5.0),
-                border: Border.all(color: Colors.orangeAccent, width: 1.0),
+                border: Border.all(color: Colors.orangeAccent, width: 2.0),
               ),
-              todayTextStyle: const TextStyle(color: Colors.orange),
+              todayTextStyle: const TextStyle(color: Colors.black),
               selectedDecoration: BoxDecoration(
                 color: Colors.orangeAccent,
                 shape: BoxShape.rectangle,
@@ -330,7 +326,7 @@ class _HomeContentState extends State<HomeContent> {
             ),
             calendarBuilders: CalendarBuilders(
               markerBuilder: (context, date, events) =>
-              events.isNotEmpty ? _buildEventsMarker(date, events) : null,
+                  events.isNotEmpty ? _buildEventsMarker(date, events) : null,
             ),
           ),
           Expanded(
@@ -341,340 +337,361 @@ class _HomeContentState extends State<HomeContent> {
               },
               child: _isMealLoaded && _isTimetableLoaded
                   ? Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Builder(
-                        builder: (context) {
-                          final events =
-                          _getEventsForRange(_rangeStart, _rangeEnd);
-                          return events.isEmpty
-                              ? const Center(
-                            child: Image(
-                              image: AssetImage('assets/dog.png'), // 로컬 이미지 경로
-                              fit: BoxFit.contain, // 이미지가 화면에 맞게 조정
-                              width: 150, // 이미지 너비
-                              height: 150, // 이미지 높이
-                            ),
-                          )
-                              : ListView.builder(
-                            itemCount: events.length,
-                            itemBuilder: (context, index) {
-                              final event = events[index];
-                              final randomColor = colors[
-                              random.nextInt(colors.length)];
-                              return Container(
-                                height: 60.0,
-                                color: randomColor,
-                                child: ListTile(
-                                  leading: const Icon(Icons.alarm,
-                                      color: Colors.white),
-                                  title: Text(
-                                    event['title'],
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18,
-                                        overflow:
-                                        TextOverflow.ellipsis),
-                                  ),
-                                  trailing: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                          'Start: ${event['start'].substring(0, 10)}',
-                                          style: const TextStyle(
-                                              fontSize: 12.0,
-                                              color:
-                                              Colors.white70)),
-                                      Text(
-                                          'End: ${event['end'].substring(0, 10)}',
-                                          style: const TextStyle(
-                                              fontSize: 12.0,
-                                              color:
-                                              Colors.white70)),
-                                    ],
-                                  ),
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (context,
-                                          animation,
-                                          secondaryAnimation) =>
-                                          CalendarDetails(
-                                            event: event,
-                                            deleteEvent: _deleteEvent,
-                                            updateEvent: _updateEvent,
-                                          ),
-                                      transitionsBuilder: (context,
-                                          animation,
-                                          secondaryAnimation,
-                                          child) {
-                                        return SlideTransition(
-                                          position: animation.drive(Tween(
-                                              begin:
-                                              const Offset(
-                                                  1.0, 0.0),
-                                              end: Offset.zero)
-                                              .chain(CurveTween(
-                                              curve: Curves
-                                                  .easeInOut))),
-                                          child: child,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        constraints: const BoxConstraints(
-                          maxHeight: 300, // 컨테이너 높이 제한
-                        ),
-                        margin: const EdgeInsets.fromLTRB(20,5,20,40),
-                        padding: const EdgeInsets.all(0.0),
-                        decoration: BoxDecoration(
-                          color: Colors.orangeAccent.withAlpha(128),
-                          borderRadius: BorderRadius.circular(16.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Padding(
-
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Center(
-                                child: timetable.isNotEmpty // 리스트가 비어 있지 않은지 확인
-                                    ? Text(
-                                  '${timetable[0]} 시간표',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.deepOrangeAccent,
-                                  ),
-                                )
-                                    : Text(
-                                  '시간표가 없습니다.', // 예외 상황에 보여줄 텍스트
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              if (_selectedDay!.weekday >= 6)
-                                const Center(
-                                  child: Text(
-                                    '',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                )
-                              else
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceAround,
-                                  children: List.generate(
-                                    6,
-                                        (index) => Expanded(
-                                      child: Container(
-                                        margin:
-                                        const EdgeInsets.symmetric(
-                                            horizontal: 4.0),
-                                        padding:
-                                        const EdgeInsets.all(12.0),
-                                        decoration: BoxDecoration(
-                                          color: Colors.deepOrangeAccent
-                                              .withOpacity(0.5),
-                                          borderRadius:
-                                          BorderRadius.circular(12.0),
-                                          border: Border.all(
-                                              color:
-                                              Colors.deepOrangeAccent,
-                                              width: 1),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey
-                                                  .withOpacity(0.3),
-                                              blurRadius: 5,
-                                              offset: const Offset(2, 2),
-                                            ),
-                                          ],
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Builder(
+                              builder: (context) {
+                                final events =
+                                    _getEventsForRange(_rangeStart, _rangeEnd);
+                                return events.isEmpty
+                                    ? const Center(
+                                        child: Image(
+                                          image: AssetImage(
+                                              'assets/dog.png'), // 로컬 이미지 경로
+                                          fit: BoxFit.contain, // 이미지가 화면에 맞게 조정
+                                          width: 150, // 이미지 너비
+                                          height: 150, // 이미지 높이
                                         ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(
-                                              '${index+1}교시',
+                                      )
+                                    : ListView.builder(
+                                        itemCount: events.length,
+                                        itemBuilder: (context, index) {
+                                          final event = events[index];
+                                          final randomColor = colors[
+                                              random.nextInt(colors.length)];
+                                          return Container(
+                                            height: 60.0,
+                                            color: randomColor,
+                                            child: ListTile(
+                                              leading: const Icon(Icons.alarm,
+                                                  color: Colors.white),
+                                              title: Text(
+                                                event['title'],
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                    overflow:
+                                                        TextOverflow.ellipsis),
+                                              ),
+                                              trailing: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Text(
+                                                      'Start: ${event['start'].substring(0, 10)}',
+                                                      style: const TextStyle(
+                                                          fontSize: 12.0,
+                                                          color:
+                                                              Colors.white70)),
+                                                  Text(
+                                                      'End: ${event['end'].substring(0, 10)}',
+                                                      style: const TextStyle(
+                                                          fontSize: 12.0,
+                                                          color:
+                                                              Colors.white70)),
+                                                ],
+                                              ),
+                                              onTap: () => Navigator.push(
+                                                context,
+                                                PageRouteBuilder(
+                                                  pageBuilder: (context,
+                                                          animation,
+                                                          secondaryAnimation) =>
+                                                      CalendarDetails(
+                                                    event: event,
+                                                    deleteEvent: _deleteEvent,
+                                                    updateEvent: _updateEvent,
+                                                  ),
+                                                  transitionsBuilder: (context,
+                                                      animation,
+                                                      secondaryAnimation,
+                                                      child) {
+                                                    return SlideTransition(
+                                                      position: animation.drive(Tween(
+                                                              begin:
+                                                                  const Offset(
+                                                                      1.0, 0.0),
+                                                              end: Offset.zero)
+                                                          .chain(CurveTween(
+                                                              curve: Curves
+                                                                  .easeInOut))),
+                                                      child: child,
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      );
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                maxHeight: 300, // 컨테이너 높이 제한
+                              ),
+                              margin: const EdgeInsets.fromLTRB(20, 5, 20, 40),
+                              padding: const EdgeInsets.all(0.0),
+                              decoration: BoxDecoration(
+                                color: Colors.orangeAccent.withAlpha(128),
+                                borderRadius: BorderRadius.circular(16.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Center(
+                                      child: timetable
+                                              .isNotEmpty // 리스트가 비어 있지 않은지 확인
+                                          ? Text(
+                                              '${timetable[0]} 시간표',
                                               style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight:
-                                                FontWeight.bold,
-                                                color: Colors.green[100],
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.deepOrangeAccent,
                                               ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            const SizedBox(height: 8),
-                                            Text(
-                                              timetable.length > index + 1
-                                                  ? timetable[index + 1]
-                                                  : '',
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white70,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
+                                            )
+                                          : Container(
+                                        padding: const EdgeInsets.fromLTRB(0,60,0,0), // 패딩 추가 (상하좌우 16픽셀)
+                                        alignment: Alignment.center, // 컨테이너 내부에서 중앙 정렬
+                                        child: Text(
+                                          '즐거운 주말', // 예외 상황에 보여줄 텍스트
+                                          style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.green[100],
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
+                                    const SizedBox(height: 16),
+                                    if (_selectedDay!.weekday >= 6)
+                                      const Center(
+                                        child: Text(
+                                          '',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                      )
+                                    else
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: List.generate(
+                                          6,
+                                          (index) => Expanded(
+                                            child: Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 4.0),
+                                              padding:
+                                                  const EdgeInsets.all(12.0),
+                                              decoration: BoxDecoration(
+                                                color: Colors.deepOrangeAccent
+                                                    .withOpacity(0.5),
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                                border: Border.all(
+                                                    color:
+                                                        Colors.deepOrangeAccent,
+                                                    width: 1),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.grey
+                                                        .withOpacity(0.3),
+                                                    blurRadius: 5,
+                                                    offset: const Offset(2, 2),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    '${index + 1}교시',
+                                                    style: TextStyle(
+                                                      fontSize: 10,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.green[100],
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                  const SizedBox(height: 8),
+                                                  Text(
+                                                    timetable.length > index + 1
+                                                        ? timetable[index + 1]
+                                                        : '',
+                                                    style: const TextStyle(
+                                                      fontSize: 15,
+                                                      color: Colors.white70,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                  ],
                                 ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        constraints: const BoxConstraints(
-                          maxHeight: 300, // 컨테이너 높이 제한
-                        ),
-                        margin: const EdgeInsets.fromLTRB(20,5,20,20),
-                        padding: const EdgeInsets.all(16.0),
-                        decoration: BoxDecoration(
-                          color: Colors.orangeAccent.withAlpha(128),
-                          borderRadius: BorderRadius.circular(16.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(0.2),
-                              blurRadius: 8,
-                              offset: const Offset(0, 4),
+                              ),
                             ),
-                          ],
-                        ),
-                        child: mealDate != null && mealMenu != null
-                            ? Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment.center,
-                          children: [
-
-                            const SizedBox(height: 16),
-                            Container(
+                          ),
+                          Expanded(
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                maxHeight: 300, // 컨테이너 높이 제한
+                              ),
+                              margin: const EdgeInsets.fromLTRB(20, 5, 20, 20),
                               padding: const EdgeInsets.all(16.0),
                               decoration: BoxDecoration(
                                 color: Colors.orangeAccent.withAlpha(128),
-                                borderRadius:
-                                BorderRadius.circular(12.0),
-                                border: Border.all(
-                                  color: Colors.orangeAccent,
-                                  width: 1.0,
-                                ),
+                                borderRadius: BorderRadius.circular(16.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    blurRadius: 8,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
                               ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center, // 중앙 정렬
-                                      crossAxisAlignment: CrossAxisAlignment.center,
+                              child: mealDate != null && mealMenu != null
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        // 왼쪽 이미지
-                                        Image.asset(
-                                          'assets/seekpan.png', // 왼쪽 이미지 경로
-                                          width: 40, // 이미지 너비
-                                          height: 30, // 이미지 높이
-                                          fit: BoxFit.cover,
-                                        ),
-                                        const SizedBox(width: 8), // 이미지와 텍스트 사이 간격
+                                        const SizedBox(height: 16),
+                                        Container(
+                                            padding: const EdgeInsets.all(16.0),
+                                            decoration: BoxDecoration(
+                                              color: Colors.orangeAccent
+                                                  .withAlpha(128),
+                                              borderRadius:
+                                                  BorderRadius.circular(12.0),
+                                              border: Border.all(
+                                                color: Colors.orangeAccent,
+                                                width: 1.0,
+                                              ),
 
-                                        // 날짜 텍스트
-                                        Text(
-                                          '${formatMealDate(mealDate!)}', // 날짜 텍스트
-                                          style: const TextStyle(
-                                            fontSize: 18,
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .center, // 중앙 정렬
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    // 왼쪽 이미지
+                                                    Image.asset(
+                                                      'assets/seekpan.png', // 왼쪽 이미지 경로
+                                                      width: 40, // 이미지 너비
+                                                      height: 30, // 이미지 높이
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    // 이미지와 텍스트 사이 간격
+
+                                                    // 날짜 텍스트
+                                                    Text(
+                                                      '${formatMealDate(mealDate!)}',
+                                                      // 날짜 텍스트
+                                                      style: const TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors
+                                                            .deepOrangeAccent,
+                                                      ),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                    const SizedBox(width: 8),
+                                                    // 텍스트와 이미지 사이 간격
+
+                                                    // 오른쪽 이미지
+                                                    Image.asset(
+                                                      'assets/seekpan.png', // 오른쪽 이미지 경로
+                                                      width: 40, // 이미지 너비
+                                                      height: 30, // 이미지 높이
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                const SizedBox(
+                                                    height:
+                                                        8), // 텍스트와 아래 컨텐츠 간격
+
+                                                // 식단 텍스트
+                                                Text(
+                                                  cleanMealData(mealMenu!),
+                                                  style: const TextStyle(
+                                                    fontSize: 18,
+                                                    color: Colors.white70,
+                                                    fontWeight: FontWeight.bold,// 텍스트 색상
+                                                    shadows: [
+                                                      Shadow(
+                                                        offset: Offset(1, 1), // 그림자의 위치 (X, Y)
+                                                        blurRadius: 3.0, // 그림자 흐림 정도
+                                                        color: Color(0x55000000), // 그림자 색상 (반투명 검정)
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  softWrap: true,
+                                                ),
+                                              ],
+                                            )),
+                                      ],
+                                    )
+                                  : Center(
+                                      child: AnimatedTextKit(
+                                      animatedTexts: [
+                                        TypewriterAnimatedText(
+                                          '오늘 급식없어요',
+                                          textStyle: TextStyle(
+                                            fontSize: 32.0,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.deepOrangeAccent,
+                                            color: Colors.green[100],
                                           ),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(width: 8), // 텍스트와 이미지 사이 간격
-
-                                        // 오른쪽 이미지
-                                        Image.asset(
-                                          'assets/seekpan.png', // 오른쪽 이미지 경로
-                                          width: 40, // 이미지 너비
-                                          height: 30, // 이미지 높이
-                                          fit: BoxFit.cover,
+                                          speed:
+                                              const Duration(milliseconds: 200),
                                         ),
                                       ],
-                                    ),
-
-                                    const SizedBox(height: 8), // 텍스트와 아래 컨텐츠 간격
-
-                                    // 식단 텍스트
-                                    Text(
-                                      cleanMealData(mealMenu!),
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                      softWrap: true,
-                                    ),
-                                  ],
-                                )
+                                      totalRepeatCount: 1,
+                                      pause: const Duration(milliseconds: 300),
+                                      displayFullTextOnTap: true,
+                                      stopPauseOnTap: true,
+                                    )),
                             ),
-                          ],
-                        )
-                            : Center(
-                          child:
-
-                          AnimatedTextKit(
-                            animatedTexts: [
-                              TypewriterAnimatedText(
-                                '오늘 급식없어요',
-                                textStyle: TextStyle(
-                                  fontSize: 32.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.green[100],
-                                ),
-                                speed: const Duration(milliseconds: 200),
-                              ),
-                            ],
-                            totalRepeatCount: 1,
-                            pause: const Duration(milliseconds: 300),
-                            displayFullTextOnTap: true,
-                            stopPauseOnTap: true,
-                          )
-
-                        ),
+                          ),
+                        ],
                       ),
-                    ),
-
-                  ],
-                ),
-              )
+                    )
                   : const Center(
-                child: Text(""), // 로딩 상태
-              ),
+                      child: Text(""), // 로딩 상태
+                    ),
             ),
           ),
         ],
@@ -700,76 +717,86 @@ class _HomeContentState extends State<HomeContent> {
 
   @override
   Widget build(BuildContext context) {
-
-
-        // 정상적으로 데이터가 로드되었을 때
-        return Scaffold(
-          body: body(), // 기존 body() 함수 호출
-          bottomNavigationBar: Container(
-            height: 80.0,
-            // 바텀바 높이
-            decoration: BoxDecoration(
-              color: const Color(0xFFFFEFB0), // 바텀바 배경색
-              border: Border(
-                top: BorderSide(
-                  color: Colors.grey.withOpacity(0.4), // 올바르게 호출
-                  width: 1.0, // 경계선 두께
-                ),
-              ),
+    // 정상적으로 데이터가 로드되었을 때
+    return Scaffold(
+      body: body(), // 기존 body() 함수 호출
+      bottomNavigationBar: Container(
+        height: 80.0,
+        // 바텀바 높이
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFEFB0), // 바텀바 배경색
+          border: Border(
+            top: BorderSide(
+              color: Colors.grey.withOpacity(0.4), // 올바르게 호출
+              width: 1.0, // 경계선 두께
             ),
-            child: BottomAppBar(
-              color: Colors.transparent, // 배경색 투명 (Container에서 설정)
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _selectedDay = DateTime.now();
-                    _focusedDay = DateTime.now();
-                    final DateTime date = DateTime.now();
-                    _rangeStart = DateTime(date.year, date.month, date.day)
-                        .add(const Duration(hours: 9))
-                        .toUtc();
-                    _rangeEnd = DateTime(date.year, date.month, date.day)
-                        .add(const Duration(hours: 9))
-                        .toUtc();
-                    fetchSchoolMealInfo(apiKey, _selectedDay!);
-                    int? weekday = _selectedDay?.weekday;
-                    fetchWeekdayInfo(weekday!);
-                  });
-                },
-                child: Container(
-                  child: Center(
-                    child: Text(
-                      '오늘',
-                      style: TextStyle(
-                        fontSize: 20.0,
-                        color: Colors.red,
+          ),
+        ),
+        child: BottomAppBar(
+          color: Colors.transparent, // 배경색 투명 (Container에서 설정)
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                _selectedDay = DateTime.now();
+                _focusedDay = DateTime.now();
+                final DateTime date = DateTime.now();
+                _rangeStart = DateTime(date.year, date.month, date.day)
+                    .add(const Duration(hours: 9))
+                    .toUtc();
+                _rangeEnd = DateTime(date.year, date.month, date.day)
+                    .add(const Duration(hours: 9))
+                    .toUtc();
+                fetchSchoolMealInfo(apiKey, _selectedDay!);
+                int? weekday = _selectedDay?.weekday;
+                fetchWeekdayInfo(weekday!);
+              });
+            },
+            child: Container(
+              child: Center(
+                child: Text(
+                  '오늘',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    // 글씨 크기
+                    fontWeight: FontWeight.bold,
+                    // 글씨 두께
+                    color: Color(0xFF9BB8D5),
+                    // 글씨 색상
+                    letterSpacing: 2.0,
+                    // 글자 간격
+                    shadows: [
+                      Shadow(
+                        offset: Offset(1.0, 1.0), // 텍스트 그림자 위치
+                        blurRadius: 3.0, // 텍스트 그림자 흐림
+                        color: Colors.black.withOpacity(0.5), // 텍스트 그림자 색상
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
             ),
           ),
-        );
-
+        ),
+      ),
+    );
   }
 
   void fetchWeekdayInfo(int weekday) {
     switch (weekday) {
       case 1: // 월요일
-        timetable = ['월요일','국어', '수학', '수학', '영어', '과학', '체육'];
+        timetable = ['월요일', '국어', '수학', '수학', '영어', '과학', '체육'];
         break;
       case 2: // 화요일
-        timetable = ['화요일','음악', '미술', '국어', '체육', '체육', '체육'];
+        timetable = ['화요일', '음악', '미술', '국어', '체육', '체육', '체육'];
         break;
       case 3: // 수요일
-        timetable = ['수요일','영어', '역사', '과학', '음악', '미술', '마술'];
+        timetable = ['수요일', '영어', '역사', '과학', '음악', '미술', '마술'];
         break;
       case 4: // 목요일
-        timetable = ['목요일','국어', '체육', '영어', '수학', '과학', '과학'];
+        timetable = ['목요일', '국어', '체육', '영어', '수학', '과학', '과학'];
         break;
       case 5: // 금요일
-        timetable = ['금요일','역사', '음악', '체육', '미술', '국어', '수학'];
+        timetable = ['금요일', '역사', '음악', '체육', '미술', '국어', '수학'];
         break;
       case 6: // 토요일
       case 7: // 일요일
