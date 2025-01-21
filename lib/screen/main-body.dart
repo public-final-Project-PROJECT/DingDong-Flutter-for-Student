@@ -50,7 +50,7 @@ class _HomeContentState extends State<HomeContent> {
     '영어',
     '과학',
     '체육',
-    '역사',
+    '세계사',
     '음악',
     '미술',
   ];
@@ -279,9 +279,27 @@ class _HomeContentState extends State<HomeContent> {
               titleCentered: true,
               titleTextFormatter: (date, locale) =>
                   DateFormat.yMMMMd(locale).format(date),
-              titleTextStyle:
-                  const TextStyle(fontSize: 20.0, color: Colors.black),
-              headerPadding: const EdgeInsets.symmetric(vertical: 4.0),
+
+              titleTextStyle: TextStyle(
+                fontSize: 22.0, // 제목 폰트 크기
+                fontWeight: FontWeight.bold, // 제목 폰트 굵기
+                color: Colors.orangeAccent, // 제목 색상
+              ),
+              headerPadding: const EdgeInsets.symmetric(vertical: 8.0), // 패딩 설정
+              leftChevronIcon: Icon(
+                Icons.arrow_left_rounded, // 원 안의 왼쪽 화살표
+                color: Colors.green[300],
+                size: 40,
+              ),
+              rightChevronIcon: Icon(
+                Icons.arrow_right_rounded, // 원 안의 오른쪽 화살표
+                color: Colors.green[300],
+                size: 40,
+              ),
+              leftChevronMargin: const EdgeInsets.only(left: 16.0), // 왼쪽 버튼 여백
+              rightChevronMargin: const EdgeInsets.only(right: 16.0), // 오른쪽 버튼 여백
+              leftChevronPadding: const EdgeInsets.all(8.0), // 왼쪽 버튼 내부 패딩
+              rightChevronPadding: const EdgeInsets.all(8.0), // 오른쪽 버튼 내부 패딩
             ),
             calendarStyle: CalendarStyle(
               isTodayHighlighted: true,
@@ -368,32 +386,18 @@ class _HomeContentState extends State<HomeContent> {
                                             child: ListTile(
                                               leading: const Icon(Icons.alarm,
                                                   color: Colors.white),
-                                              title: Text(
+                                              title: Container(
+                                                  padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                                             child: Text(
                                                 event['title'],
                                                 style: const TextStyle(
                                                     color: Colors.white,
-                                                    fontSize: 18,
+                                                    fontSize: 24,
                                                     overflow:
                                                         TextOverflow.ellipsis),
                                               ),
-                                              trailing: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Text(
-                                                      'Start: ${event['start'].substring(0, 10)}',
-                                                      style: const TextStyle(
-                                                          fontSize: 12.0,
-                                                          color:
-                                                              Colors.white70)),
-                                                  Text(
-                                                      'End: ${event['end'].substring(0, 10)}',
-                                                      style: const TextStyle(
-                                                          fontSize: 12.0,
-                                                          color:
-                                                              Colors.white70)),
-                                                ],
                                               ),
+
                                               onTap: () => Navigator.push(
                                                 context,
                                                 PageRouteBuilder(
@@ -461,7 +465,7 @@ class _HomeContentState extends State<HomeContent> {
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.deepOrangeAccent,
+                                                color: Colors.white,
                                               ),
                                             )
                                           : Container(
@@ -484,6 +488,7 @@ class _HomeContentState extends State<HomeContent> {
                                           '',
                                           style: TextStyle(
                                             fontSize: 16,
+                                            fontWeight: FontWeight.bold,
                                             color: Colors.grey,
                                           ),
                                         ),
@@ -502,14 +507,14 @@ class _HomeContentState extends State<HomeContent> {
                                               padding:
                                                   const EdgeInsets.all(12.0),
                                               decoration: BoxDecoration(
-                                                color: Colors.deepOrangeAccent
+                                                color: Colors.orange
                                                     .withOpacity(0.5),
                                                 borderRadius:
                                                     BorderRadius.circular(12.0),
                                                 border: Border.all(
                                                     color:
-                                                        Colors.deepOrangeAccent,
-                                                    width: 1),
+                                                        Colors.orange,
+                                                    width: 0.1),
                                                 boxShadow: [
                                                   BoxShadow(
                                                     color: Colors.grey
@@ -539,6 +544,7 @@ class _HomeContentState extends State<HomeContent> {
                                                         : '',
                                                     style: const TextStyle(
                                                       fontSize: 15,
+                                                      fontWeight: FontWeight.bold,
                                                       color: Colors.white70,
                                                     ),
                                                     textAlign: TextAlign.center,
