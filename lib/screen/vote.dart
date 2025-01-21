@@ -45,6 +45,9 @@ class _StudentVoteState extends State<Vote> {
 
   void _loadVoting() async {
     try {
+      print(" 클래스아이디 : $widget.classId");
+      print(widget.classId);
+      print(widget.studentId);
       List<dynamic> votingData = await _votingModel.selectVoting(widget.classId);
 
       // 진행중인 투표를 위로 배치
@@ -294,30 +297,6 @@ class _StudentVoteState extends State<Vote> {
                                         ),
                                       ),
                                     ),
-                                  // 중복투표 표시
-                                  if (doubleVoting == true)
-                                    Stack(
-                                      children: [
-                                        Container(
-                                          padding:
-                                          EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                                          decoration: BoxDecoration(
-                                            color: voting["vote"] == false
-                                                ? Colors.grey
-                                                : Colors.orangeAccent,
-                                            borderRadius: BorderRadius.circular(15),
-                                          ),
-                                          child: Text(
-                                            "중복투표",
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                 ],
                               ),
                               SizedBox(height: 20),
@@ -373,7 +352,7 @@ class _StudentVoteState extends State<Vote> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: votingContents.map<Widget>((content) {
-                              bool isVoted = false; // Ensure it's initialized to false or true.
+                              bool isVoted = false;
                               final contentId = content["contentsId"];
                               final isMyVote =
                                   myVote != null && myVote["contentsId"] == contentId;
