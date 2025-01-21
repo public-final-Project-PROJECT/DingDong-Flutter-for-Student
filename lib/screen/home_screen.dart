@@ -61,45 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     } catch (e) {
       debugPrint("Error fetching student ID: $e");
-
-    });
-    //포그라운드 상태에서 알림을 처리하기 위한 핸들러
-    FirebaseMessaging.onMessage.listen((RemoteMessage message){
-      showNotification(message.notification?.title, message.notification?.body);
-    });
-
-    //알람을 클릭해서 앱이 열릴 때 핸들러
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message){
-    });
-
-
-    //백그라운드 및 종료 상태에서 알람을 처리하기 위한 핸들러
-    FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
-
-  }
-  static Future<void> _backgroundMessageHandler(RemoteMessage message) async{
-  }
-
-  //권한 설정 메소드
-  Future<void> requestNotificationPermission() async{
-    if(await Permission.notification.isDenied){
-      await Permission.notification.request();
     }
-  }
-
-  Future<void> sendTokenToServer(String token, int studentId) async {
-    final url = Uri.parse("http://112.221.66.174:3013/fcm/register-token");
-
-    final body = jsonEncode({
-      "token": token,
-      "studentId": studentId,
-    });
-
-    final response = await http.post(
-      url,
-      headers: {"Content-Type": "application/json"},
-      body: body,
-    );
   }
 
   Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
@@ -117,6 +79,29 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  static Future<void> _backgroundMessageHandler(RemoteMessage message) async {}
+
+  Future<void> requestNotificationPermission() async {
+    if (await Permission.notification.isDenied) {
+      await Permission.notification.request();
+    }
+  }
+
+  Future<void> sendTokenToServer(String token, int studentId) async {
+    final url = Uri.parse("http://112.221.66.174:3013/fcm/register-token");
+
+    final body = jsonEncode({
+      "token": token,
+      "studentId": studentId,
+    });
+
+    await http.post(
+      url,
+      headers: {"Content-Type": "application/json"},
+      body: body,
+    );
+  }
+
   void _initializeNotifications() {
     _requestNotificationPermission();
     initNotification();
@@ -125,6 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
     FirebaseMessaging.onMessage.listen((message) => showNotification(
         message.notification?.title, message.notification?.body));
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {});
     FirebaseMessaging.onBackgroundMessage(_backgroundMessageHandler);
   }
 
@@ -143,10 +129,6 @@ class _HomeScreenState extends State<HomeScreen> {
     } catch (e) {
       debugPrint("Error sending token to server: $e");
     }
-  }
-
-  static Future<void> _backgroundMessageHandler(RemoteMessage message) async {
-    // Handle background notifications
   }
 
   @override
@@ -196,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
           DrawerHeader(
             child: Text(
               '${classDetails['schoolName']} ${classDetails['grade']}학년 ${classDetails['classNo']}반\n'
-                  '${widget.student.studentInfo.studentName}',
+              '${widget.student.studentInfo.studentName}',
               style: const TextStyle(fontSize: 24),
             ),
           ),
