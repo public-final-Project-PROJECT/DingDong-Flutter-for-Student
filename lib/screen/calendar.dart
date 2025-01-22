@@ -245,12 +245,14 @@ class _CalendarState extends State<Calendar> {
                     .toUtc();
               });
             },
-            child: Center(
-              child: Text(
-                '오늘',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.red,
+            child: Container(
+              child: Center(
+                child: Text(
+                  '오늘',
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.red,
+                  ),
                 ),
               ),
             ),

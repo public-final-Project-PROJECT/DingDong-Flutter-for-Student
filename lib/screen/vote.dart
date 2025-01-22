@@ -14,10 +14,10 @@ class Vote extends StatefulWidget {
 }
 
 class _StudentVoteState extends State<Vote> {
-  List<dynamic> _voteList = []; // 투표 정보 담기
-  Map<int, List<dynamic>> _allVotingData = {}; // 투표 id 별 항목 정보
-  List<Map<String, dynamic>> _studentsInfo = []; // 반 학생들의 정보(학생테이블)
-  Map<int, Map<int, List<dynamic>>> _votingStudentsMap = {}; // 투표 항목에 대한 학생들 정보
+  List<dynamic> _voteList = [];
+  Map<int, List<dynamic>> _allVotingData = {};
+  List<Map<String, dynamic>> _studentsInfo = [];
+  Map<int, Map<int, List<dynamic>>> _votingStudentsMap = {};
 
   final VotingModel _votingModel = VotingModel();
 
@@ -98,7 +98,7 @@ class _StudentVoteState extends State<Vote> {
   void _voteOptionUsers(int votingId) async {
     try {
       List<dynamic> userVotingData =
-          await _votingModel.voteOptionUsers(votingId);
+      await _votingModel.voteOptionUsers(votingId);
       Map<int, List<dynamic>> votingStudents = {};
 
       for (var userVote in userVotingData) {
@@ -120,7 +120,7 @@ class _StudentVoteState extends State<Vote> {
   void _loadVotingContents(int votingId) async {
     try {
       List<dynamic> contents =
-          await _votingModel.selectVotingContents(votingId);
+      await _votingModel.selectVotingContents(votingId);
       setState(() {
         _allVotingData[votingId] = contents;
       });
@@ -152,7 +152,7 @@ class _StudentVoteState extends State<Vote> {
 
     if (mostVotedContentId != -1) {
       final mostVotedContent = votingContents.firstWhere(
-        (content) => content["contentsId"] == mostVotedContentId,
+            (content) => content["contentsId"] == mostVotedContentId,
         orElse: () => {},
       );
       return mostVotedContent;
@@ -234,7 +234,6 @@ class _StudentVoteState extends State<Vote> {
             (vote) => vote["studentId"] == widget.studentId,
             orElse: () => null,
           );
-
           // 중복투표 여부 확인
           final doubleVoting = voting["doubleVote"] ?? false;
 
@@ -286,25 +285,6 @@ class _StudentVoteState extends State<Vote> {
                               ),
                             ),
                           ),
-                        if (doubleVoting == true)
-                          Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 5),
-                            decoration: BoxDecoration(
-                              color: voting["vote"] == false
-                                  ? Colors.grey
-                                  : Colors.orangeAccent,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                            child: Text(
-                              "중복투표",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
                       ],
                     ),
                     subtitle: Column(
@@ -333,16 +313,28 @@ class _StudentVoteState extends State<Vote> {
                         ),
                         SizedBox(height: 18),
                         if (mostVotedContentName.isNotEmpty)
-                          SizedBox(height: 30),
+                          SizedBox(height: 30, width: 50,),
                         if (voting["vote"] == false)
-                          Text(
+                          Row(
+                          children: [
+                            Icon(Icons.real_estate_agent, color: Colors.red,),
+                            SizedBox(width: 5,),
+                            Text("투표 결과 : ", style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                              fontSize: 17,),),
+                            SizedBox(width: 10,),
+                            Text(
                             mostVotedContentName,
                             style: TextStyle(
-                              color: Colors.deepOrangeAccent,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
                             ),
+                            )
+                          ],
                           )
+
                         else
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -396,7 +388,7 @@ class _StudentVoteState extends State<Vote> {
                                         overflow: TextOverflow.clip,
                                       ),
                                     ),
-                                    if (voting["anonymousVote"] == true)
+                                    if (voting["anonymousVote"] == true )
                                       Text(
                                         " ($voteCount명)",
                                         style: TextStyle(
@@ -413,63 +405,74 @@ class _StudentVoteState extends State<Vote> {
                       ],
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  SizedBox(height: 30,),
+
+                  Column(
                     children: [
-                      if (votingEnd.isNotEmpty)
-                        Row(
-                          children: [
-                            Icon(Icons.alarm, size: 22, color: Colors.red),
-                            SizedBox(width: 5),
-                            Text(
-                              votingEnd,
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          if (voting["votingEnd"] != null)
+                            Row(
+                              children: [
+                                Icon(Icons.alarm, size: 22, color: Colors.red),
+                                SizedBox(width: 5),
+                                Text(
+                                  votingEnd,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                Text(
+                                  "  종료 !",
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                  ),
+                                ),
+                                SizedBox(height: 20)
+                              ],
+                            )
+                          else
+                            SizedBox(height: 30),
+                          TextButton(
+                            onPressed: isVoted || voting["vote"] == false
+                                ? null
+                                : () => _submitVote(votingId),
+                            style: TextButton.styleFrom(
+                              backgroundColor: isVoted || voting["vote"] == false
+                                  ? Colors.grey
+                                  : Colors.orange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
                               ),
+                              padding:
+                              EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                             ),
-                            Text(
-                              " 종료!",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
-                              ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.check_circle_outlined,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(width: 10),
+                                Text(
+                                  isVoted ? "이미 투표 완료" : "투표하기",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      TextButton(
-                        onPressed: isVoted || voting["vote"] == false
-                            ? null
-                            : () => _submitVote(votingId),
-                        style: TextButton.styleFrom(
-                          backgroundColor: isVoted || voting["vote"] == false
-                              ? Colors.grey
-                              : Colors.orange,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
                           ),
-                          padding: EdgeInsets.symmetric(
-                              vertical: 12, horizontal: 20),
-                        ),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.check_circle_outlined,
-                              color: Colors.white,
-                            ),
-                            SizedBox(width: 10),
-                            Text(
-                              isVoted ? "이미 투표 완료" : "투표하기",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
                     ],
                   ),
@@ -477,6 +480,7 @@ class _StudentVoteState extends State<Vote> {
               ),
             ),
           );
+
         },
       ),
     );
