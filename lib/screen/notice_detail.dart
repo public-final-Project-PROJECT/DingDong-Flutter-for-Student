@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -6,16 +8,16 @@ import 'package:lastdance_f/model/notice_model.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
-class NoticeDetailpage extends StatefulWidget {
+class NoticeDetailPage extends StatefulWidget {
   final dynamic noticeId;
 
-  const NoticeDetailpage({super.key, required this.noticeId});
+  const NoticeDetailPage({super.key, required this.noticeId});
 
   @override
-  State<NoticeDetailpage> createState() => _NoticeDetailpageState();
+  State<NoticeDetailPage> createState() => _NoticeDetailPageState();
 }
 
-class _NoticeDetailpageState extends State<NoticeDetailpage> {
+class _NoticeDetailPageState extends State<NoticeDetailPage> {
   static bool isInitialized = false;
   NoticeModel _noticeModel = NoticeModel();
   List<dynamic> noticeList = [];
@@ -31,7 +33,6 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
   }
 
   void _loadNoticeDetail() async {
-    print(widget.noticeId);
     List<dynamic> noticeData = await _noticeModel.searchNoticeDetail(widget.noticeId);
     setState(() {
       noticeList = noticeData;
@@ -148,7 +149,7 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
                 alignment: Alignment.centerRight,
                 padding: EdgeInsets.all(8.0),
                 child: Text(
-                  getFileName("${getFileName(notice['noticeFile'])}"),
+                  getFileName(getFileName(notice['noticeFile'])),
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
                 ),
               ),
@@ -169,12 +170,11 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
         }
 
         final downloadsDirectory = Directory('/storage/emulated/0/Download');
-        print("다운로드 위치: ${downloadsDirectory.path}");
         if (!downloadsDirectory.existsSync()) {
           downloadsDirectory.createSync(recursive: true);
         }
 
-        final taskId = await FlutterDownloader.enqueue(
+        await FlutterDownloader.enqueue(
           url: fileUrl,
           savedDir: downloadsDirectory.path,
           showNotification: true,
@@ -182,7 +182,6 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
           saveInPublicStorage: true,
         );
 
-        print("다운로드 완료: $taskId");
         ScaffoldMessenger.of(context)
             .showSnackBar(const SnackBar(content: Text('다운로드가 완료되었습니다.')));
       } else {
@@ -190,7 +189,6 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
             .showSnackBar(const SnackBar(content: Text('저장소 권한을 허용해주세요.')));
       }
     } catch (e) {
-      print("파일 다운로드 중 오류 발생: $e");
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('파일 다운로드 중 오류가 발생했습니다: $e')));
     }

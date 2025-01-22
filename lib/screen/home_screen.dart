@@ -11,13 +11,12 @@ import 'package:permission_handler/permission_handler.dart';
 import '../dialog/end_drawer.dart';
 import '../notification/init_noti.dart';
 import '../notification/show_noti.dart';
-import '../screen/calendar.dart';
-import '../screen/myPage.dart';
+import '../screen/my_page.dart';
 import '../screen/notice.dart';
 import '../screen/seat.dart';
 import '../screen/vote.dart';
 import '../student.dart';
-import 'main-body.dart';
+import 'main_body.dart';
 
 class HomeScreen extends StatefulWidget {
   final Student student;
@@ -168,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text(
             classDetails['classNickname'] ?? '홈',
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20, fontFamily: 'Dol'),
           ),
           actions: [
             IconButton(
@@ -204,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
           _buildDrawerItem(
               title: '마이 페이지',
               onTap: () => _navigateTo(MyPage(studentId: _studentId))),
-          _buildDrawerItem(title: '캘린더', onTap: () => _navigateTo(Calendar())),
+
           _buildDrawerItem(
               title: '우리반 좌석 보기',
               onTap: () => _navigateTo(Seat(classId: widget.student.classId))),

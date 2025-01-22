@@ -31,7 +31,6 @@ initNotification() async{
     // onDidReceiveNotificationResponse 알림 클릭 시 나오는것
     onDidReceiveNotificationResponse: (NotificationResponse response){
       //payload 만약 클릭시 어디로 보낼 수 있다.
-      print("알림이 클릭됨 : ${response.payload}");
     },
   );
 
@@ -53,8 +52,7 @@ initNotification() async{
         .resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(androidChanner);
-    print("테스트 채널 생성완료");
   }catch(e){
-    print("테스트 채널 생성 실패 : $e");
+    Exception("테스트 채널 생성 실패 : $e");
   }
 }

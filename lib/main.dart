@@ -66,6 +66,23 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
+        theme: ThemeData(
+          primarySwatch: Colors.green,
+          scaffoldBackgroundColor: Color(0xFFFFEFB0),
+          appBarTheme: AppBarTheme(
+            color: Color(0xFFFFEFB0),
+            titleTextStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            iconTheme: IconThemeData(color: Colors.black),
+          ),
+          bottomAppBarTheme: BottomAppBarTheme(
+            color: Color(0xFFFFEFB0),
+            elevation: 4.0,
+          ),
+        ),
         home: _student != null
             ? HomeScreen(student: _student!)
             : LoginScreen()
