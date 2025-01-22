@@ -13,6 +13,12 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Image(
+              image: AssetImage('assets/dog.png'), // 로컬 이미지 경로
+              fit: BoxFit.contain,   // 이미지가 화면에 맞게 조정
+              width: 150,
+              height: 150,
+            ),
             const Text('로고는 여기 위에'),
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
