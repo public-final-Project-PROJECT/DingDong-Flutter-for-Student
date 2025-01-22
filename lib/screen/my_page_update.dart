@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -127,7 +129,6 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
         );
       }
     } catch (e) {
-      print("Error: $e");
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("업데이트 중 오류가 발생했습니다.")),
       );

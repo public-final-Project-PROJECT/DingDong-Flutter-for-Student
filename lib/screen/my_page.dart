@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lastdance_f/model/student_model.dart';
-import 'package:lastdance_f/screen/myPageUpdate.dart';
+import 'package:lastdance_f/screen/my_page_update.dart';
 
 class MyPage extends StatefulWidget {
   final int studentId;
@@ -30,7 +30,6 @@ class _MyPageState extends State<MyPage> {
         _student = studentData; // 데이터 저장
       });
     } catch (e) {
-      print("Error loading student data: $e");
       setState(() {});
     }
   }
@@ -99,10 +98,7 @@ class _MyPageState extends State<MyPage> {
                          );
                             },
                            ),
-                      Container(
-                        child:
-                        Text("프로필 사진" ,style: const TextStyle(fontSize: 20, fontWeight:FontWeight.bold )),
-                      ),
+                      Text("프로필 사진" ,style: const TextStyle(fontSize: 20, fontWeight:FontWeight.bold )),
                       SizedBox(height: 18),
 
                       // 학생 이름
@@ -116,12 +112,12 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text("${_student['studentName']}",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text("${_student['studentName']}",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -138,13 +134,13 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text(
-                                  "${_student['studentBirth'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text(
+                                  "${_student['studentBirth'] ?? '미입력'}",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -161,13 +157,13 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text(
-                                  "${_student['schoolName']}/${_student['grade']}학년/${_student['classNo']}반 / ${_student['studentNo']}번",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text(
+                                  "${_student['schoolName']}/${_student['grade']}학년/${_student['classNo']}반 / ${_student['studentNo']}번",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -184,13 +180,13 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text(
-                                  "${_student['studentGender'] ?? '미입력'} ",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text(
+                                  "${_student['studentGender'] ?? '미입력'} ",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -207,13 +203,13 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text(
-                                  "${_student['studentPhone'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text(
+                                  "${_student['studentPhone'] ?? '미입력'}",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -230,12 +226,12 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text("${_student['parentsName'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text("${_student['parentsName'] ?? '미입력'}",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -253,13 +249,13 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text(
-                                  "${_student['parentsPhone'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text(
+                                  "${_student['parentsPhone'] ?? '미입력'}",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -276,13 +272,13 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text(
-                                  "${_student['studentAddress'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text(
+                                  "${_student['studentAddress'] ?? '미입력'}",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
@@ -300,12 +296,12 @@ class _MyPageState extends State<MyPage> {
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
-                              child: Text("${_student['studentEtc'] ?? '미입력' }",
-                                  style: TextStyle(fontSize: 15)),
                               decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
+                              child: Text("${_student['studentEtc'] ?? '미입력' }",
+                                  style: TextStyle(fontSize: 15)),
                             ),
                           ),
                         ],
