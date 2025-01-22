@@ -92,13 +92,13 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
               children: [
                 Text(
                   "${notice['noticeTitle']}",
-                  style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                 ),
                 if (notice['noticeFile'] != null)
                   ElevatedButton.icon(
                     onPressed: () async {
                       String fileUrl =
-                          "http://112.221.66.174:3013/download${notice['noticeFile']}";
+                          "http://112.221.66.174:6892/download${notice['noticeFile']}";
                       await _downloadFile(fileUrl, context);
                     },
                     icon: Icon(Icons.file_download),
@@ -113,8 +113,8 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
                   ),
               ],
             ),
-            Text(displayDate ,style: TextStyle(fontSize: 9),),
-            Text("${notice['noticeCategory']}", style: TextStyle(fontSize: 12,color: Colors.orangeAccent),),
+            Text(displayDate ,style: TextStyle(fontSize: 12),),
+            Text("${notice['noticeCategory']}", style: TextStyle(fontSize: 14,color: Colors.orangeAccent),),
             SizedBox(height: 8),
             Container(
               width: 393,
@@ -133,7 +133,7 @@ class _NoticeDetailpageState extends State<NoticeDetailpage> {
             // 이미지 섬네일 표시
             if (notice['noticeImg'] != null && notice['noticeImg'].isNotEmpty)
               Image.network(
-                "http://112.221.66.174:3013${notice['noticeImg']}",
+                "http://112.221.66.174:6892${notice['noticeImg']}",
                 fit: BoxFit.fill,
                 width: double.infinity,
                 height: 300,

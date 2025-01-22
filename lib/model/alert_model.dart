@@ -5,7 +5,7 @@ class AlertModel {
   Future<List<dynamic>> searchAlert(int classId, int studentId) async{
     final dio = Dio();
     try{
-      final response = await dio.get( "http://112.221.66.174:3013/api/alert/view",
+      final response = await dio.get( "http://112.221.66.174:6892/api/alert/view",
         queryParameters: {
           'classId': classId,
           'studentId': studentId,
@@ -21,7 +21,7 @@ class AlertModel {
   Future<void> updateAlert(int alert) async{
     final dio = Dio();
     try{
-      await dio.get( "http://112.221.66.174:3013/api/alert/update",
+      await dio.get( "http://112.221.66.174:6892/api/alert/update",
         queryParameters: {
           'alertId': alert,
         },
@@ -35,7 +35,7 @@ class AlertModel {
     final dio = Dio();
     try {
       final response = await dio.post(
-          "http://112.221.66.174:3013/api/voting/votingNameSearch",
+          "http://112.221.66.174:6892/api/voting/votingNameSearch",
           data: {'votingId': votingId});
       if (response.statusCode == 200) {
         return response.data as String;

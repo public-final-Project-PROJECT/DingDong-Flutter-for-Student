@@ -11,6 +11,7 @@ showNotification(String? title,String? content) async{
     "테스트채널",
     priority: Priority.max,  //Priority 우선순위 ex) 여러개 울릴 시 우선순위
     color: Colors.black,
+    icon: "bell"
   );
 
   //애플
