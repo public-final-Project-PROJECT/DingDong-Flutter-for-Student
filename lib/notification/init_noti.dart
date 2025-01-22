@@ -10,7 +10,7 @@ FlutterLocalNotificationsPlugin();
 initNotification() async{
   //안드로이드 초기화 설정
   //알림 왔을 때 보이는 아이콘
-  var androidInitialization = AndroidInitializationSettings("app_icon");
+  var androidInitialization = AndroidInitializationSettings("bell");
 
   //ios 설정  알림 권한 true
   var iosSetting = DarwinInitializationSettings(

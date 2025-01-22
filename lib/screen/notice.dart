@@ -107,31 +107,49 @@ class _NoticeState extends State<Notice> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
-                          child: Text(
+                          child:
+                    Container(
+                    margin: const EdgeInsets.only(left: 17),
+                    child:
+                          Text(
                             notice['noticeTitle'],
                             style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
+                                fontSize: 20, fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
                           ),
+                    )
                         ),
                       ],
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                    Container(
+                      margin: const EdgeInsets.only(left: 17),
+                      child:
+                      Text(
                           "${notice['noticeCategory']}",
-                          style: const TextStyle(fontSize: 10, color: Colors.deepOrange),
+                          style: const TextStyle(fontSize: 12, color: Colors.deepOrange),
                         ),
+                    ),
                         const SizedBox(height: 8),
-                        Text(
-                          "내용: ${notice['noticeContent']}",
-                          style: const TextStyle(fontSize: 13),
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 1,
+                        Container(
+                          margin: const EdgeInsets.only(left: 17),
+                          child: Text(
+                            "${notice['noticeContent']}",
+                            style: const TextStyle(fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ),
-                        Text(displayDate, style: const TextStyle(fontSize: 9)),
-                        const SizedBox(height: 8),
+
+
+                  Container(
+                    margin: const EdgeInsets.only(left: 17),
+                    child:
+                        Text(displayDate, style: const TextStyle(fontSize: 11)),
+                    )
+                      ,  const SizedBox(height: 8),
                       ],
                     ),
                     onTap: () {
