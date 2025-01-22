@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lastdance_f/model/notice_model.dart';
-import 'package:lastdance_f/screen/noticeDetail.dart';
+import 'package:lastdance_f/screen/notice_detail.dart';
 
 class Notice extends StatefulWidget {
   final int classId;
@@ -135,15 +135,11 @@ class _NoticeState extends State<Notice> {
                       ],
                     ),
                     onTap: () {
-                      print("d");
-                      print(notice['noticeId']);
-                      print("d");
-
                       Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  NoticeDetailpage(noticeId: notice['noticeId'])));
+                                  NoticeDetailPage(noticeId: notice['noticeId'])));
                     },
                   ),
                 );

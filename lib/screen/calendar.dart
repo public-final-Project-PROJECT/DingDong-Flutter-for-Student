@@ -79,13 +79,10 @@ class _CalendarState extends State<Calendar> {
 
   void _insertCalendar(dynamic eventData) async {
     try {
-      print('Inserting calendar event...');
       await _calendarModel.calendarInsert(eventData);
-      print('Event inserted successfully.');
     } catch (e) {
-      print('Error during event insert: $e');
+      Exception('Error during event insert: $e');
     } finally {
-      print('Calling _loadCalendar...');
       _loadCalendar();
     }
   }
@@ -94,6 +91,7 @@ class _CalendarState extends State<Calendar> {
     try {
       await _calendarModel.calendarDelete(id);
     } catch (e) {
+      Exception(e);
     } finally {
       _loadCalendar();
     }
@@ -103,6 +101,7 @@ class _CalendarState extends State<Calendar> {
     try {
       await _calendarModel.calendarUpdate(event);
     } catch (e) {
+      Exception(e);
     } finally {
       _loadCalendar();
     }
@@ -133,7 +132,6 @@ class _CalendarState extends State<Calendar> {
         currentDate = currentDate.add(const Duration(days: 1));
       }
     });
-    print(_events);
 
     final dynamic eventData = {
       'title': event['title'],
@@ -218,7 +216,7 @@ class _CalendarState extends State<Calendar> {
         ),
 
       ),
-      body: Body(),
+      body: body(),
       bottomNavigationBar: Container(
         height: 80.0,
         // 바텀바 높이
@@ -247,14 +245,12 @@ class _CalendarState extends State<Calendar> {
                     .toUtc();
               });
             },
-            child: Container(
-              child: Center(
-                child: Text(
-                  '오늘',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    color: Colors.red,
-                  ),
+            child: Center(
+              child: Text(
+                '오늘',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  color: Colors.red,
                 ),
               ),
             ),
@@ -264,7 +260,7 @@ class _CalendarState extends State<Calendar> {
     );
   }
 
-  Widget Body() {
+  Widget body() {
     return Column(
       children: [
         TableCalendar(
@@ -466,7 +462,6 @@ class _CalendarState extends State<Calendar> {
                         ],
                       ),
                       onTap: () {
-                        print('Clicked Event: $event');
                         Navigator.push(
                           context,
                           PageRouteBuilder(

@@ -42,9 +42,6 @@ class _StudentVoteState extends State<Vote> {
 
   void _loadVoting() async {
     try {
-      print(" 클래스아이디 : $widget.classId");
-      print(widget.classId);
-      print(widget.studentId);
       List<dynamic> votingData = await _votingModel.selectVoting(widget.classId);
 
       votingData.sort((a, b) {
