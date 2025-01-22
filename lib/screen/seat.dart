@@ -164,8 +164,8 @@ class _SeatState extends State<Seat> {
     }
     return GestureDetector(
       child: Container(
-        height: 40,
-        width: 100,
+        height: 10,
+        width: 50,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
