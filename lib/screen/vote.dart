@@ -13,10 +13,10 @@ class Vote extends StatefulWidget {
 }
 
 class _StudentVoteState extends State<Vote> {
-  List<dynamic> _voteList = []; // 투표 정보 담기
-  Map<int, List<dynamic>> _allVotingData = {}; // 투표 id 별 항목 정보
-  List<Map<String, dynamic>> _studentsInfo = []; // 반 학생들의 정보(학생테이블)
-  Map<int, Map<int, List<dynamic>>> _votingStudentsMap = {}; // 투표 항목에 대한 학생들 정보
+  List<dynamic> _voteList = [];
+  Map<int, List<dynamic>> _allVotingData = {};
+  List<Map<String, dynamic>> _studentsInfo = [];
+  Map<int, Map<int, List<dynamic>>> _votingStudentsMap = {};
 
   final VotingModel _votingModel = VotingModel();
 
@@ -30,10 +30,8 @@ class _StudentVoteState extends State<Vote> {
   }
 
   void _loadClassStudentsInfo() async {
-    print("classId : ");
-    print( widget.classId);
     try {
-      List<dynamic> studentsList = await _votingModel.findStudentsNameAndImg(10);
+      List<dynamic> studentsList = await _votingModel.findStudentsNameAndImg(widget.classId);
       setState(() {
         _studentsInfo = studentsList.cast<Map<String, dynamic>>();
       });
@@ -44,7 +42,7 @@ class _StudentVoteState extends State<Vote> {
 
   void _loadVoting() async {
     try {
-      List<dynamic> votingData = await _votingModel.selectVoting(10);
+      List<dynamic> votingData = await _votingModel.selectVoting(widget.classId);
 
       votingData.sort((a, b) {
         if (a["vote"] == true && b["vote"] != true) return -1;
@@ -169,7 +167,7 @@ class _StudentVoteState extends State<Vote> {
     try {
       for (var selectedContentId in selectedContent) {
         final record = await _votingModel.saveVotingRecord(
-            selectedContentId, 53, votingId);
+            selectedContentId, widget.studentId, votingId);
 
         if (record == null || record.isEmpty) {
           _showAlertDialog("알림", "투표가 완료되었습니다!", votingId);
@@ -224,7 +222,7 @@ class _StudentVoteState extends State<Vote> {
           final studentVotes =
               _votingStudentsMap[votingId]?.values.expand((x) => x).toList() ?? [];
           final isVoted =
-          studentVotes.any((vote) => vote["studentId"] == 53);
+          studentVotes.any((vote) => vote["studentId"] == widget.studentId);
           final myVote = studentVotes.firstWhere(
                 (vote) => vote["studentId"] == 53,
             orElse: () => null,
