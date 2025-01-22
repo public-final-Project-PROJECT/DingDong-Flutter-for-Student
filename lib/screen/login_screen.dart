@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:lastdance_f/screen/home_screen.dart';
 import 'package:lastdance_f/screen/scanner.dart';
@@ -19,6 +20,25 @@ class LoginScreen extends StatelessWidget {
               width: 150,
               height: 150,
             ),
+            Center(
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      '로고 뭐 할 거에요',
+                      textStyle: TextStyle(
+                        fontSize: 32.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[100],
+                      ),
+                      speed:
+                      const Duration(milliseconds: 200),
+                    ),
+                  ],
+                  totalRepeatCount: 1,
+                  pause: const Duration(milliseconds: 300),
+                  displayFullTextOnTap: true,
+                  stopPauseOnTap: true,
+                )),
             const Text('로고는 여기 위에'),
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
