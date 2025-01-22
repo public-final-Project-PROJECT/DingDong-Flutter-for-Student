@@ -11,12 +11,12 @@ import 'package:permission_handler/permission_handler.dart';
 import '../dialog/end_drawer.dart';
 import '../notification/init_noti.dart';
 import '../notification/show_noti.dart';
-import '../screen/myPage.dart';
+import '../screen/my_page.dart';
 import '../screen/notice.dart';
 import '../screen/seat.dart';
 import '../screen/vote.dart';
 import '../student.dart';
-import 'main-body.dart';
+import 'main_body.dart';
 
 class HomeScreen extends StatefulWidget {
   final Student student;

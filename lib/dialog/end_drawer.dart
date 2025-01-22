@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lastdance_f/model/alert_model.dart';
-import 'package:lastdance_f/screen/notice.dart';
-import 'package:lastdance_f/screen/noticeDetail.dart';
+import 'package:lastdance_f/screen/notice_detail.dart';
 import 'package:lastdance_f/screen/vote.dart';
 
 class EndDrawerWidget extends StatefulWidget {
@@ -51,14 +50,8 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
   Future<String> votingNameData(int votingId) async {
     final result = await _alertModel.votingNameSearch(votingId);
 
-    if (result is String) {
-      return result.toString(); // 문자열인 경우 바로 반환
-    } else if (result is List && result.isNotEmpty) {
-      return result[0].toString(); // 리스트에서 첫 번째 항목 추출
-    } else {
-      throw Exception("유효하지 않은 데이터 형식: $result");
+    return result.toString(); // 문자열인 경우 바로 반환
     }
-  }
 
 
   @override
@@ -142,14 +135,13 @@ class _EndDrawerWidgetState extends State<EndDrawerWidget> {
                         ],
                       ),
                       onTap: () {
-                        print(alert['noticeId']);
                         Navigator.pop(context);
                         _updateAlert(alert['alertId']);
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) =>
-                                NoticeDetailpage(
+                                NoticeDetailPage(
                                     noticeId: alert["noticeId"]),
                           ),
                         );
