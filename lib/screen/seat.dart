@@ -82,24 +82,29 @@ class _SeatState extends State<Seat> {
       backgroundColor: const Color(0xffF4F4F4),
       body: Column(
         children: [
-          SizedBox(height: 70,),
+          SizedBox(height: 90,),
           Center(
-            child: Container(
-              height: 40,
-              width: 170,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Color(0xff57cc4e),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Text(
-                "칠판",
-                style: TextStyle(fontSize: 19, color: Colors.white),
-                textAlign: TextAlign.center,
+            child:  Center(
+              child: Container(
+                height: 40,
+                width: 170,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Color(0xff205736),
+                  borderRadius: BorderRadius.circular(0),
+                  border: Border(
+                      bottom: BorderSide(color: Colors.brown, width: 5)
+                  ),
+                ),
+                child: Text(
+                  "칠판",
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
-          SizedBox(height: 30),
+          SizedBox(height: 20),
           Expanded(
             child: GridView.builder(
                 padding: EdgeInsets.fromLTRB(30, 30, 30, 30),
@@ -130,7 +135,7 @@ class _SeatState extends State<Seat> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(25),
-                        color: Colors.orange,
+                        color: Color(0xfff1c555),
                       ),
                       child: Text(
                         student['studentName'],
@@ -159,12 +164,12 @@ class _SeatState extends State<Seat> {
     }
     return GestureDetector(
       child: Container(
-        height: 10,
-        width: 50,
+        height: 40,
+        width: 100,
         alignment: Alignment.center,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: Colors.orange,
+          color: Color(0xfff1c555),
           border: Border.all(
             color: (firstSelectedSeat == seat) ? Colors.red : Colors.white70,
           ),

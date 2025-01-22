@@ -11,13 +11,12 @@ import 'package:permission_handler/permission_handler.dart';
 import '../dialog/end_drawer.dart';
 import '../notification/init_noti.dart';
 import '../notification/show_noti.dart';
-import '../screen/calendar.dart';
-import '../screen/myPage.dart';
+import '../screen/my_page.dart';
 import '../screen/notice.dart';
 import '../screen/seat.dart';
 import '../screen/vote.dart';
 import '../student.dart';
-import 'main-body.dart';
+import 'main_body.dart';
 
 class HomeScreen extends StatefulWidget {
   final Student student;
@@ -40,16 +39,21 @@ class _HomeScreenState extends State<HomeScreen> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+  bool _studentIdFetched = false;
+  bool _classDetailsFetched = false;
+
   @override
   void initState() {
     super.initState();
-    classDetailsFuture = _fetchClassDetails(widget.student.classId);
+    classDetailsFuture = _fetchClassDetails();
     _fetchStudentId(widget.student.classId).then((_) {
       _initializeNotifications();
     });
   }
 
   Future<void> _fetchStudentId(int classId) async {
+    if(_studentIdFetched) return;
+
     final dio = Dio();
     final serverURL = _getServerURL();
 
@@ -59,18 +63,25 @@ class _HomeScreenState extends State<HomeScreen> {
       if (response.statusCode == 200) {
         final data = response.data;
         _studentId = data is int ? data : int.tryParse(data.toString()) ?? 0;
+        _studentIdFetched = true;
       }
     } catch (e) {
       debugPrint("Error fetching student ID: $e");
     }
   }
 
-  Future<Map<String, dynamic>> _fetchClassDetails(int classId) async {
+  Future<Map<String, dynamic>> _fetchClassDetails() async {
+    if (_classDetailsFetched) {
+        return classDetailsFuture;
+    }
+
+    final dio = Dio();
+    final serverURL = _getServerURL();
+
     try {
-      final dio = Dio();
-      final serverURL = _getServerURL();
-      final response = await dio.get('$serverURL/class/$classId');
+      final response = await dio.get('$serverURL/class/${widget.student.classId}');
       if (response.statusCode == 200) {
+        _classDetailsFetched = true;
         return response.data as Map<String, dynamic>;
       } else {
         throw Exception("Failed to fetch class details.");
@@ -184,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
           DrawerHeader(
             child: Text(
               '${classDetails['schoolName']} ${classDetails['grade']}학년 ${classDetails['classNo']}반\n'
-                  '${widget.student.studentInfo.studentName}',
+              '${widget.student.studentInfo.studentName}',
               style: const TextStyle(fontSize: 24),
             ),
           ),

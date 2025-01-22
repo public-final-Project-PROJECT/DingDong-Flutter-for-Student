@@ -206,8 +206,8 @@ class _HomeContentState extends State<HomeContent> {
     String day = mealDate.substring(6, 8); // 일
 
     // 월과 일을 원하는 형식으로 변환
-    String formattedMonth = int.parse(month).toString() + '월';
-    String formattedDay = int.parse(day).toString() + '일';
+    String formattedMonth = '${int.parse(month)}월';
+    String formattedDay = '${int.parse(day)}일';
 
     // 최종 결과
     return '$formattedMonth $formattedDay'; // 예: 11월 11일
@@ -620,7 +620,7 @@ class _HomeContentState extends State<HomeContent> {
 
                                                     // 날짜 텍스트
                                                     Text(
-                                                      '${formatMealDate(mealDate!)}',
+                                                      formatMealDate(mealDate!),
                                                       // 날짜 텍스트
                                                       style: const TextStyle(
                                                         fontSize: 18,
@@ -758,27 +758,25 @@ class _HomeContentState extends State<HomeContent> {
                 fetchWeekdayInfo(weekday!);
               });
             },
-            child: Container(
-              child: Center(
-                child: Text(
-                  '오늘',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    // 글씨 크기
-                    fontWeight: FontWeight.bold,
-                    // 글씨 두께
-                    color: Color(0xFF9BB8D5),
-                    // 글씨 색상
-                    letterSpacing: 2.0,
-                    // 글자 간격
-                    shadows: [
-                      Shadow(
-                        offset: Offset(1.0, 1.0), // 텍스트 그림자 위치
-                        blurRadius: 3.0, // 텍스트 그림자 흐림
-                        color: Colors.black.withOpacity(0.5), // 텍스트 그림자 색상
-                      ),
-                    ],
-                  ),
+            child: Center(
+              child: Text(
+                '오늘',
+                style: TextStyle(
+                  fontSize: 20.0,
+                  // 글씨 크기
+                  fontWeight: FontWeight.bold,
+                  // 글씨 두께
+                  color: Color(0xFF9BB8D5),
+                  // 글씨 색상
+                  letterSpacing: 2.0,
+                  // 글자 간격
+                  shadows: [
+                    Shadow(
+                      offset: Offset(1.0, 1.0), // 텍스트 그림자 위치
+                      blurRadius: 3.0, // 텍스트 그림자 흐림
+                      color: Colors.black.withOpacity(0.5), // 텍스트 그림자 색상
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -813,8 +811,5 @@ class _HomeContentState extends State<HomeContent> {
         timetable = [];
     }
     _isTimetableLoaded = true; // 시간표 정보 로드 완료
-
-    print(
-        "_isMealLoaded: $_isMealLoaded, _isTimetableLoaded: $_isTimetableLoaded");
   }
 }

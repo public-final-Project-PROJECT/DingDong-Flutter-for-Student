@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
@@ -12,6 +14,7 @@ import 'package:lastdance_f/screen/auth_succeeded.dart';
 import 'package:lastdance_f/student.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
+// ignore: must_be_immutable
 class QRScanner extends StatelessWidget {
   QRScanner({
     this.dio,
@@ -23,6 +26,7 @@ class QRScanner extends StatelessWidget {
   final Dio? dio;
   final String? secretKey;
   final FlutterSecureStorage storage = const FlutterSecureStorage();
+  bool _studentAdded = false;
 
   String getServerURL() {
     return kIsWeb
@@ -143,12 +147,15 @@ class QRScanner extends StatelessWidget {
 
   Future<void> _addStudent(
       Student student, Dio dio, String serverURL, int classId) async {
+    if(_studentAdded) return;
+
     try {
       await dio.post('$serverURL/api/students/add', queryParameters: {
         'studentNo': student.studentInfo.studentNo,
         'studentName': student.studentInfo.studentName,
         'classId': classId,
       });
+      _studentAdded = true;
     } catch (e) {
       throw Exception("ERROR in addStudent: $e");
     }

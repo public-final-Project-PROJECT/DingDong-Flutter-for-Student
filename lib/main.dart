@@ -31,8 +31,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _checkStoredQRData();
-
-
   }
 
   Future<void> _checkStoredQRData() async {
@@ -68,7 +66,6 @@ class _MyAppState extends State<MyApp> {
     }
 
     return MaterialApp(
-
         theme: ThemeData(
           primarySwatch: Colors.green,
           scaffoldBackgroundColor: Color(0xFFFFEFB0),
