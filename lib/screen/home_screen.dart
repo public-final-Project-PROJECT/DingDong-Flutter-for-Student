@@ -165,12 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
         backgroundColor: Color(0xFFFFEFB0),
+
         key: _scaffoldKey,
         appBar: AppBar(
 
           title: Text(
             classDetails['classNickname'] ?? '홈',
             style: const TextStyle(fontSize: 20),
+
           ),
           actions: [
             IconButton(

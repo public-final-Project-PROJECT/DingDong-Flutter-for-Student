@@ -115,7 +115,7 @@ class _NoticeState extends State<Notice> {
                           Text(
                             notice['noticeTitle'],
                             style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold,color: Colors.black),
+                                fontSize: 17, fontWeight: FontWeight.bold,color: Colors.black,fontFamily: "NamuL",),
                             overflow: TextOverflow.ellipsis,
                           ),
                     )
@@ -130,7 +130,7 @@ class _NoticeState extends State<Notice> {
                       child:
                       Text(
                           "${notice['noticeCategory']}",
-                          style: const TextStyle(fontSize: 12, color: Colors.deepOrange),
+                          style: const TextStyle(fontSize: 12, color: Colors.deepOrange,fontFamily: "NamuL",),
                         ),
                     ),
                         const SizedBox(height: 8),
@@ -138,7 +138,7 @@ class _NoticeState extends State<Notice> {
                           margin: const EdgeInsets.only(left: 17),
                           child: Text(
                             "${notice['noticeContent']}",
-                            style: const TextStyle(fontSize: 13),
+                            style: const TextStyle(fontSize: 13,fontFamily: "NamuL",),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 1,
                           ),
@@ -148,7 +148,7 @@ class _NoticeState extends State<Notice> {
                   Container(
                     margin: const EdgeInsets.only(left: 17),
                     child:
-                        Text(displayDate, style: const TextStyle(fontSize: 11)),
+                        Text(displayDate, style: const TextStyle(fontSize: 11,fontFamily: "NamuL",)),
                     )
                       ,  const SizedBox(height: 8),
                       ],

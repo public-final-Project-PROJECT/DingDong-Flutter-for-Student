@@ -229,6 +229,7 @@ class _HomeContentState extends State<HomeContent> {
           child: Text(
             '${events.length}',
             style: const TextStyle(
+              fontFamily: "NamuL",
               color: Colors.white,
               fontSize: 8.0,
             ),
@@ -281,6 +282,7 @@ class _HomeContentState extends State<HomeContent> {
                   DateFormat.yMMMMd(locale).format(date),
 
               titleTextStyle: TextStyle(
+                fontFamily: "NamuL",
                 fontSize: 22.0, // 제목 폰트 크기
                 fontWeight: FontWeight.bold, // 제목 폰트 굵기
                 color: Colors.orangeAccent, // 제목 색상
@@ -310,7 +312,7 @@ class _HomeContentState extends State<HomeContent> {
                 borderRadius: BorderRadius.circular(5.0),
                 border: Border.all(color: Colors.orangeAccent, width: 2.0),
               ),
-              todayTextStyle: const TextStyle(color: Colors.black),
+              todayTextStyle: const TextStyle(color: Colors.black,fontFamily: "NamuL",),
               selectedDecoration: BoxDecoration(
                 color: Colors.orangeAccent,
                 shape: BoxShape.rectangle,
@@ -378,7 +380,7 @@ class _HomeContentState extends State<HomeContent> {
                                       SizedBox(height: 16),    // 이미지와 텍스트 사이 간격
                                       Text(
                                         '오늘 일정 없어요',
-                                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                                        style: TextStyle(fontSize: 16, color: Colors.grey,fontFamily: "NamuL",),
                                       ),
                                     ],
                                   ),
@@ -400,6 +402,7 @@ class _HomeContentState extends State<HomeContent> {
                                              child: Text(
                                                 event['title'],
                                                 style: const TextStyle(
+                                                    fontFamily: "NamuL",
                                                     color: Colors.white,
                                                     fontSize: 24,
                                                     overflow:
@@ -472,6 +475,7 @@ class _HomeContentState extends State<HomeContent> {
                                           ? Text(
                                               '${timetable[0]} 시간표',
                                               style: TextStyle(
+                                                fontFamily: "NamuL",
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,
@@ -483,6 +487,7 @@ class _HomeContentState extends State<HomeContent> {
                                         child: Text(
                                           '즐거운 주말', // 예외 상황에 보여줄 텍스트
                                           style: TextStyle(
+                                            fontFamily: "NamuL",
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.green[100],
@@ -496,6 +501,7 @@ class _HomeContentState extends State<HomeContent> {
                                         child: Text(
                                           '',
                                           style: TextStyle(
+                                            fontFamily: "NamuL",
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.grey,
@@ -539,6 +545,8 @@ class _HomeContentState extends State<HomeContent> {
                                                   Text(
                                                     '${index + 1}교시',
                                                     style: TextStyle(
+
+                                                      fontFamily: "NamuL",
                                                       fontSize: 10,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -552,6 +560,7 @@ class _HomeContentState extends State<HomeContent> {
                                                         ? timetable[index + 1]
                                                         : '',
                                                     style: const TextStyle(
+                                                      fontFamily: "NamuL",
                                                       fontSize: 15,
                                                       fontWeight: FontWeight.bold,
                                                       color: Colors.white70,
@@ -632,6 +641,7 @@ class _HomeContentState extends State<HomeContent> {
                                                       formatMealDate(mealDate!),
                                                       // 날짜 텍스트
                                                       style: const TextStyle(
+                                                        fontFamily: "NamuL",
                                                         fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -662,6 +672,7 @@ class _HomeContentState extends State<HomeContent> {
                                                 Text(
                                                   cleanMealData(mealMenu!),
                                                   style: const TextStyle(
+                                                    fontFamily: "NamuL",
                                                     fontSize: 16,
                                                     color: Colors.white70,
                                                     fontWeight: FontWeight.bold,// 텍스트 색상
@@ -686,6 +697,7 @@ class _HomeContentState extends State<HomeContent> {
                                         TypewriterAnimatedText(
                                           '오늘 급식없어요',
                                           textStyle: TextStyle(
+                                            fontFamily: "NamuL",
                                             fontSize: 32.0,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.green[100],
@@ -777,6 +789,7 @@ class _HomeContentState extends State<HomeContent> {
                 '오늘',
                 style: TextStyle(
                   fontSize: 20.0,
+                  fontFamily: "NamuL",
                   // 글씨 크기
                   fontWeight: FontWeight.bold,
                   // 글씨 두께

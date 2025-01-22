@@ -224,6 +224,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
               Text(
                 label,
                 style: const TextStyle(
+                  fontFamily: "NamuL",
                   fontWeight: FontWeight.bold,
                   fontSize: 10.0,
                   color: Colors.black,

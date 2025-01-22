@@ -33,7 +33,8 @@ class _CalendarDetailsState extends State<CalendarDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('이벤트 세부사항'),
+          title: const Text('이벤트 세부사항',style: TextStyle(
+            fontFamily: "NamuL",)),
           centerTitle: true,
           leadingWidth: 90,
           leading: SizedBox(
@@ -56,6 +57,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                           ? '${event2['start'].toString().substring(5, 7)} 월' // 날짜 출력
                           : 'No Date',
                       style: const TextStyle(
+                      fontFamily: "NamuL",
                         fontSize: 16, // 텍스트 크기 줄이기
 
                         color: Color(0xff3CB371),
@@ -79,6 +81,8 @@ class _CalendarDetailsState extends State<CalendarDetails> {
               style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: Color(0xff309729),
+
+              fontFamily: "NamuL",
               ),
             ),
             const SizedBox(height: 16),
@@ -90,7 +94,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                 const SizedBox(width: 8),
                 Text(
                   '시작일 : ${event2['start'].toString().substring(0, 10)}',
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+                  style: const TextStyle(fontSize: 16, color: Colors.black87,fontFamily: "NamuL"),
                 ),
               ],
             ),
@@ -103,7 +107,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                 const SizedBox(width: 8),
                 Text(
                   '종료일 : ${event2['end'].toString().substring(0, 10)}',
-                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+                  style: const TextStyle(fontSize: 16, color: Colors.black87,fontFamily: "NamuL"),
                 ),
               ],
             ),
@@ -141,6 +145,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                       const Text(
                         '메모',
                         style: TextStyle(
+                        fontFamily: "NamuL",
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
@@ -154,6 +159,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                   Text(
                     event2['description'] ?? '메모가 없습니다.',
                     style: const TextStyle(
+                      fontFamily: "NamuL",
                       fontSize: 16,
                       color: Colors.black54,
                       height: 1.4,
@@ -205,6 +211,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                       child: Text(
                         '이 이벤트를 삭제하겠습니까?', // Confirmation text
                         style: TextStyle(
+                          fontFamily: "NamuL",
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: Colors.black, // Text color
@@ -228,6 +235,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                         child: const Text(
                           '이벤트 삭제', // Delete text
                           style: TextStyle(
+                            fontFamily: "NamuL",
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.red, // Red text color
@@ -254,6 +262,7 @@ class _CalendarDetailsState extends State<CalendarDetails> {
                   child: const Text(
                     '취소', // Cancel text
                     style: TextStyle(
+                      fontFamily: "NamuL",
                       fontSize: 18,
                       fontWeight: FontWeight.normal,
                       color: Colors.black, // Text color
@@ -279,10 +288,12 @@ class EditEventScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Event'),
+        title: const Text('Edit Event',style: TextStyle(
+          fontFamily: "NamuL",)),
       ),
       body: Center(
-        child: Text('Edit screen for: ${event['title']}'),
+        child: Text('Edit screen for: ${event['title']}',style: TextStyle(
+          fontFamily: "NamuL",)),
       ),
     );
   }

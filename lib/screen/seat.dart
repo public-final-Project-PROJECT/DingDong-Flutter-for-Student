@@ -98,7 +98,7 @@ class _SeatState extends State<Seat> {
                 ),
                 child: Text(
                   "칠판",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Colors.white,fontFamily: "NamuL",),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -139,7 +139,7 @@ class _SeatState extends State<Seat> {
                       ),
                       child: Text(
                         student['studentName'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: "NamuL",),
                       ),
                     );
                   }
@@ -177,7 +177,7 @@ class _SeatState extends State<Seat> {
         child: Text(
           getStudentNameByStudentId(seat['studentId']),
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold,fontFamily: "NamuL",),
         ),
       ),
     );

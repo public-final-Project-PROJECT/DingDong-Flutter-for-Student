@@ -58,7 +58,7 @@ class _MyPageState extends State<MyPage> {
           Icons.person,
           color: Colors.deepOrange,
           size: 30,// 아이콘 색상 설정
-        ) ,Text("${_student['studentName']} 학생 인적 사항" , style: TextStyle(fontSize: 18)),],),
+        ) ,Text("${_student['studentName']} 학생 인적 사항" , style: TextStyle(fontSize: 18,fontFamily: "NamuL",)),],),
         backgroundColor: Color(0xffF4F4F4),
       ),
 
@@ -100,7 +100,7 @@ class _MyPageState extends State<MyPage> {
                          );
                             },
                            ),
-                      Text("프로필 사진" ,style: const TextStyle(fontSize: 20, fontWeight:FontWeight.bold )),
+                      Text("프로필 사진" ,style: const TextStyle(fontSize: 20, fontWeight:FontWeight.bold,fontFamily: "NamuL", )),
                       SizedBox(height: 18),
 
                       // 학생 이름
@@ -108,7 +108,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("이 름", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("이 름", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -119,7 +119,7 @@ class _MyPageState extends State<MyPage> {
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
                               child: Text("${_student['studentName']}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -130,7 +130,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                         child: Text("생년월일 ", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                         child: Text("생년월일 ", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                            textAlign: TextAlign.center),
                            ),
                           Expanded(
@@ -142,7 +142,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                               child: Text(
                                   "${_student['studentBirth'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -153,7 +153,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("학교", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("학교", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -165,7 +165,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                               child: Text(
                                   "${_student['schoolName']}/${_student['grade']}학년/${_student['classNo']}반 / ${_student['studentNo']}번",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -188,7 +188,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                               child: Text(
                                   "${_student['studentGender'] ?? '미입력'} ",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -199,7 +199,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("핸드폰", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("핸드폰", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -211,7 +211,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                               child: Text(
                                   "${_student['studentPhone'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -222,7 +222,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("보호자", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("보호자", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -233,7 +233,7 @@ class _MyPageState extends State<MyPage> {
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
                               child: Text("${_student['parentsName'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -245,7 +245,7 @@ class _MyPageState extends State<MyPage> {
                           Container(
                             width: 87,
                             child: Text("보호자 번호",
-                                style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                                style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -257,7 +257,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                               child: Text(
                                   "${_student['parentsPhone'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -268,7 +268,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("주소", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("주소", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -280,7 +280,7 @@ class _MyPageState extends State<MyPage> {
                               ),
                               child: Text(
                                   "${_student['studentAddress'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],
@@ -292,7 +292,7 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("특이사항", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("특이사항", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold,fontFamily: "NamuL",),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -303,7 +303,7 @@ class _MyPageState extends State<MyPage> {
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
                               child: Text("${_student['studentEtc'] ?? '미입력' }",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(fontSize: 15,fontFamily: "NamuL",)),
                             ),
                           ),
                         ],

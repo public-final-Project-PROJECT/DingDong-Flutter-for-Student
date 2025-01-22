@@ -259,6 +259,7 @@ class _StudentVoteState extends State<Vote> {
                         Text(
                           voting["vote"] == true ? "진행중" : "종료",
                           style: TextStyle(
+                            fontFamily: "NamuL",
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
                             color: voting["vote"] == true
@@ -304,6 +305,7 @@ class _StudentVoteState extends State<Vote> {
                               child: Text(
                                 voting["votingDetail"] ?? '',
                                 style: TextStyle(
+                                  fontFamily: "NamuL",
                                   fontSize: 15,
                                   color: Colors.deepOrangeAccent,
                                 ),
@@ -328,6 +330,7 @@ class _StudentVoteState extends State<Vote> {
                             Text(
                             mostVotedContentName,
                             style: TextStyle(
+                              fontFamily: "NamuL",
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
                             fontSize: 25,
@@ -380,6 +383,7 @@ class _StudentVoteState extends State<Vote> {
                                       child: Text(
                                         content["votingContents"] ?? "",
                                         style: TextStyle(
+                                          fontFamily: "NamuL",
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
                                           color: isMyVote
@@ -393,6 +397,7 @@ class _StudentVoteState extends State<Vote> {
                                       Text(
                                         " ($voteCount명)",
                                         style: TextStyle(
+                                          fontFamily: "NamuL",
                                           color: Colors.red,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -422,6 +427,7 @@ class _StudentVoteState extends State<Vote> {
                                 Text(
                                   votingEnd,
                                   style: TextStyle(
+                                    fontFamily: "NamuL",
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
@@ -430,6 +436,7 @@ class _StudentVoteState extends State<Vote> {
                                 Text(
                                   "  종료 !",
                                   style: TextStyle(
+                                    fontFamily: "NamuL",
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17,
@@ -465,6 +472,7 @@ class _StudentVoteState extends State<Vote> {
                                 Text(
                                   isVoted ? "이미 투표 완료" : "투표하기",
                                   style: TextStyle(
+                                    fontFamily: "NamuL",
                                     fontSize: 15,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
