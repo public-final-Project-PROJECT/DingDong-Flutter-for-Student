@@ -193,6 +193,7 @@ class _StudentVoteState extends State<Vote> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Color(0xFFFFEFB0),
         title: Row(
           children: [
             Icon(Icons.how_to_vote, color: Colors.deepOrange, size: 30),
@@ -200,14 +201,14 @@ class _StudentVoteState extends State<Vote> {
             Text("학급 투표"),
           ],
         ),
-        backgroundColor: const Color(0xffF4F4F4),
+
         shape: const Border(
           bottom: BorderSide(
             color: Colors.grey,
           ),
         ),
       ),
-      backgroundColor: const Color(0xffF4F4F4),
+      backgroundColor:Color(0xFFFFEFB0),
       body: ListView.builder(
         itemCount: _voteList.length,
         itemBuilder: (context, index) {

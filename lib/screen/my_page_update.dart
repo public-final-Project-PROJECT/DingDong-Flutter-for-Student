@@ -140,9 +140,9 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("학생 정보 수정"),
-        backgroundColor: const Color(0xffF4F4F4),
+        backgroundColor: Color(0xFFFFEFB0),
       ),
-      backgroundColor: const Color(0xffF4F4F4),
+      backgroundColor: Color(0xFFFFEFB0),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(

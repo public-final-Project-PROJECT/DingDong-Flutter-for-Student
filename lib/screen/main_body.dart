@@ -366,14 +366,23 @@ class _HomeContentState extends State<HomeContent> {
                                     _getEventsForRange(_rangeStart, _rangeEnd);
                                 return events.isEmpty
                                     ? const Center(
-                                        child: Image(
-                                          image: AssetImage(
-                                              'assets/dog.png'), // 로컬 이미지 경로
-                                          fit: BoxFit.contain, // 이미지가 화면에 맞게 조정
-                                          width: 150, // 이미지 너비
-                                          height: 150, // 이미지 높이
-                                        ),
-                                      )
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center, // 세로축 중앙 정렬
+                                    children: [
+                                      Image(
+                                        image: AssetImage('assets/dog.png'), // 로컬 이미지 경로
+                                        fit: BoxFit.contain,   // 이미지가 화면에 맞게 조정
+                                        width: 150,
+                                        height: 150,
+                                      ),
+                                      SizedBox(height: 16),    // 이미지와 텍스트 사이 간격
+                                      Text(
+                                        '오늘 일정 없어요',
+                                        style: TextStyle(fontSize: 16, color: Colors.grey),
+                                      ),
+                                    ],
+                                  ),
+                                )
                                     : ListView.builder(
                                         itemCount: events.length,
                                         itemBuilder: (context, index) {
@@ -715,8 +724,14 @@ class _HomeContentState extends State<HomeContent> {
     final DateTime now = DateTime.now();
     _selectedDay = now;
     _focusedDay = now;
-    _rangeStart = now.add(const Duration(hours: 9)).toUtc();
-    _rangeEnd = now.add(const Duration(hours: 9)).toUtc();
+    final DateTime date = DateTime.now();
+    _rangeStart = DateTime(date.year, date.month, date.day)
+        .add(const Duration(hours: 9))
+        .toUtc();
+    _rangeEnd = DateTime(date.year, date.month, date.day)
+        .add(const Duration(hours: 9))
+        .toUtc();
+
   }
 
   // 상태를 갱신하는 함수

@@ -1,10 +1,51 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:lastdance_f/screen/home_screen.dart';
 import 'package:lastdance_f/screen/scanner.dart';
 import 'package:lastdance_f/student.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+
+
+
+  class _LoginScreenState extends State<LoginScreen>
+  with SingleTickerProviderStateMixin {
+
+  late AnimationController _shakeController;
+  late Animation<double> _shakeAnimation;
+
+  @override
+  void initState() {
+  super.initState();
+
+  // AnimationController 설정
+  _shakeController = AnimationController(
+  vsync: this,
+  duration: const Duration(milliseconds: 400),
+  );
+
+  // -10 ~ 10 구간으로 좌우 흔들림 설정 (Curves.easeInOut)
+  _shakeAnimation = Tween<double>(begin: -10, end: 10)
+      .chain(CurveTween(curve: Curves.easeInOut))
+      .animate(_shakeController);
+
+  // 애니메이션을 반복(왕복)하도록 설정
+  _shakeController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+  // 꼭 dispose에서 해제해주어야 메모리 누수가 발생하지 않습니다.
+  _shakeController.dispose();
+  super.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +54,24 @@ class LoginScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('로고는 여기 위에'),
+            AnimatedBuilder(
+              animation: _shakeAnimation,
+              builder: (context, child) {
+                // 흔들림(Shake)을 표현하기 위해 좌우 이동(translate)
+                return Transform.translate(
+                  offset: Offset(_shakeAnimation.value, 0),
+                  child: child,
+                );
+              },
+              // 흔들리는 대상만 child로 두면, builder에서는 흔들림 처리만 해주면 됨
+              child: Image.asset(
+                'assets/logo.png',
+                width: 350,
+                height: 150,
+                fit: BoxFit.contain,
+              ),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(

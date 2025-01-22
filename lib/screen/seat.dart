@@ -72,14 +72,14 @@ class _SeatState extends State<Seat> {
             Text("우리반 좌석 보기"),
           ],
         ),
-        backgroundColor: const Color(0xffF4F4F4),
+        backgroundColor: Color(0xFFFFEFB0),
         shape: Border(
           bottom: BorderSide(
             color: Colors.grey,
           ),
         ),
       ),
-      backgroundColor: const Color(0xffF4F4F4),
+      backgroundColor: Color(0xFFFFEFB0),
       body: Column(
         children: [
           SizedBox(height: 90,),
