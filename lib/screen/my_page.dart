@@ -38,12 +38,13 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     // 로딩 상태 확인
     if (_student.isEmpty) {
+
       return Scaffold(
         appBar: AppBar(
           title: Text("학생 정보 로딩 중..."),
-          backgroundColor: Color(0xffF4F4F4),
+          backgroundColor: Color(0xFFFFEFB0),
         ),
-        backgroundColor: Color(0xffF4F4F4),
+        backgroundColor: Color(0xFFFFEFB0),
         body: Center(
           child: CircularProgressIndicator(), // 로딩 인디케이터 표시
         ),
@@ -51,6 +52,7 @@ class _MyPageState extends State<MyPage> {
     }
 
     return Scaffold(
+    backgroundColor: Color(0xFFFFEFB0),
       appBar: AppBar(
         title: Row(children: [Icon(
           Icons.person,
@@ -59,7 +61,7 @@ class _MyPageState extends State<MyPage> {
         ) ,Text("${_student['studentName']} 학생 인적 사항" , style: TextStyle(fontSize: 18)),],),
         backgroundColor: Color(0xffF4F4F4),
       ),
-      backgroundColor: Color(0xffF4F4F4),
+
       body: Column(
         children: [
           Expanded(

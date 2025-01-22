@@ -38,7 +38,8 @@ class _NoticeState extends State<Notice> {
           color: Colors.deepOrange,
           size: 30,// 아이콘 색상 설정
         ), const Text("공지사항") ],) ,
-        backgroundColor: const Color(0xffF4F4F4),
+        backgroundColor: Color(0xFFFFEFB0),
+
         shape: const Border(
           bottom: BorderSide(color: Colors.grey, width: 1),
         ),
@@ -99,7 +100,7 @@ class _NoticeState extends State<Notice> {
 
                 return Card(
                   margin: const EdgeInsets.all(5.0),
-                  color: const Color(0xffFFFFFF),
+                  color: Color(0xFFFFEB99),
                   elevation: 4.0,
                   child: ListTile(
                     contentPadding: const EdgeInsets.all(9.0),
@@ -110,7 +111,7 @@ class _NoticeState extends State<Notice> {
                           child: Text(
                             notice['noticeTitle'],
                             style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.bold),
+                                fontSize: 17, fontWeight: FontWeight.bold,color: Colors.black),
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),

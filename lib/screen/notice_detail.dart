@@ -45,14 +45,14 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
       return Scaffold(
         appBar: AppBar(
           title: Text("공지사항"),
-          backgroundColor: Color(0xffF4F4F4),
+          backgroundColor: Color(0xFFFFEFB0),
           shape: const Border(
               bottom: BorderSide(
                 color: Colors.grey,
                 width: 1,
               )),
         ),
-        backgroundColor: Color(0xffF4F4F4),
+        backgroundColor: Color(0xFFFFEFB0),
         body: Center(child: CircularProgressIndicator()),
       );
     }
@@ -74,15 +74,16 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
+
         title: Text("공지사항"),
-        backgroundColor: Color(0xffF4F4F4),
+        backgroundColor: Color(0xFFFFEFB0),
         shape: const Border(
             bottom: BorderSide(
               color: Colors.grey,
               width: 1,
             )),
       ),
-      backgroundColor: Color(0xffF4F4F4),
+      backgroundColor: Color(0xFFFFEFB0),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
