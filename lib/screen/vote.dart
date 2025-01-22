@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../model/voting_model.dart';
 
 class Vote extends StatefulWidget {
@@ -31,7 +32,9 @@ class _StudentVoteState extends State<Vote> {
 
   void _loadClassStudentsInfo() async {
     try {
-      List<dynamic> studentsList = await _votingModel.findStudentsNameAndImg(widget.classId);
+      List<dynamic> studentsList =
+          await _votingModel.findStudentsNameAndImg(widget.classId);
+
       setState(() {
         _studentsInfo = studentsList.cast<Map<String, dynamic>>();
       });
@@ -42,7 +45,8 @@ class _StudentVoteState extends State<Vote> {
 
   void _loadVoting() async {
     try {
-      List<dynamic> votingData = await _votingModel.selectVoting(widget.classId);
+      List<dynamic> votingData =
+          await _votingModel.selectVoting(widget.classId);
 
       votingData.sort((a, b) {
         if (a["vote"] == true && b["vote"] != true) return -1;
@@ -96,6 +100,7 @@ class _StudentVoteState extends State<Vote> {
       List<dynamic> userVotingData =
           await _votingModel.voteOptionUsers(votingId);
       Map<int, List<dynamic>> votingStudents = {};
+
       for (var userVote in userVotingData) {
         final int contentsId = userVote["contentsId"];
         if (!votingStudents.containsKey(contentsId)) {
@@ -213,18 +218,20 @@ class _StudentVoteState extends State<Vote> {
           final mostVotedContentName = mostVotedContent["votingContents"] ?? "";
           final createdAt = voting["createdAt"] != null
               ? DateFormat('yyyy-MM-dd')
-              .format(DateTime.parse(voting["createdAt"]))
+                  .format(DateTime.parse(voting["createdAt"]))
               : '';
           final votingEnd = voting["votingEnd"] != null
               ? DateFormat('yyyy-MM-dd')
-              .format(DateTime.parse(voting["votingEnd"]))
+                  .format(DateTime.parse(voting["votingEnd"]))
               : '';
           final studentVotes =
-              _votingStudentsMap[votingId]?.values.expand((x) => x).toList() ?? [];
+              _votingStudentsMap[votingId]?.values.expand((x) => x).toList() ??
+                  [];
+
           final isVoted =
-          studentVotes.any((vote) => vote["studentId"] == widget.studentId);
+              studentVotes.any((vote) => vote["studentId"] == widget.studentId);
           final myVote = studentVotes.firstWhere(
-                (vote) => vote["studentId"] == widget.studentId,
+            (vote) => vote["studentId"] == widget.studentId,
             orElse: () => null,
           );
 
@@ -242,64 +249,28 @@ class _StudentVoteState extends State<Vote> {
                   ListTile(
                     title: Row(
                       children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(
-                                    Icons.circle,
-                                    size: 13,
-                                    color: voting["vote"] == true ? Colors.red : Colors.grey,
-                                  ),
-                                  SizedBox(width: 5),
-                                  Text(
-                                    voting["vote"] == true ? "진행중" : "종료",
-                                    style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold,
-                                      color: voting["vote"] == true ? Colors.red : Colors.grey,
-                                    ),
-                                  ),
-                                  SizedBox(width: 13),
-                                  if (voting["anonymousVote"] == false)
-                                    Container(
-                                      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-                                      decoration: BoxDecoration(
-                                        color: voting["vote"] == false
-                                            ? Colors.grey
-                                            : Colors.deepOrangeAccent,
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      child: Text(
-                                        "비밀 투표",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                              SizedBox(height: 20),
-                              Text(
-                                voting["votingName"],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 19,
-                                ),
-                                softWrap: true,
-                              ),
-                            ],
+                        Icon(
+                          Icons.circle,
+                          size: 13,
+                          color:
+                              voting["vote"] == true ? Colors.red : Colors.grey,
+                        ),
+                        SizedBox(width: 5),
+                        Text(
+                          voting["vote"] == true ? "진행중" : "종료",
+                          style: TextStyle(
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold,
+                            color: voting["vote"] == true
+                                ? Colors.red
+                                : Colors.grey,
                           ),
                         ),
                         SizedBox(width: 13),
                         if (voting["anonymousVote"] == false)
                           Container(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
                             decoration: BoxDecoration(
                               color: voting["vote"] == false
                                   ? Colors.grey
@@ -317,8 +288,8 @@ class _StudentVoteState extends State<Vote> {
                           ),
                         if (doubleVoting == true)
                           Container(
-                            padding:
-                            EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8, vertical: 5),
                             decoration: BoxDecoration(
                               color: voting["vote"] == false
                                   ? Colors.grey
@@ -376,30 +347,33 @@ class _StudentVoteState extends State<Vote> {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: votingContents.map<Widget>((content) {
-                              bool isVoted = false;
                               final contentId = content["contentsId"];
-                              final isMyVote =
-                                  myVote != null && myVote["contentsId"] == contentId;
-                              final voteCount =
-                                  _votingStudentsMap[votingId]?[contentId]?.length ?? 0;
+                              final isMyVote = myVote != null &&
+                                  myVote["contentsId"] == contentId;
+                              final voteCount = _votingStudentsMap[votingId]
+                                          ?[contentId]
+                                      ?.length ??
+                                  0;
 
                               return ListTile(
                                 leading: Radio<int>(
                                   value: contentId,
                                   groupValue:
-                                  _selectedContents[votingId]?.isNotEmpty ??
-                                      false
-                                      ? _selectedContents[votingId]!.last
-                                      : null,
+                                      _selectedContents[votingId]?.isNotEmpty ??
+                                              false
+                                          ? _selectedContents[votingId]!.last
+                                          : null,
                                   onChanged: (value) {
                                     setState(() {
                                       if (doubleVoting) {
-                                        if (_selectedContents[votingId] == null) {
+                                        if (_selectedContents[votingId] ==
+                                            null) {
                                           _selectedContents[votingId] = [];
                                         }
                                         if (!_selectedContents[votingId]!
                                             .contains(value)) {
-                                          _selectedContents[votingId]!.add(value);
+                                          _selectedContents[votingId]!
+                                              .add(value);
                                         }
                                       } else {
                                         _selectedContents[votingId] = [value];
@@ -415,8 +389,9 @@ class _StudentVoteState extends State<Vote> {
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
-                                          color:
-                                          isMyVote ? Colors.red : Colors.black,
+                                          color: isMyVote
+                                              ? Colors.red
+                                              : Colors.black,
                                         ),
                                         overflow: TextOverflow.clip,
                                       ),
