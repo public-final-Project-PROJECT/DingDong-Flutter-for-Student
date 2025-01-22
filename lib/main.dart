@@ -69,6 +69,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           primarySwatch: Colors.green,
           scaffoldBackgroundColor: Color(0xFFFFEFB0),
+          fontFamily: "NamuL",
           appBarTheme: AppBarTheme(
             color: Color(0xFFFFEFB0),
             titleTextStyle: TextStyle(

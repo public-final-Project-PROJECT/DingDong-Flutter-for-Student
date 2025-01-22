@@ -82,12 +82,17 @@ flutter:
     - .env
     - assets/
   fonts:
-    - family: Dol
+    - family: NamuB
       fonts:
-        - asset: assets/fonts/Dol.otf
-    - family: Nut
+        - asset: assets/fonts/NamuB.ttf
+    - family: NamuL
       fonts:
-        - asset: assets/fonts/Nut.otf
+        - asset: assets/fonts/NamuL.ttf
+    - family: NamuM
+      fonts:
+        - asset: assets/fonts/NamuM.ttf
+
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
