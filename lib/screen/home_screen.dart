@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text(
             classDetails['classNickname'] ?? '홈',
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20, fontFamily: 'Dol'),
           ),
           actions: [
             IconButton(
