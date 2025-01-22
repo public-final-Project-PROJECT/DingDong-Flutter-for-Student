@@ -151,9 +151,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Scaffold _buildScaffold(Map<String, dynamic> classDetails) {
+
     return Scaffold(
+        backgroundColor: Color(0xFFFFEFB0),
         key: _scaffoldKey,
         appBar: AppBar(
+
           title: Text(
             classDetails['classNickname'] ?? '홈',
             style: const TextStyle(fontSize: 20),
@@ -174,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Drawer _buildDrawer(Map<String, dynamic> classDetails) {
     return Drawer(
+      backgroundColor: Color(0xFFFFEFB0),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [

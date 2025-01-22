@@ -717,6 +717,7 @@ class _HomeContentState extends State<HomeContent> {
     _focusedDay = now;
     _rangeStart = now.add(const Duration(hours: 9)).toUtc();
     _rangeEnd = now.add(const Duration(hours: 9)).toUtc();
+
   }
 
   // 상태를 갱신하는 함수

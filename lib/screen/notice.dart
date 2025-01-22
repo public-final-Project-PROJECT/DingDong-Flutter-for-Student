@@ -39,7 +39,7 @@ class _NoticeState extends State<Notice> {
           bottom: BorderSide(color: Colors.grey, width: 1),
         ),
       ),
-      backgroundColor: const Color(0xffF4F4F4),
+      backgroundColor: Color(0xFFFFEFB0),
       body: Column(
         children: [
           Padding(
