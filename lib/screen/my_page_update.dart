@@ -35,19 +35,25 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
   @override
   void initState() {
     super.initState();
-    _nameController = TextEditingController(text: widget.studentData['studentName'] ?? '');
-    _birthController = TextEditingController(text: widget.studentData['studentBirth'] ?? '');
-    _phoneController = TextEditingController(text: widget.studentData['studentPhone'] ?? '');
-    _addressController = TextEditingController(text: widget.studentData['studentAddress'] ?? '');
-    _studentEtcController = TextEditingController(text: widget.studentData['studentEtc'] ?? '');
-    _parentsNameController = TextEditingController(text: widget.studentData['parentsName'] ?? '');
-    _parentsPhoneController = TextEditingController(text: widget.studentData['parentsPhone'] ?? '');
-    _studentGenderController = TextEditingController(text: widget.studentData['studentGender'] ?? '');
+    _nameController =
+        TextEditingController(text: widget.studentData['studentName'] ?? '');
+    _birthController =
+        TextEditingController(text: widget.studentData['studentBirth'] ?? '');
+    _phoneController =
+        TextEditingController(text: widget.studentData['studentPhone'] ?? '');
+    _addressController =
+        TextEditingController(text: widget.studentData['studentAddress'] ?? '');
+    _studentEtcController =
+        TextEditingController(text: widget.studentData['studentEtc'] ?? '');
+    _parentsNameController =
+        TextEditingController(text: widget.studentData['parentsName'] ?? '');
+    _parentsPhoneController =
+        TextEditingController(text: widget.studentData['parentsPhone'] ?? '');
+    _studentGenderController =
+        TextEditingController(text: widget.studentData['studentGender'] ?? '');
 
     if (widget.studentData['studentImg'] != null) {
-
       beforeImg = widget.studentData['studentImg'];
-
     }
   }
 
@@ -60,10 +66,6 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
       setState(() {
         _selectedImage = File(pickedFile.path);
       });
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("이미지를 선택할 수 없습니다.")),
-      );
     }
   }
 
@@ -80,9 +82,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
     }
   }
 
-
-
-  Future<void> _saveChanges() async  {
+  Future<void> _saveChanges() async {
     String studentImgPath = _selectedImage != null ? _selectedImage!.path : '';
     Map<String, dynamic> updatedData = {
       'studentName': _nameController.text,
@@ -139,7 +139,10 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("학생 정보 수정"),
+        title: const Text(
+          "학생 정보 수정",
+          style: TextStyle(fontFamily: "NamuL"),
+        ),
         backgroundColor: Color(0xFFFFEFB0),
       ),
       backgroundColor: Color(0xFFFFEFB0),
@@ -183,13 +186,15 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
                 ),
               ],
             ),
-            _buildTextField("이 름", _nameController, isEnabled: false, icon: Icons.person),
+            _buildTextField("이 름", _nameController,
+                isEnabled: false, icon: Icons.person),
             _buildTextField("성별", _studentGenderController, icon: Icons.male),
             _buildTextField("생년월일", _birthController, icon: Icons.cake),
             _buildTextField("핸드폰", _phoneController, icon: Icons.phone),
             _buildTextField("주소", _addressController, icon: Icons.home),
             _buildTextField("보호자", _parentsNameController, icon: Icons.group),
-            _buildTextField("보호자 번호", _parentsPhoneController, icon: Icons.phone_android),
+            _buildTextField("보호자 번호", _parentsPhoneController,
+                icon: Icons.phone_android),
             _buildTextField("특이사항", _studentEtcController, icon: Icons.info),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -197,12 +202,16 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.deepOrangeAccent,
                 foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
               ),
-              child: const Text("저장"),
+              child: const Text(
+                "저장",
+                style: TextStyle(fontFamily: "NamuL"),
+              ),
             ),
           ],
         ),
@@ -230,8 +239,10 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
                   color: Colors.black,
                 ),
               ),
-              const SizedBox(width: 8), // 라벨과 아이콘 사이 간격
-              if (icon != null) Icon(icon, size: 17, color: Colors.orangeAccent),
+              const SizedBox(width: 8),
+              // 라벨과 아이콘 사이 간격
+              if (icon != null)
+                Icon(icon, size: 17, color: Colors.orangeAccent),
             ],
           ),
           border: OutlineInputBorder(
@@ -240,4 +251,5 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
         ),
       ),
     );
-  }}
+  }
+}

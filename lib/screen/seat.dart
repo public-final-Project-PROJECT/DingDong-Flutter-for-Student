@@ -69,7 +69,7 @@ class _SeatState extends State<Seat> {
           children: [
             Icon(Icons.table_restaurant_outlined, color: Colors.deepOrange, size: 30,),
             SizedBox(width: 10),
-            Text("우리반 좌석 보기"),
+            Text("우리반 좌석 보기", style: TextStyle(fontFamily: "NamuL"),),
           ],
         ),
         backgroundColor: Color(0xFFFFEFB0),

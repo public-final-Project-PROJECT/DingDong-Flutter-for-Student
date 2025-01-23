@@ -695,7 +695,7 @@ class _HomeContentState extends State<HomeContent> {
                                       child: AnimatedTextKit(
                                       animatedTexts: [
                                         TypewriterAnimatedText(
-                                          '오늘 급식없어요',
+                                          '오늘은 급식이 없어요',
                                           textStyle: TextStyle(
                                             fontFamily: "NamuL",
                                             fontSize: 32.0,

@@ -44,7 +44,7 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
     if (noticeList.isEmpty) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("공지사항"),
+          title: Text("공지사항", style: TextStyle(fontFamily: "NamuL"),),
           backgroundColor: Color(0xFFFFEFB0),
           shape: const Border(
               bottom: BorderSide(
@@ -74,7 +74,6 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-
         title: Text("공지사항",style: TextStyle(
           fontFamily: "NamuL",)),
         backgroundColor: Color(0xFFFFEFB0),
@@ -105,7 +104,7 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
                       await _downloadFile(fileUrl, context);
                     },
                     icon: Icon(Icons.file_download),
-                    label: Text("첨부 파일"),
+                    label: Text("첨부 파일", style: TextStyle(fontFamily: "NamuL"),),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orangeAccent,
                         foregroundColor: Colors.white,
