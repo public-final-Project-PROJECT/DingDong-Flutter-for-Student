@@ -129,6 +129,7 @@ class _NoticeState extends State<Notice> {
                       margin: const EdgeInsets.only(left: 17),
                       child:
                       Text(
+
                           "${notice['noticeCategory']}",
                           style: const TextStyle(fontSize: 12, color: Colors.deepOrange),
                         ),

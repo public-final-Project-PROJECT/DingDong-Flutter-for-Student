@@ -61,9 +61,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
         _selectedImage = File(pickedFile.path);
       });
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("이미지를 선택할 수 없습니다.")),
-      );
+
     }
   }
 
@@ -125,6 +123,7 @@ class _MyPageUpdateState extends State<MyPageUpdate> {
         Navigator.pop(context);
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
+
           const SnackBar(content: Text("업데이트 실패")),
         );
       }
