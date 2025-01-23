@@ -69,7 +69,7 @@ class _SeatState extends State<Seat> {
           children: [
             Icon(Icons.table_restaurant_outlined, color: Colors.deepOrange, size: 30,),
             SizedBox(width: 10),
-            Text("우리반 좌석 보기"),
+            Text("우리반 좌석 보기", style: TextStyle(fontFamily: "NamuL"),),
           ],
         ),
         backgroundColor: Color(0xFFFFEFB0),
@@ -98,7 +98,7 @@ class _SeatState extends State<Seat> {
                 ),
                 child: Text(
                   "칠판",
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: TextStyle(fontSize: 16, color: Colors.white,fontFamily: "NamuL",),
                   textAlign: TextAlign.center,
                 ),
               ),
@@ -139,7 +139,7 @@ class _SeatState extends State<Seat> {
                       ),
                       child: Text(
                         student['studentName'],
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: TextStyle(fontWeight: FontWeight.bold,fontFamily: "NamuL",),
                       ),
                     );
                   }
@@ -177,7 +177,7 @@ class _SeatState extends State<Seat> {
         child: Text(
           getStudentNameByStudentId(seat['studentId']),
           textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: TextStyle(fontWeight: FontWeight.bold,fontFamily: "NamuL",),
         ),
       ),
     );

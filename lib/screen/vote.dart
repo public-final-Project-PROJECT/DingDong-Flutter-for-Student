@@ -33,7 +33,7 @@ class _StudentVoteState extends State<Vote> {
   void _loadClassStudentsInfo() async {
     try {
       List<dynamic> studentsList =
-          await _votingModel.findStudentsNameAndImg(widget.classId);
+      await _votingModel.findStudentsNameAndImg(widget.classId);
 
       setState(() {
         _studentsInfo = studentsList.cast<Map<String, dynamic>>();
@@ -46,7 +46,7 @@ class _StudentVoteState extends State<Vote> {
   void _loadVoting() async {
     try {
       List<dynamic> votingData =
-          await _votingModel.selectVoting(widget.classId);
+      await _votingModel.selectVoting(widget.classId);
 
       votingData.sort((a, b) {
         if (a["vote"] == true && b["vote"] != true) return -1;
@@ -219,20 +219,20 @@ class _StudentVoteState extends State<Vote> {
           final mostVotedContentName = mostVotedContent["votingContents"] ?? "";
           final createdAt = voting["createdAt"] != null
               ? DateFormat('yyyy-MM-dd')
-                  .format(DateTime.parse(voting["createdAt"]))
+              .format(DateTime.parse(voting["createdAt"]))
               : '';
           final votingEnd = voting["votingEnd"] != null
               ? DateFormat('yyyy-MM-dd')
-                  .format(DateTime.parse(voting["votingEnd"]))
+              .format(DateTime.parse(voting["votingEnd"]))
               : '';
           final studentVotes =
               _votingStudentsMap[votingId]?.values.expand((x) => x).toList() ??
                   [];
 
           final isVoted =
-              studentVotes.any((vote) => vote["studentId"] == widget.studentId);
+          studentVotes.any((vote) => vote["studentId"] == widget.studentId);
           final myVote = studentVotes.firstWhere(
-            (vote) => vote["studentId"] == widget.studentId,
+                (vote) => vote["studentId"] == widget.studentId,
             orElse: () => null,
           );
           // 중복투표 여부 확인
@@ -253,12 +253,13 @@ class _StudentVoteState extends State<Vote> {
                           Icons.circle,
                           size: 13,
                           color:
-                              voting["vote"] == true ? Colors.red : Colors.grey,
+                          voting["vote"] == true ? Colors.red : Colors.grey,
                         ),
                         SizedBox(width: 5),
                         Text(
                           voting["vote"] == true ? "진행중" : "종료",
                           style: TextStyle(
+                            fontFamily: "NamuL",
                             fontSize: 17,
                             fontWeight: FontWeight.bold,
                             color: voting["vote"] == true
@@ -286,6 +287,9 @@ class _StudentVoteState extends State<Vote> {
                               ),
                             ),
                           ),
+
+
+
                       ],
                     ),
                     subtitle: Column(
@@ -294,21 +298,34 @@ class _StudentVoteState extends State<Vote> {
                         SizedBox(height: 25),
                         Row(
                           children: [
-                            Icon(
-                              Icons.star,
-                              color: Colors.deepOrangeAccent,
-                              size: 20,
-                            ),
+
                             SizedBox(width: 7),
                             Expanded(
-                              child: Text(
-                                voting["votingDetail"] ?? '',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.deepOrangeAccent,
-                                ),
-                                softWrap: true,
-                              ),
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: 20),
+                                    Text(
+                                      voting["votingName"],
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 19,
+                                      ),
+                                      softWrap: true,
+                                    ),
+                                    SizedBox(width: 13, height: 15,),
+                                    Text(
+                                      voting["votingDetail"] ?? '',
+                                      style: TextStyle(
+                                        fontFamily: "NamuL",
+                                        fontSize: 15,
+                                        color: Colors.deepOrangeAccent,
+                                      ),
+                                      softWrap: true,
+                                    ),
+
+                                  ],
+                                )
+
                             ),
                           ],
                         ),
@@ -317,23 +334,24 @@ class _StudentVoteState extends State<Vote> {
                           SizedBox(height: 30, width: 50,),
                         if (voting["vote"] == false)
                           Row(
-                          children: [
-                            Icon(Icons.real_estate_agent, color: Colors.red,),
-                            SizedBox(width: 5,),
-                            Text("투표 결과 : ", style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.red,
-                              fontSize: 17,),),
-                            SizedBox(width: 10,),
-                            Text(
-                            mostVotedContentName,
-                            style: TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                            ),
-                            )
-                          ],
+                            children: [
+                              Icon(Icons.real_estate_agent, color: Colors.red,),
+                              SizedBox(width: 5,),
+                              Text("투표 결과 : ", style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 17,),),
+                              SizedBox(width: 10,),
+                              Text(
+                                mostVotedContentName,
+                                style: TextStyle(
+                                  fontFamily: "NamuL",
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                ),
+                              )
+                            ],
                           )
 
                         else
@@ -344,18 +362,18 @@ class _StudentVoteState extends State<Vote> {
                               final isMyVote = myVote != null &&
                                   myVote["contentsId"] == contentId;
                               final voteCount = _votingStudentsMap[votingId]
-                                          ?[contentId]
-                                      ?.length ??
+                              ?[contentId]
+                                  ?.length ??
                                   0;
 
                               return ListTile(
                                 leading: Radio<int>(
                                   value: contentId,
                                   groupValue:
-                                      _selectedContents[votingId]?.isNotEmpty ??
-                                              false
-                                          ? _selectedContents[votingId]!.last
-                                          : null,
+                                  _selectedContents[votingId]?.isNotEmpty ??
+                                      false
+                                      ? _selectedContents[votingId]!.last
+                                      : null,
                                   onChanged: (value) {
                                     setState(() {
                                       if (doubleVoting) {
@@ -380,6 +398,7 @@ class _StudentVoteState extends State<Vote> {
                                       child: Text(
                                         content["votingContents"] ?? "",
                                         style: TextStyle(
+                                          fontFamily: "NamuL",
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18,
                                           color: isMyVote
@@ -393,6 +412,7 @@ class _StudentVoteState extends State<Vote> {
                                       Text(
                                         " ($voteCount명)",
                                         style: TextStyle(
+                                          fontFamily: "NamuL",
                                           color: Colors.red,
                                           fontWeight: FontWeight.bold,
                                           fontSize: 16,
@@ -422,6 +442,7 @@ class _StudentVoteState extends State<Vote> {
                                 Text(
                                   votingEnd,
                                   style: TextStyle(
+                                    fontFamily: "NamuL",
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18,
@@ -430,6 +451,7 @@ class _StudentVoteState extends State<Vote> {
                                 Text(
                                   "  종료 !",
                                   style: TextStyle(
+                                    fontFamily: "NamuL",
                                     color: Colors.red,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 17,
@@ -465,6 +487,7 @@ class _StudentVoteState extends State<Vote> {
                                 Text(
                                   isVoted ? "이미 투표 완료" : "투표하기",
                                   style: TextStyle(
+                                    fontFamily: "NamuL",
                                     fontSize: 15,
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

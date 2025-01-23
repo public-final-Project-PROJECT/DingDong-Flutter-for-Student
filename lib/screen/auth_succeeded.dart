@@ -67,13 +67,16 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text("우리반을 찾을 수 없어요.",
-                        style: TextStyle(fontSize: 18)),
+                        style: TextStyle(fontSize: 18, fontFamily: "NamuL")),
                     const SizedBox(height: 10),
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(builder: (context) => MyApp()),
                           (route) => false),
-                      child: const Text("뒤로"),
+                      child: const Text("뒤로",
+                          style: TextStyle(
+                            fontFamily: "NamuL",
+                          )),
                     ),
                   ],
                 ),
@@ -90,19 +93,28 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                       "${classDetails['schoolName']} "
                       "${classDetails['grade']}학년 "
                       "${classDetails['classNo']}반",
-                      style: const TextStyle(fontSize: 20),
+                      style: const TextStyle(fontSize: 20, fontFamily: "NamuL"),
                     ),
                     const SizedBox(height: 10),
-                    const Text("우리반이 맞나요?"),
+                    const Text(
+                      "우리반이 맞나요?",
+                      style: TextStyle(fontFamily: "NamuL"),
+                    ),
                     const SizedBox(height: 10),
-                    const Text("\"네\"를 누르면 어플을 삭제하기 전까지 우리반을 변경할 수 없어요."),
+                    const Text("\"네\"를 누르면 어플을 삭제하기 전까지 우리반을 변경할 수 없어요.",
+                        style: TextStyle(
+                          fontFamily: "NamuL",
+                        )),
                     const SizedBox(height: 20),
                     Center(
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ElevatedButton(
-                            child: const Text("네"),
+                            child: const Text("네",
+                                style: TextStyle(
+                                  fontFamily: "NamuL",
+                                )),
                             onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                   builder: (context) =>
@@ -111,7 +123,10 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                           ),
                           const SizedBox(width: 10),
                           ElevatedButton(
-                            child: const Text("아니오"),
+                            child: const Text("아니오",
+                                style: TextStyle(
+                                  fontFamily: "NamuL",
+                                )),
                             onPressed: () async {
                               final FlutterSecureStorage storage =
                                   const FlutterSecureStorage();
@@ -131,7 +146,11 @@ class _AuthSucceededState extends State<AuthSucceeded> {
                 ),
               );
             } else {
-              return const Center(child: Text("오류"));
+              return const Center(
+                  child: Text("오류",
+                      style: TextStyle(
+                        fontFamily: "NamuL",
+                      )));
             }
           },
         ),

@@ -93,17 +93,23 @@ class QRScanner extends StatelessWidget {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text("앗!"),
+          title: const Text(
+            "앗!",
+            style: TextStyle(fontFamily: "NamuL"),
+          ),
           content: const Text(
             "QR 코드 인식에 실패했어요.",
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(fontSize: 16, fontFamily: "NamuL"),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => MyApp())),
               // Close the dialog
-              child: const Text("확인"),
+              child: const Text(
+                "확인",
+                style: TextStyle(fontFamily: "NamuL"),
+              ),
             ),
           ],
         );
@@ -133,7 +139,9 @@ class QRScanner extends StatelessWidget {
         final String classCreated = responseData['classCreated'];
         final int yearOfClassCreated = int.parse(classCreated.substring(0, 4));
 
-        _addStudent(student, dio, serverURL, classId);
+        if (!_studentAdded) {
+          await _addStudent(student, dio, serverURL, classId);
+        }
 
         return student.classId == classId &&
             student.teacherId == teacherId &&
@@ -147,15 +155,15 @@ class QRScanner extends StatelessWidget {
 
   Future<void> _addStudent(
       Student student, Dio dio, String serverURL, int classId) async {
-    if(_studentAdded) return;
+    if (_studentAdded) return;
 
     try {
+      _studentAdded = true;
       await dio.post('$serverURL/api/students/add', queryParameters: {
         'studentNo': student.studentInfo.studentNo,
         'studentName': student.studentInfo.studentName,
         'classId': classId,
       });
-      _studentAdded = true;
     } catch (e) {
       throw Exception("ERROR in addStudent: $e");
     }

@@ -14,8 +14,6 @@ class _MyPageState extends State<MyPage> {
   Map<String, dynamic> _student = {};
   final StudentModel _studentModel = StudentModel();
 
-
-
   @override
   void initState() {
     super.initState();
@@ -38,7 +36,6 @@ class _MyPageState extends State<MyPage> {
   Widget build(BuildContext context) {
     // 로딩 상태 확인
     if (_student.isEmpty) {
-
       return Scaffold(
         appBar: AppBar(
           title: Text("학생 정보 로딩 중..."),
@@ -52,16 +49,22 @@ class _MyPageState extends State<MyPage> {
     }
 
     return Scaffold(
-    backgroundColor: Color(0xFFFFEFB0),
+      backgroundColor: Color(0xFFFFEFB0),
       appBar: AppBar(
-        title: Row(children: [Icon(
-          Icons.person,
-          color: Colors.deepOrange,
-          size: 30,// 아이콘 색상 설정
-        ) ,Text("${_student['studentName']} 학생 인적 사항" , style: TextStyle(fontSize: 18)),],),
-        backgroundColor: Color(0xffF4F4F4),
+        title: Row(
+          children: [
+            Icon(
+              Icons.person, color: Colors.deepOrange, size: 30, // 아이콘 색상 설정
+            ),
+            Text("${_student['studentName']} 학생 인적 사항",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontFamily: "NamuL",
+                )),
+          ],
+        ),
+        backgroundColor: Color(0xFFFFEFB0),
       ),
-
       body: Column(
         children: [
           Expanded(
@@ -85,22 +88,27 @@ class _MyPageState extends State<MyPage> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(height: 15),
-                      if( _student['studentImg'] != null )
-              Image.network(
-                      "http://112.221.66.174:6892${_student['studentImg']}",
-                         width: 150,
-                         height: 150,
+                      if (_student['studentImg'] != null)
+                        Image.network(
+                          "http://112.221.66.174:6892${_student['studentImg']}",
+                          width: 150,
+                          height: 150,
                           fit: BoxFit.cover,
                           errorBuilder: (context, error, stackTrace) {
-                           return Container(
-                        width: 100,
-                         height: 100,
-                           color: Colors.grey[300],
-                          child: Icon(Icons.image, color: Colors.grey[700]),
-                         );
-                            },
-                           ),
-                      Text("프로필 사진" ,style: const TextStyle(fontSize: 20, fontWeight:FontWeight.bold )),
+                            return Container(
+                              width: 100,
+                              height: 100,
+                              color: Colors.grey[300],
+                              child: Icon(Icons.image, color: Colors.grey[700]),
+                            );
+                          },
+                        ),
+                      Text("프로필 사진",
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "NamuL",
+                          )),
                       SizedBox(height: 18),
 
                       // 학생 이름
@@ -108,7 +116,12 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("이 름", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("이 름",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -119,7 +132,10 @@ class _MyPageState extends State<MyPage> {
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
                               child: Text("${_student['studentName']}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "NamuL",
+                                  )),
                             ),
                           ),
                         ],
@@ -130,9 +146,14 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                         child: Text("생년월일 ", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
-                           textAlign: TextAlign.center),
-                           ),
+                            child: Text("생년월일 ",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
+                                textAlign: TextAlign.center),
+                          ),
                           Expanded(
                             child: Container(
                               padding: EdgeInsets.only(left: 14.0),
@@ -140,9 +161,12 @@ class _MyPageState extends State<MyPage> {
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
-                              child: Text(
-                                  "${_student['studentBirth'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                              child:
+                                  Text("${_student['studentBirth'] ?? '미입력'}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "NamuL",
+                                      )),
                             ),
                           ),
                         ],
@@ -153,7 +177,12 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("학교", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("학교",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -165,7 +194,10 @@ class _MyPageState extends State<MyPage> {
                               ),
                               child: Text(
                                   "${_student['schoolName']}/${_student['grade']}학년/${_student['classNo']}반 / ${_student['studentNo']}번",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "NamuL",
+                                  )),
                             ),
                           ),
                         ],
@@ -176,7 +208,11 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("성별", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("성별",
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: "NamuL"),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -186,9 +222,12 @@ class _MyPageState extends State<MyPage> {
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
-                              child: Text(
-                                  "${_student['studentGender'] ?? '미입력'} ",
-                                  style: TextStyle(fontSize: 15)),
+                              child:
+                                  Text("${_student['studentGender'] ?? '미입력'} ",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "NamuL",
+                                      )),
                             ),
                           ),
                         ],
@@ -199,7 +238,12 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("핸드폰", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("핸드폰",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -209,9 +253,12 @@ class _MyPageState extends State<MyPage> {
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
-                              child: Text(
-                                  "${_student['studentPhone'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                              child:
+                                  Text("${_student['studentPhone'] ?? '미입력'}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "NamuL",
+                                      )),
                             ),
                           ),
                         ],
@@ -222,7 +269,12 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("보호자", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("보호자",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -233,7 +285,10 @@ class _MyPageState extends State<MyPage> {
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
                               child: Text("${_student['parentsName'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "NamuL",
+                                  )),
                             ),
                           ),
                         ],
@@ -245,7 +300,11 @@ class _MyPageState extends State<MyPage> {
                           Container(
                             width: 87,
                             child: Text("보호자 번호",
-                                style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -255,9 +314,12 @@ class _MyPageState extends State<MyPage> {
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
-                              child: Text(
-                                  "${_student['parentsPhone'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                              child:
+                                  Text("${_student['parentsPhone'] ?? '미입력'}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "NamuL",
+                                      )),
                             ),
                           ),
                         ],
@@ -268,7 +330,12 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("주소", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("주소",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -278,9 +345,12 @@ class _MyPageState extends State<MyPage> {
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
-                              child: Text(
-                                  "${_student['studentAddress'] ?? '미입력'}",
-                                  style: TextStyle(fontSize: 15)),
+                              child:
+                                  Text("${_student['studentAddress'] ?? '미입력'}",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                        fontFamily: "NamuL",
+                                      )),
                             ),
                           ),
                         ],
@@ -292,7 +362,12 @@ class _MyPageState extends State<MyPage> {
                         children: [
                           Container(
                             width: 87,
-                            child: Text("특이사항", style: TextStyle(fontSize: 15, fontWeight:FontWeight.bold),
+                            child: Text("특이사항",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "NamuL",
+                                ),
                                 textAlign: TextAlign.center),
                           ),
                           Expanded(
@@ -302,8 +377,11 @@ class _MyPageState extends State<MyPage> {
                                 border: Border(
                                     bottom: BorderSide(color: Colors.grey)),
                               ),
-                              child: Text("${_student['studentEtc'] ?? '미입력' }",
-                                  style: TextStyle(fontSize: 15)),
+                              child: Text("${_student['studentEtc'] ?? '미입력'}",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontFamily: "NamuL",
+                                  )),
                             ),
                           ),
                         ],
@@ -315,7 +393,8 @@ class _MyPageState extends State<MyPage> {
                           final updatedData = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MyPageUpdate(studentData: _student),
+                              builder: (context) =>
+                                  MyPageUpdate(studentData: _student),
                             ),
                           );
                           if (updatedData != null) {
@@ -327,12 +406,19 @@ class _MyPageState extends State<MyPage> {
                             _loadStudent();
                           }
                         },
-                        icon: const Icon(Icons.update, color: Colors.white, ),
-                        label: const Text("수정하기"),
+                        icon: const Icon(
+                          Icons.update,
+                          color: Colors.white,
+                        ),
+                        label: const Text(
+                          "수정하기",
+                          style: TextStyle(fontFamily: "NamuL"),
+                        ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.orangeAccent,
                           foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
@@ -341,7 +427,6 @@ class _MyPageState extends State<MyPage> {
                     ],
                   ),
                 ),
-
               ],
             ),
           ),

@@ -106,31 +106,6 @@ class LoginScreen extends StatefulWidget {
                 ],
               ),
             ),
-            TextButton(
-              child: const Text('로그인 건너뛰기',
-                style: TextStyle(
-                  fontSize: 14,
-                  height: 5,
-                  color: Colors.grey,
-                  decoration: TextDecoration.underline,
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(
-                        student: Student(
-                            studentInfo: StudentInfo(
-                                schoolName: "서이초등학교",
-                                studentNo: 1,
-                                studentName: "테스트"),
-                            teacherId: 3,
-                            classId: 4,
-                            year: 2025)),
-                  ),
-                );
-              },
-            ),
           ],
         ),
       ),

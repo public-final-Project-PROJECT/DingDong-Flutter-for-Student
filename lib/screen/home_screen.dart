@@ -165,12 +165,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
         backgroundColor: Color(0xFFFFEFB0),
+
         key: _scaffoldKey,
         appBar: AppBar(
 
           title: Text(
             classDetails['classNickname'] ?? '홈',
-            style: const TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20, fontFamily: "NamuL"),
+
           ),
           actions: [
             IconButton(
@@ -196,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(
               '${classDetails['schoolName']} ${classDetails['grade']}학년 ${classDetails['classNo']}반\n'
               '${widget.student.studentInfo.studentName}',
-              style: const TextStyle(fontSize: 24),
+              style: const TextStyle(fontSize: 24, fontFamily: "NamuL"),
             ),
           ),
           _buildDrawerItem(title: '홈', onTap: () => Navigator.pop(context)),

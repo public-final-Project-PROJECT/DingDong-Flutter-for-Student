@@ -44,7 +44,7 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
     if (noticeList.isEmpty) {
       return Scaffold(
         appBar: AppBar(
-          title: Text("공지사항"),
+          title: Text("공지사항", style: TextStyle(fontFamily: "NamuL"),),
           backgroundColor: Color(0xFFFFEFB0),
           shape: const Border(
               bottom: BorderSide(
@@ -74,8 +74,8 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-
-        title: Text("공지사항"),
+        title: Text("공지사항",style: TextStyle(
+          fontFamily: "NamuL",)),
         backgroundColor: Color(0xFFFFEFB0),
         shape: const Border(
             bottom: BorderSide(
@@ -104,7 +104,7 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
                       await _downloadFile(fileUrl, context);
                     },
                     icon: Icon(Icons.file_download),
-                    label: Text("첨부 파일"),
+                    label: Text("첨부 파일", style: TextStyle(fontFamily: "NamuL"),),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orangeAccent,
                         foregroundColor: Colors.white,
@@ -115,8 +115,8 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
                   ),
               ],
             ),
-            Text(displayDate ,style: TextStyle(fontSize: 12),),
-            Text("${notice['noticeCategory']}", style: TextStyle(fontSize: 14,color: Colors.orangeAccent),),
+            Text(displayDate ,style: TextStyle(fontSize: 12,fontFamily: "NamuL",),),
+            Text("${notice['noticeCategory']}", style: TextStyle(fontSize: 14,color: Colors.orangeAccent,fontFamily: "NamuL",),),
             SizedBox(height: 8),
             Container(
               width: 393,
@@ -142,7 +142,7 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
               ),
             SizedBox(height: 10),
 
-            Text("${notice['noticeContent']}",style: TextStyle(fontSize: 20),),
+            Text("${notice['noticeContent']}",style: TextStyle(fontSize: 20,fontFamily: "NamuL",),),
             SizedBox(height: 10),
 
             if (notice['noticeFile'] != null && notice['noticeFile'].isNotEmpty)
@@ -151,7 +151,7 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
                 padding: EdgeInsets.all(8.0),
                 child: Text(
                   getFileName(getFileName(notice['noticeFile'])),
-                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+                  style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500,fontFamily: "NamuL",),
                 ),
               ),
           ],
@@ -166,7 +166,7 @@ class _NoticeDetailPageState extends State<NoticeDetailPage> {
         final externalDirs = await getExternalStorageDirectories();
         if (externalDirs == null || externalDirs.isEmpty) {
           ScaffoldMessenger.of(context)
-              .showSnackBar(const SnackBar(content: Text('외부 저장소를 찾을 수 없습니다.')));
+              .showSnackBar(const SnackBar(content: Text('외부 저장소를 찾을 수 없습니다.',)));
           return;
         }
 
